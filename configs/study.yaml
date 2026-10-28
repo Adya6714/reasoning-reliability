@@ -1,0 +1,28 @@
+study:
+  id: rr_behavioral_v1
+  status: design
+  primary_question: >-
+    Do controlled, task-conditioned behavioral indicators predict held-out failure patterns
+    beyond canonical scores and psychometric skill profiles?
+  primary_estimand: >-
+    held-out predictive improvement of the process-diagnostic model over score and skill-profile baselines
+  process_indicators: [dependence, organization, source, faithfulness]
+  secondary_estimands:
+    - paired correctness difference between canonical and each answer-preserving transform
+    - paired correctness response to minimal answer-changing counterfactuals
+  primary_models: [qwen3_5_27b, gemma4_31b_dense, llama4_scout]
+  primary_families: [arithmetic, graph_optimization, planning]
+  holdout_rule: hold back at least one whole task family from probe development and predictive-model fitting
+  primary_baselines: [canonical_score_plus_difficulty, psychometric_skill_profile_plus_difficulty]
+  target_independent_items_per_family: 200
+  pilot_items_per_family: 40
+  primary_decoding_replicates: 3
+  initial_repeat_rule: run 3 matched stochastic replicates per item when stochastic decoding is part of the estimand; run greedy once plus repeatability audit for greedy condition
+  expansion_rule: increase to 5 replicates if pilot within-item variance is material; expand up to 20 only when estimating a prespecified stochastic response distribution, not to inflate item n
+  minimum_detectable_effect_pp: 8
+  power_target: 0.80
+  confidence_level: 0.95
+  multiple_testing: Holm correction across the three primary family contrasts
+  clustering: generator_seed_and_item_id
+  canonical_accuracy_floor: 0.50
+  preregistration_required_before_confirmatory_runs: true

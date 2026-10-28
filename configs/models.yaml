@@ -1,0 +1,42 @@
+# Candidate open-weight behavioral panel. Pin immutable revisions before a run.
+behavioral_panel:
+  - id: qwen3_5_27b
+    hf_id: Qwen/Qwen3.5-27B
+    family: Qwen
+    role: high-capability behavioral anchor
+    architecture_note: hybrid linear-attention and full-attention; multimodal checkpoint
+    license_note: verify the exact model card and terms before use
+  - id: gemma4_31b_dense
+    hf_id: google/gemma-4-31B-it
+    family: Gemma
+    role: independent high-capability family
+    architecture_note: dense; hybrid local/global attention; multimodal family
+    license_note: Apache-2.0 model card for current family; verify checkpoint terms
+  - id: llama4_scout
+    hf_id: meta-llama/Llama-4-Scout-17B-16E-Instruct
+    family: Llama
+    role: independent high-capability MoE family
+    architecture_note: multimodal MoE; 17B active parameters, 109B total per Meta
+    license_note: Llama community license; gated access may apply
+
+mechanistic_candidates:
+  - id: qwen3_5_4b
+    hf_id: Qwen/Qwen3.5-4B
+    role: exploratory neuron-steering / instrumentation feasibility candidate
+    status: reproduce an existing open workflow with matched controls; not yet selected for the primary mechanistic claim
+    note: verify GPU VRAM, model revision, inference fork, behavioral task accuracy, and whether the exact steering intervention is supported
+  - id: qwen3_8b
+    hf_id: Qwen/Qwen3-8B
+    role: provisional primary mechanistic model; dense causal transformer; manageable scale
+    status: pilot first; replace if it lacks enough canonical and transformed-item accuracy
+  - id: gemma3_12b
+    hf_id: google/gemma-3-12b-it
+    role: cross-family mechanistic replication candidate
+    status: secondary; requires architecture/tooling feasibility check
+
+selection_rules:
+  - compare instruct-tuned models for the main behavioral question; do not mix base and instruct checkpoints in one roster without a preregistered reason
+  - require canonical accuracy >= 0.50 on the primary task family for inclusion in retention estimates; retain lower-capability results descriptively
+  - select at least three model families; do not select models solely from leaderboard rank
+  - record full model ID, immutable revision/commit, tokenizer, chat template, serving engine, dtype/quantization, and release date
+  - treat reasoning-mode settings as a separate factor; freeze one primary mode and report a matched sensitivity analysis

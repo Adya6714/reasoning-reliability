@@ -1,0 +1,34 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "reasoning-reliability"
+version = "0.1.0"
+description = "Reproducible behavioral evaluation of reasoning reliability in language models"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "httpx>=0.27,<1",
+  "pydantic>=2.7,<3",
+  "pyyaml>=6,<7",
+]
+
+[project.optional-dependencies]
+analysis = ["numpy>=2,<3", "pandas>=2.2,<4", "scipy>=1.13,<2", "statsmodels>=0.14,<1"]
+dev = ["pytest>=8,<9", "ruff>=0.6,<1"]
+
+[project.scripts]
+rr = "reasoning_reliability.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/reasoning_reliability"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+line-length = 100
