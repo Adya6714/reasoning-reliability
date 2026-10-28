@@ -46,6 +46,13 @@ This is an annotated inbox for the X posts you shared. Direct X pages were not r
 - **Research implication:** include ICA as a candidate low-cost baseline in a fair methods comparison. Do not infer that it replaces SAEs generally from one benchmark or budget range.
 - **My notes:** Which targets and metrics are most relevant to our behavioral findings? Are the results stable across prompts, seeds, and layers?
 
+### Abstraction neurons used as embeddings
+
+- [Original post by Murat Ayfer](https://x.com/mayfer/status/2114900352407642151)
+- **Post's claim:** the author reports that an “abstraction neurons as embeddings” method beats the compared state-of-the-art embedding search methods on word-similarity evaluation, but performs much worse on sentence similarity and retrieval. The post attributes the narrower success to using 16,000 neurons from a 4B model. I have recorded this as the author's report; the post does not itself provide enough methodological detail to verify the benchmark set, comparison protocol, or statistical uncertainty.
+- **Research implication:** neuron-derived representations may be useful for some semantic tasks without transferring to others. This supports evaluating any internal representation on the exact target behavior and held-out task family; success on word similarity would not establish that it predicts reasoning failures or supports reliable interventions.
+- **My notes:** What are the 16,000 units and how were they selected? Which word/sentence similarity and retrieval datasets, baselines, and metrics were used? Are the images or a paper/code link available for replication?
+
 ### Neurons versus transcoders
 
 - [Original post by nev](https://x.com/neverrixx/status/2112667471664791576) · [Primary paper](https://arxiv.org/abs/2610.24521)
