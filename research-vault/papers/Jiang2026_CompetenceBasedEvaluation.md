@@ -1,12 +1,19 @@
 ---
 title: "Competence-Based Evaluation of Logical Reasoning in Large Language Models"
+type: paper
 authors: ["Jize Jiang", "Chengxiang Zhai"]
 year: 2026
 venue: "arXiv preprint"
+link: "https://www.alphaxiv.org/abs/2610.22894"
 arxiv: "2610.22894"
-url: "https://www.alphaxiv.org/abs/2610.22894"
-zotero_uri: ""
-status: full-text-read
+code: ""
+added: 2026-10-28
+status: read
+trust: medium
+numbers_checked: false
+dimensions: [structural, method]
+overlap: 0  # TODO: score closeness (0–3)
+uses: []
 tags: [paper, behavioral-evaluation, reasoning]
 ---
 

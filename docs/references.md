@@ -1,6 +1,6 @@
 # Initial research references
 
-Discovery is not verification. Read each primary paper before relying on detailed claims; create a vault note from `research-vault/templates/PAPER_NOTE.md` and record the exact version and pages used.
+Discovery is not verification. Read each primary paper before relying on detailed claims; create a vault note from `research-vault/templates/NOTE.md` and record the exact version and pages used.
 
 - Rank et al. (2026), [POSTTRAINBENCH: Can LLM Agents Automate LLM Post-Training?](https://www.alphaxiv.org/abs/2603.08640). Defines bounded-compute agent post-training; useful as context for the broader ambition, not as the project's behavioral benchmark.
 - Jiang & Zhai (2026), [Competence-Based Evaluation of Logical Reasoning in Large Language Models](https://www.alphaxiv.org/abs/2610.22894). A family-based, paired-presentation evaluation; supports the design principle that aggregate accuracy alone misses invariant correctness. It also explicitly cautions that behavioral failures do not localize internal causes.

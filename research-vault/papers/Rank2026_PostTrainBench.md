@@ -1,12 +1,19 @@
 ---
 title: "POSTTRAINBENCH: Can LLM Agents Automate LLM Post-Training?"
+type: paper
 authors: ["Ben Rank", "Hardik Bhatnagar", "Ameya Prabhu", "Shira Eisenberg", "Karina Nguyen", "Matthias Bethge", "Maksym Andriushchenko"]
 year: 2026
 venue: "arXiv preprint"
+link: "https://www.alphaxiv.org/abs/2603.08640"
 arxiv: "2603.08640"
-url: "https://www.alphaxiv.org/abs/2603.08640"
-zotero_uri: ""
-status: full-text-read
+code: ""
+added: 2026-10-28
+status: read
+trust: medium
+numbers_checked: false
+dimensions: [method]
+overlap: 0  # TODO: score closeness (0–3)
+uses: []
 tags: [paper, post-training, evaluation]
 ---
 
