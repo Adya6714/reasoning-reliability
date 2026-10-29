@@ -3,7 +3,8 @@
 ## Read this first: coverage and honesty notes
 
 - I found **12 items** that meet your rules. That is well below 25, so I stopped instead of padding.
-- **None were opened in full.** Every item comes from search-result excerpts. Some are mirrors (claudeissues.com, Reddit front-ends) or secondary write-ups quoting the original. Fields I could not see say `unknown`. Treat every number as unverified.
+- **None were opened in full at first write.** Every item comes from search-result excerpts. Some are mirrors (claudeissues.com, Reddit front-ends) or secondary write-ups quoting the original. Fields I could not see say `unknown`.
+- **Verification pass 2026-10-29:** opened official [aider HISTORY.html](https://aider.chat/HISTORY.html) and [edit-formats docs](https://aider.chat/docs/more/edit-formats.html); opened Claude Code #64171 via [claudeissues.com mirror](https://claudeissues.com/issue/64171-feedback-noticeable-reliability-regression-agent-edits-from-memory-silent-edit-f) (direct GitHub issue timed out). Prefer aider.chat / Aider-AI over the fork URL in the original clip.
 - `karma` here means GitHub reactions / HN points / Reddit upvotes. All are `unknown` unless shown.
 - **Coverage by source:**
   - aider: 3 items. DSPy: 1. LangGraph-based: 1. Claude Code (not on your list, but it is a harness and had the clearest model-caused issues): 4.
@@ -49,9 +50,9 @@ Why it matters for my project: A clean "knows the answer, fails the format" case
 ---
 title: "aider HISTORY.md: laziness benchmark and edit-format changes"
 type: clip
-link: "https://github.com/platformengineerid/aider/blob/main/HISTORY.md"
-author: "aider maintainers (this is a fork's copy of the changelog)"
-date: unknown
+link: "https://aider.chat/HISTORY.html"
+author: "aider maintainers"
+date: "2023-11 era changelog entry (udiff default for gpt-4-1106-preview)"
 karma: unknown
 failure_type: constraint-ignored
 dimensions: [planning]
@@ -63,13 +64,14 @@ task_or_benchmark: "aider 'laziness benchmark'; aider code-editing benchmark"
 key_number: "Switching to unified diffs raised GPT-4 Turbo on the laziness benchmark from 20% to 61%. Earlier, moving to search/replace blocks cut malformed edits with no score loss (66.2%)."
 linked_source: "https://aider.chat/docs/more/edit-formats.html"
 fix_tried: "Edit-format change (harness fix)"
-status: to-read
-trust: medium
-numbers_checked: false
-overlap: 0
+status: verified
+trust: high
+numbers_checked: true
+overlap: 3
 ---
 Summary: GPT-4 Turbo tended to skip code and write placeholders like "original code here" instead of full edits. aider measured this and fixed much of it by changing the output format alone.
 Why it matters for my project: Strong evidence that a harness change can move a "reasoning habit" score by 40 points, so your suite should hold harness and format fixed or vary them on purpose.
+**Verified 2026-10-29:** official HISTORY.html states “Significantly reduced ‘lazy’ coding from GPT-4 Turbo due to new unified diff edit format” and “Score improves from 20% to 61% on new ‘laziness benchmark’.” Edit-formats docs confirm udiff was aimed at GPT-4 Turbo lazy elision (`# … original code here …`).
 
 ---
 title: "aider #4716: model returns partial lines in SEARCH blocks"
@@ -213,13 +215,14 @@ task_or_benchmark: "Production web app edits (i18n, package.json, Zod schema, JW
 key_number: "none"
 linked_source: "none"
 fix_tried: "none"
-status: to-read
-trust: medium
+status: verified
+trust: high
 numbers_checked: false
-overlap: 0
+overlap: 3
 ---
 Summary: The agent used assumed text for edits, the edits failed, and it carried on as if they worked, so broken code reached production. The reporter frames it as a regression in self-checking, not in raw capability.
 Why it matters for my project: A real-use report of "same capability, worse process" across model versions, which is your core claim.
+**Verified 2026-10-29:** opened claudeissues.com mirror of #64171 (Closed — not planned; opened 2026-05-31, closed 2026-07-13; 9 comments). Concrete pattern confirmed: Edit `old_string` from memory → silent fail → report success → broken i18n shipped to two tenants; asks for read-before-edit and verify-after-edit. Direct GitHub page timed out; treat mirror as secondary but content matches the clip.
 
 ---
 title: "Claude Code #67847 (via secondary blog): model claims a file edit with no tool call"
@@ -369,13 +372,14 @@ Why it matters for my project: Same lesson as above: loop rates depend on decodi
 
 ## 5. Overlap with your research question (FLAGGED)
 
-- **FLAG, strong: aider HISTORY.md.** Same model, same tasks, score changes from 20% to 61% from output format alone. This is a measured "fix chosen by diagnosis" result (harness fix for a habit).
-- **FLAG, strong: Claude Code #64171.** User-level report that a newer model kept capability but lost process discipline (read before edit, verify after). Same score, different process, in the wild.
-- **FLAG, medium: aider #558.** Model solves the task in free form but not under a format constraint, a per-problem split between competence and constraint following.
-- **FLAG, medium: DSPy #10439.** Reports both failure rate and a fix with confidence intervals and raw replies, across 15 model-corpus pairs.
+- **FLAG, strong, VERIFIED: aider HISTORY.md / HISTORY.html.** Same model, same tasks, score changes from 20% to 61% from output format alone. This is a measured "fix chosen by diagnosis" result (harness fix for a habit).
+- **FLAG, strong, VERIFIED (via mirror): Claude Code #64171.** User-level report that a newer model kept capability but lost process discipline (read before edit, verify after). Same score, different process, in the wild.
+- **FLAG, medium: aider #558.** Model solves the task in free form but not under a format constraint, a per-problem split between competence and constraint following. *(not re-opened this pass)*
+- **FLAG, medium: DSPy #10439.** Reports both failure rate and a fix with confidence intervals and raw replies, across 15 model-corpus pairs. *(not re-opened this pass)*
 
 ## Suggested next pass
 
-- Open each GitHub issue directly to get dates, reactions and maintainer root-cause comments.
+- Open remaining GitHub issues directly to get dates, reactions and maintainer root-cause comments.
 - Search GitHub with label filters (e.g. `label:bug` plus "model" or "LLM") inside OpenHands and SWE-agent repos; web search did not surface them.
 - Search HN with hn.algolia.com for "agent said tests pass", "claimed done" and launch threads.
+- Done this pass: aider HISTORY 20%→61% confirmed on official changelog; #64171 confirmed on claudeissues mirror.

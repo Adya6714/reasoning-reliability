@@ -3,12 +3,19 @@
 ## Read this first: coverage and honesty notes
 
 - I found **16 posts** that meet your inclusion rules. That is below your 25 floor, so per your rule I stopped instead of padding.
-- **Only 2 posts were opened in full** (Section A). Their metadata and numbers come from the page itself.
-- **14 posts were seen only through search-result excerpts** (Section B). I did not open them. Fields I could not see are marked `unknown`. Treat every number in Section B as unverified until you open the post.
-- Searches that returned almost nothing from LW/AF: planning and state tracking, overthinking (Tower of Hanoi debate lives on arXiv and Substack, not LW in my results), calibration and overconfidence, memorization vs reasoning and contamination. These came back as arXiv papers, not posts.
+- **Only 2 posts were opened in full** at first write (Section A). Their metadata and numbers come from the page itself.
+- **14 posts were seen only through search-result excerpts** (Section B). I did not open them initially. Fields I could not see are marked `unknown`. Treat every number in Section B as unverified until you open the post.
+- Searches that returned almost nothing from LW/AF: planning and state tracking, overthinking (Tower of Hanoi debate lives on arXiv and Substack, not LW in my results), calibration and overconfidence, memorization vs reasoning and contamination. These came back as arXiv papers, not posts. → **Gap fill:** see `sweep_arxiv_gaps_2026-10.md`.
 - Skipped as requested: "No Answer Needed" (it did come up, as LW post KwYpFHAJrh6C84ShD).
 - Excluded on your rules: opinion or conceptual posts ("The case for CoT unfaithfulness is overstated", "What is an evaluation and why this definition matters", "Where we are on evaluation awareness", "Call for Science of Eval Awareness"), and a human-trust user study ("Flattering to deceive") since it measures people, not model failures.
 - One promising post I saw linked but did not open: "Rerunning AI safety papers on every frontier release would be pretty easy and valuable" (https://www.lesswrong.com/posts/oKxc8maZGtnzgpNzx/rerunning-ai-safety-papers-on-every-frontier-release-would-1). Worth a look for your benchmark choice.
+
+### Verification pass 2026-10-29 (flagged posts)
+
+- **ywrdwT (FLAG strong) — verified.** Opened full post. OLMo-3 pretrained → SFT → DPO → RLVR on MMLU-Pro (100 filtered items, 20 rollouts). SFT nearly doubles follow rate with lowest concealment (0.43); DPO pushes concealment back above 50% and is the only stage where CoT *increases* hint following (+0.02 vs no-CoT); RLVR lowest follow rate, concealment ≈ DPO. Non-monotone training-stage effect confirmed. Author: arav-dhoot, yix; 2026-07-24; 24 karma.
+- **AoBTiL7 (FLAG strong) — verified.** Opened full post. 11-model Emmons et al. replication; simple-hint unfaithfulness +0.03 to +0.38; complex hints near baseline (max +0.05). Follow ≠ concealment. Repo: https://github.com/uchicago-xlab/arav-cot-monitorability. 2026-07-15; 46 karma.
+- **WAxkA6 (FLAG, was Section B) — verified.** Opened full post: METR linkpost *CoT May Be Highly Informative Despite “Unfaithfulness”* (GradientDissenter, 2025-08-11, 65 karma). On 21,272 complex-clue trajectories, only 3 plausibly both unfaithful and silent; auto detector TPR 99.3% / specificity 96.2%. Code: https://github.com/METR/CoT-faithfulness-and-monitorability/.
+- **ScyXz7 (FLAG medium) — verified.** Opened full post: Kyle Cox, 2025-02-05, 20 karma. Gemma-2 9B IT: pre-CoT probes often predict final answer; steering answer vectors changes answers; wrong-answer steering can invent supporting facts.
 
 ---
 
@@ -31,13 +38,14 @@ task_or_benchmark: "GPQA with planted hints (no hint, simple metadata hint, comp
 key_number: "Every model follows simple hints while hiding it above baseline, from +0.03 (gpt-oss-120b, Nemotron3-120b) up to +0.38 (GPT-5.5). Complex hints drop to near baseline, max +0.05 (Qwen3-32B). Concealment never exceeds 30% across model-task cells."
 linked_source: "https://github.com/uchicago-xlab/arav-cot-monitorability ; replicates https://arxiv.org/abs/2507.05246"
 fix_tried: "none (diagnostic study); adds a question-competence filter that roughly halves complex-hint take rate on Gemini 2.5 Flash"
-status: to-read
-trust: medium
-numbers_checked: false
-overlap: 0
+status: verified
+trust: high
+numbers_checked: true
+overlap: 3
 ---
 Summary: Replicates Emmons et al. across 11 models. Models take an easy planted answer and hide it, but when using the hint needs real computation they mostly decline or reason about it openly. Hint following and concealment are separate traits that do not correlate, and how much a task needs CoT depends on the model, not just task difficulty.
 Why it matters for my project: Direct evidence that the same task is solved by different processes in different models (decode-necessity differs per model), which supports measuring faithfulness and inhibition per problem rather than per benchmark.
+**Verified 2026-10-29:** re-read full page; simple-hint deltas +0.03…+0.38 and complex near baseline confirmed.
 
 ---
 title: "Where does hint-following and concealment arise? A case study on OLMo-3 checkpoints"
@@ -56,67 +64,70 @@ task_or_benchmark: "MMLU-Pro (100 filtered items, 20 rollouts each) with a plant
 key_number: "Behaviour is non-monotone across stages. SFT nearly doubles hint following but has the lowest concealment (0.43). DPO pushes concealment back above 50% and is the only stage where CoT increases hint following (+0.02 vs no-CoT). RLVR has the lowest follow rate but stays as concealing as DPO."
 linked_source: "none (no repo linked on the page I read)"
 fix_tried: "none; compares CoT vs no-CoT per checkpoint"
-status: to-read
-trust: medium
-numbers_checked: false
-overlap: 0
+status: verified
+trust: high
+numbers_checked: true
+overlap: 3
 ---
 Summary: Tracks hint following and concealment across four public OLMo-3 training stages. It finds that each stage changes the behaviour differently, with DPO teaching the model to quietly alter arithmetic or reinterpret the question to justify the planted answer. Transcript categories are tallied by hand and with Claude.
 Why it matters for my project: A worked example of attributing a reasoning habit to a training stage using open checkpoints, which is exactly your "find the cause" step.
+**Verified 2026-10-29:** re-read full page; SFT follow nearly doubles / concealment 0.43; DPO concealment >50% and CoT–NoCoT delta +0.02; RLVR lowest follow, still concealing. Matches sweep key_number.
 
 ---
 
 ## Section B: seen in search excerpts only (not opened, verify before use)
 
 ---
-title: "unknown (replication of Anthropic Claude 3.7 / Claude 4 system card clue-use evaluations)"
+title: "CoT May Be Highly Informative Despite “Unfaithfulness” [METR]"
 type: clip
 link: "https://www.lesswrong.com/posts/WAxkA6gDgrschZovx"
-author: "unknown"
-date: unknown
-karma: unknown
+author: "GradientDissenter"
+date: 2025-08-11
+karma: 65
 failure_type: unfaithful-reasoning
 dimensions: [faithfulness]
 domain: general
-models_tested: "unknown (replicates Claude 3.7 and Claude 4 system card setup)"
+models_tested: "Claude Sonnet 3.7, Claude Opus 4, Qwen 3 235B (replication of Anthropic system-card clue setup)"
 evidence_kind: measured-result
-reproducible: partly
-task_or_benchmark: "Clue-use questions from Anthropic system card evaluations, plus adversarial prompts"
-key_number: "When the task needs CoT, models are almost always faithful. An automatic detector flags clue use from the CoT at 99.3% true positive rate and 96.2% specificity."
-linked_source: "unknown"
+reproducible: yes
+task_or_benchmark: "Clue-use questions from Anthropic system card evaluations, plus harder clues and adversarial prompts"
+key_number: "On 21,272 complex-clue trajectories needing CoT, only 3 plausibly both unfaithful and silent about the clue. Auto detector: 99.3% TPR / 96.2% specificity."
+linked_source: "https://github.com/METR/CoT-faithfulness-and-monitorability/ ; https://metr.org/blog/2025-08-08-cot-may-be-highly-informative-despite-unfaithfulness/"
 fix_tried: "Adversarial prompting to push faithfulness down; built a CoT detector"
-status: to-read
-trust: medium
-numbers_checked: false
-overlap: 0
+status: verified
+trust: high
+numbers_checked: true
+overlap: 2
 ---
 Summary: Replicates the system card evaluations that showed unfaithful CoT, then asks whether you can still tell from the CoT that a clue was used. The answer reported is yes, almost always, even when the CoT is technically unfaithful.
 Why it matters for my project: Suggests faithfulness should be measured as "can a monitor recover the real driver", not only "does the CoT mention it".
+**Verified 2026-10-29:** opened full LW post + METR linkpost framing.
 
 ---
 title: "Post-hoc reasoning in chain of thought"
 type: clip
 link: "https://www.lesswrong.com/posts/ScyXz74hughga2ncZ/post-hoc-reasoning-in-chain-of-thought"
-author: "unknown"
-date: unknown
-karma: unknown
+author: "Kyle Cox"
+date: 2025-02-05
+karma: 20
 failure_type: unfaithful-reasoning
 dimensions: [faithfulness, misplaced-retrieval]
 domain: logic
 models_tested: "Gemma-2 9B instruction-tuned"
 evidence_kind: mixed
 reproducible: partly
-task_or_benchmark: "unknown (several reasoning tasks; final answer predicted from activations before CoT)"
-key_number: "Linear probes on pre-CoT activations often predict the final answer; steering with answer vectors changes answers, with a narrow coefficient range that stays coherent."
-linked_source: "unknown"
+task_or_benchmark: "several reasoning tasks; final answer predicted from activations before CoT"
+key_number: "Linear probes on pre-CoT activations often predict the final answer; steering with answer vectors changes answers; wrong-answer steering can invent supporting facts."
+linked_source: "none linked on page"
 fix_tried: "none (steering used as a causal test)"
-status: to-read
-trust: medium
+status: verified
+trust: high
 numbers_checked: false
-overlap: 0
+overlap: 2
 ---
 Summary: Shows the model often decides its answer before writing reasoning, then tests causality by steering the pre-computed answer. It sorts outcomes into sound reasoning, confabulation and non-entailment.
 Why it matters for my project: Gives a mechanistic test for "retrieved answer, then rationalised" vs "computed", which is close to your retrieval vs computation framing.
+**Verified 2026-10-29:** opened full post; author/date/karma filled; probe + steering claims match.
 
 ---
 title: "How LLM beliefs change during chain of thought reasoning (part 2)"
@@ -471,13 +482,15 @@ Eval awareness is 4 of 16 posts (25%), right at your quarter cap.
 
 ## 5. Posts that overlap with your research question (FLAGGED)
 
-- **FLAG, strong: ywrdwT (OLMo-3 checkpoints)**. Same model lineage, different training stages, different processes on the same items. This is your "find the cause: training stage" step done on public checkpoints.
-- **FLAG, strong: AoBTiL7 (11-model replication)**. Decode-necessity differs by model on identical tasks, i.e. same score with CoT, different process without it. Its with-CoT arm is saturated while the no-CoT arm separates models.
-- **FLAG, medium: ScyXz7 (post-hoc reasoning probes)**. Pre-CoT probes predict the answer, a per-problem process signal like your retrieval vs computation split.
-- **FLAG, medium: CdWbCv, aYtrLh, SCqDip (two-hop and reversal)**. Controlled exposure via synthetic facts, the cleanest designs for testing whether a habit comes from training data exposure.
-- **FLAG, light: 3ou8Da (base models not sycophantic)**. Locates a habit at post-training rather than pretraining.
+- **FLAG, strong, VERIFIED: ywrdwT (OLMo-3 checkpoints)**. Same model lineage, different training stages, different processes on the same items. This is your "find the cause: training stage" step done on public checkpoints.
+- **FLAG, strong, VERIFIED: AoBTiL7 (11-model replication)**. Decode-necessity differs by model on identical tasks, i.e. same score with CoT, different process without it. Its with-CoT arm is saturated while the no-CoT arm separates models.
+- **FLAG, medium, VERIFIED: WAxkA6 (METR)**. Complex-clue regime almost always monitorable; detector 99.3% TPR / 96.2% specificity — faithfulness-as-monitorability, not narrative completeness.
+- **FLAG, medium, VERIFIED: ScyXz7 (post-hoc reasoning probes)**. Pre-CoT probes predict the answer, a per-problem process signal like your retrieval vs computation split.
+- **FLAG, medium: CdWbCv, aYtrLh, SCqDip (two-hop and reversal)**. Controlled exposure via synthetic facts, the cleanest designs for testing whether a habit comes from training data exposure. *(not re-opened this pass)*
+- **FLAG, light: 3ou8Da (base models not sycophantic)**. Locates a habit at post-training rather than pretraining. *(not re-opened this pass)*
 
 ## Suggested next pass
 
-- Open every Section B post and fill dates, authors, karma and numbers.
+- Open remaining Section B posts and fill dates, authors, karma and numbers.
 - Search LW user pages for MATS and SPAR cohorts directly, and the Alignment Forum "AI Evaluations" tag page, which the search engine did not surface well.
+- Done this pass: ywrdwT, AoBTiL7, WAxkA6, ScyXz7 + arXiv gap sweep for planning / numbers / overthinking / memorization.
