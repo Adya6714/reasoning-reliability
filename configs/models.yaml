@@ -1,42 +1,102 @@
-# Candidate open-weight behavioral panel. Pin immutable revisions before a run.
-behavioral_panel:
-  - id: qwen3_5_27b
-    hf_id: Qwen/Qwen3.5-27B
-    family: Qwen
-    role: high-capability behavioral anchor
-    architecture_note: hybrid linear-attention and full-attention; multimodal checkpoint
-    license_note: verify the exact model card and terms before use
-  - id: gemma4_31b_dense
-    hf_id: google/gemma-4-31B-it
-    family: Gemma
-    role: independent high-capability family
-    architecture_note: dense; hybrid local/global attention; multimodal family
-    license_note: Apache-2.0 model card for current family; verify checkpoint terms
-  - id: llama4_scout
-    hf_id: meta-llama/Llama-4-Scout-17B-16E-Instruct
-    family: Llama
-    role: independent high-capability MoE family
-    architecture_note: multimodal MoE; 17B active parameters, 109B total per Meta
-    license_note: Llama community license; gated access may apply
+# Model roster. Source of truth: docs/research_design.md.
+# Rule: every model must create a contrast; leaderboard rank alone is never a reason.
+# Pin exact Hugging Face revision hashes (or API model strings + date) on run day.
 
-mechanistic_candidates:
-  - id: qwen3_5_4b
-    hf_id: Qwen/Qwen3.5-4B
-    role: exploratory neuron-steering / instrumentation feasibility candidate
-    status: reproduce an existing open workflow with matched controls; not yet selected for the primary mechanistic claim
-    note: verify GPU VRAM, model revision, inference fork, behavioral task accuracy, and whether the exact steering intervention is supported
+roster:
+  exposure_and_stages:
+    - id: olmo3_7b
+      model: OLMo 3 7B
+      checkpoints: [base, sft, dpo, instruct, think]
+      contrast: which training stage creates fragility; real exposure counts from public data (Dolma 3)
+      used_for: [behaviour, exposure, mechanism]
+      hardware: L4 or A100
+      revision: PIN ON RUN DAY
+
+  thinking_toggle:
+    - id: qwen_27b
+      model: Qwen3.6-27B (hybrid thinking)
+      contrast: thinking on vs off on the same weights (the v1 confound as a clean factor)
+      used_for: [behaviour]
+      hardware: A100 80GB
+      revision: PIN ON RUN DAY
+      note: verify exact name and thinking toggle on the model card
+    - id: qwen_small
+      model: small Qwen3.5 (0.8B to 9B range)
+      contrast: same family at small size
+      used_for: [behaviour, mechanism]
+      hardware: L4
+      revision: PIN ON RUN DAY
+      note: check thinking toggle on the model card
+
+  interp_tools:
+    - id: gemma3
+      model: Gemma 3 (4B or 12B) instruct
+      contrast: ready-made SAEs and transcoders on every layer (Gemma Scope 2)
+      used_for: [behaviour, mechanism]
+      hardware: L4 or A100
+      revision: PIN ON RUN DAY
+
+  reasoning_trained:
+    - id: gpt_oss_20b
+      model: gpt-oss-20b
+      contrast: reasoning-trained recipe
+      used_for: [behaviour, mechanism_partial]
+      hardware: A100
+      revision: PIN ON RUN DAY
+      note: MoE; mechanism work is harder
+
+  bridge_to_v1:
+    - id: llama31_8b
+      model: Llama 3.1 8B Instruct
+      contrast: links to v1 data; exposure replication family
+      used_for: [behaviour, exposure]
+      hardware: L4
+      revision: PIN ON RUN DAY
+
+  open_frontier_api:
+    - id: open_frontier
+      model: TBD, one of DeepSeek V4.x, GLM-5.x, Kimi K3
+      contrast: does the effect hold at very large scale
+      used_for: [behaviour]
+      hardware: API
+      revision: PIN MODEL STRING AND DATE
+
+  closed_panel:
+    - id: closed_a
+      model: TBD, frontier model from lab A
+      used_for: [behaviour]
+      revision: PIN MODEL STRING AND DATE
+    - id: closed_b
+      model: TBD, frontier model from lab B
+      used_for: [behaviour]
+      revision: PIN MODEL STRING AND DATE
+
+  non_llm_baseline:
+    - id: jev
+      model: Jev (TypeSafe AI)
+      contrast: recognition-only baseline; later a router
+      used_for: [behaviour_feature, router]
+      revision: PIN VERSION, never jev-latest
+      limits: fixed-option tasks only; distractors from the generator; not a judge; not for untrusted text
+
+pilot_roster: [qwen_27b_thinking_on, qwen_27b_thinking_off, olmo3_7b_instruct, jev]
+
+optional_mechanistic_candidates:
+  - id: qwen35_4b
+    model: Qwen3.5-4B
+    reason: open neuron-steering workflow exists; feasibility only
   - id: qwen3_8b
-    hf_id: Qwen/Qwen3-8B
-    role: provisional primary mechanistic model; dense causal transformer; manageable scale
-    status: pilot first; replace if it lacks enough canonical and transformed-item accuracy
-  - id: gemma3_12b
-    hf_id: google/gemma-3-12b-it
-    role: cross-family mechanistic replication candidate
-    status: secondary; requires architecture/tooling feasibility check
+    model: Qwen3-8B
+    reason: dense, tractable; feasibility only
 
-selection_rules:
-  - compare instruct-tuned models for the main behavioral question; do not mix base and instruct checkpoints in one roster without a preregistered reason
-  - require canonical accuracy >= 0.50 on the primary task family for inclusion in retention estimates; retain lower-capability results descriptively
-  - select at least three model families; do not select models solely from leaderboard rank
-  - record full model ID, immutable revision/commit, tokenizer, chat template, serving engine, dtype/quantization, and release date
-  - treat reasoning-mode settings as a separate factor; freeze one primary mode and report a matched sensitivity analysis
+considered_and_dropped:
+  - model: Llama 4 Scout
+    reason: 109B total weights, needs multiple GPUs
+  - model: Gemma 4 31B
+    reason: no matching interp tools (Gemma Scope 2 targets Gemma 3)
+
+rules:
+  - closed models are behaviour-only; never used for exposure or mechanism claims
+  - record model ID, revision hash, tokenizer, chat template, engine, precision, release date
+  - thinking on/off is a planned factor, never a hidden setting
+  - tune difficulty so each model lands at about 30 to 80 percent accuracy

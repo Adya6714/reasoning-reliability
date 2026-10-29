@@ -1,155 +1,205 @@
-# Behavioral research design
+# Research design
 
-## Primary question and interpretation boundary
+## 1. Question
 
-Primary question: do reliable, problem-level behavioral measurements predict *which kinds of unseen problems* a model will fail, beyond canonical accuracy, task difficulty, and domain? The motivating comparison is between models with similar aggregate accuracy but different failure profiles. The first paper's strongest possible claim is incremental predictive validity on held-out task families; descriptive profile differences alone are not sufficient.
+Two models with the same score can solve problems in different ways. Can we measure those ways per problem, show they predict failures beyond general skill, find their cause, and use that to choose fixes?
 
-The four provisional dimensions are **Dependence** (sensitivity to presentation and irrelevant cues), **Organization** (planning, state tracking, and long-horizon control), **Source** (sensitivity to controlled prior exposure versus novel composition), and **Faithfulness** (whether intermediate reasoning supports and causally influences the answer). These are working constructs, not established internal properties. They may overlap, collapse into general ability, or fail to predict. Treat uncertainty/calibration as a cross-cutting outcome and prerequisite skill as a control. Add an answer-changing counterfactual condition alongside answer-preserving transformations: invariance without sensitivity to a changed constraint can reward ignoring the prompt.
+**Goals:** understand how models reason (science), make reasoning reliable (engineering), and build tools others use: an eval suite, RL environments, a reliability harness.
 
-Behavioral evidence does not directly reveal a hidden reasoning process. Use terms such as “planning-like behavior,” “exposure sensitivity,” and “rationale-answer consistency” unless an intervention justifies stronger causal language. Retrieval and computation may contribute to the same answer; novel instances alone do not prove computation.
+## 2. Research questions
 
-## Predictive validity design
+| RQ | Question |
+|---|---|
+| RQ1 Measurement | Can each dimension be measured per problem, above noise, separately from the others? |
+| RQ2 Beyond general skill | Do dimensions add information beyond overall ability? |
+| RQ3 Prediction (main) | Do they predict specific failures on a task family never used for profiling? |
+| RQ4 Origin | Memorized data, or a specific training step? |
+| RQ5 Mechanism | Is there a signature inside the model? |
+| RQ6 Reliability | Does fixing the weakest dimension beat generic training? |
 
-The confirmatory comparison is between nested predictors of item-level failure or preregistered failure strata:
+Order matters: you cannot look inside for a failure until you can label it, and you cannot call a fix targeted until you know its target.
 
-1. Score baseline: canonical performance, task difficulty, and task family.
-2. Psychometric skill-profile baseline: fine-grained skill estimates (where adequately measured), task difficulty, and task family. This is necessary because recent cognitive-diagnosis work already reports prediction on held-out benchmark items.
-3. Process-diagnostic model: the same controls plus preregistered, manipulation-validated Dependence, Organization, Source, and Faithfulness indicators.
+**Assumptions:** answer-preserving rewrites exist and are solver-checkable; repeated samples estimate stable tendencies above a measured noise floor; dimensions are hidden and seen only through behaviour; retrieval and computation form a continuum; known-structure problems (greedy traps) define planning by construction; open models are representative, checked by a closed panel.
 
-Define the prediction unit before collecting data. A model-level profile by itself can predict aggregate risks for a family or condition, but cannot identify the exact next item that will fail unless item-level features or item-specific probe outcomes are available. For item-level prediction, specify those features and train only on development items. Evaluate on untouched items and, for the main generalization claim, a task family excluded from probe construction and model fitting. The target contribution is not merely predicting benchmark items from a learned skill taxonomy; it is testing whether controlled, task-conditioned behavioral indicators add predictive value beyond both aggregate accuracy and psychometric ability profiles. Report change in log loss/Brier score and discrimination with uncertainty, plus calibration and failure-category performance. Split by generator, template, and underlying rule—not by surface variant—so paired variants cannot leak across splits. Compare against simple baselines and report when the profile adds no predictive value.
+## 3. Dimensions
 
-Do not treat a small roster of models as the statistical sample for broad claims about models. Estimate item-level effects across several model families, and state that conclusions generalize to the tested checkpoints and task families. A leave-one-family-out result is a meaningful stress test, but not proof of universal transfer.
+A dimension is a hidden habit seen only through behaviour, like working memory in people. All are provisional. Two are chosen after the screening pilot.
 
-Construct validity requires multiple indicators per dimension across more than one task family where feasible. Check repeatability, known-group sensitivity under controlled manipulations, discriminant value, and residual failure patterns. Recent cognitive-battery work shows that theory-named dimensions may fail selective-intervention and held-out-family tests; the framework must permit that outcome. Avoid declaring four dimensions “independent” from one probe each or from a factor analysis with too few independent models.
+**A dimension stays only if:** (1) theory or prior work supports it, (2) two different tests of it agree, (3) it predicts failures beyond general skill.
 
-## Instrument
+**Main risk:** abilities collapsing into one general factor (CogArena 2026).
 
-### Test menu and how to choose
+| Candidate | Plain meaning | Theory | Example test | Fix it points to |
+|---|---|---|---|---|
+| Structural understanding | Sees the problem, not the wording | Analogical transfer (Gick and Holyoak; Kotovsky, Hayes and Simon) | Answer-preserving and answer-changing edits | Rewrite-diverse training, JEPA |
+| Planning | Thinks ahead vs reacts | Polya; Tower of London | Greedy traps, lookahead depth | Planner scaffold, RL on traps |
+| State tracking | Keeps track of what changed | Working memory, updating (Miyake) | Many moves, then "what is the state?" | Written state |
+| Inhibition | Ignores tempting irrelevant cues | Executive function (Miyake) | Distractors, misleading hints | Distractor training |
+| Misplaced retrieval | Reuses a remembered answer where it does not fit | Gershman | Famous problem vs fresh twin with a different answer | Recall monitor, varied training |
+| Self-correction | Notices and fixes errors | Metacognition (Flavell, Schoenfeld) | True vs false feedback | Verifier in the loop |
+| Uncertainty | Knows when it may be wrong | Metacognition | Confidence signals (Section 10) | "Check this" flag |
+| Faithfulness | Shown reasoning drives the answer | Source monitoring | Plant a false step | Side measure only |
+| Knowledge (control) | Has prerequisite facts and skills | CHC crystallized knowledge | Prerequisite mini-tests | A control, not a dimension |
 
-The menu below is a hypothesis-generating inventory, not a commitment to run every test. Keep the constructs provisional: several tests can measure overlapping abilities, and each probe needs a clean answer-changing or matched-control condition where applicable.
+Variant design uses Brown and Walter's "What-If-Not": list every attribute of a problem, change it, and split edits into answer-preserving (robustness) and answer-changing (attention).
 
-| Candidate test | Operation | Primary construct to investigate | Key control / scoring note |
+## 4. Hypotheses
+
+| # | Hypothesis | Refuted if |
+|---|---|---|
+| H1 | Accuracy-matched models differ on at least one dimension | Differences within noise |
+| H2 | Profile predicts failures on a hidden family beyond accuracy | No gain over accuracy plus difficulty |
+| H3 | Dimensions are distinct | Cross-dimension correlations as high as within |
+| H4 | Surface dependence rises with controlled exposure | No exposure gradient |
+| H5 | Reactive models fail greedy traps beyond a lookahead horizon at equal accuracy | No trap gap difference |
+| H6 | Planting a false step changes answers in faithful models only | Same effect everywhere |
+| H7 | Removing step-by-step working raises surface dependence more for non-reasoning models | No interaction |
+| H8 | Each OLMo training stage shifts specific dimensions | No stage-specific change |
+| H9 | Targeted fix beats generic training at matched compute | No advantage |
+| H10 | Question-only correctness signals work on recall-heavy items but fail on computation-heavy items; mid-reasoning signals close the gap; confidence is inflated on fresh twins of famous items | Equal performance across item types; no twin inflation |
+
+## 5. The main test
+
+Predict failure on held-out families with three baselines:
+
+- **B1:** overall ability
+- **B2:** B1 + difficulty + domain + knowledge-skill profile
+- **B3:** B2 + process measures
+
+Dimensions matter only if B3 clearly beats B2 on unseen families. Metrics: AUC and log-loss, cross-validated by family. Written down and pre-registered before data.
+
+| Outcome | Action |
+|---|---|
+| Clear win | Main claim |
+| Partial win (some families or failure types) | Narrower claim, report where it works |
+| No win | Check measurement reliability, then transfer; report the pre-registered null; pivot to reliability engineering or the eval suite as product |
+
+**Gating:** Stages 2 to 4 depend on RQ1 (a reliable contrast exists), not on RQ3.
+
+## 6. Evidence rules
+
+- A rewrite drop is a symptom, not a diagnosis. Possible causes: contamination, fragile procedure, difficulty change, meaning change, prompt change. Claim a cause only when answer-changing edits, controlled exposure, fresh twins and other probes agree.
+- Surprising result (either direction): re-verify gold; hand-audit 30 failures; run the "prompts differ only as intended" check; rerun on fresh twins with a new seed; rerun on a second family; log every step in a result ledger.
+- Repeatable runs are not faithful reasoning. Check answers by program.
+- Never trust an LLM's written confidence without calibration.
+
+## 7. Stages
+
+The core asset is a set of **generators with exact solvers**. They become the test bank, the hidden family, controlled training data, labelled probing examples, and RL environments.
+
+| Stage | Weeks | What | Output |
 |---|---|---|---|
-| Answer-changing edits | Flip one task-defining detail | Structural understanding / constraint sensitivity | Verify the new answer independently; ignoring the edit must count as failure. |
-| Changed-rule worlds | Use arithmetic in base 9 or a toy world with a newly stated rule | Rule induction / fluid transfer versus familiar-rule reliance | Check prerequisite knowledge and provide all novel rules. |
-| Distractors | Add irrelevant details | Inhibition / relevance filtering | Pair with a matched item without distractors and preserve the gold answer. |
-| Missing information | Omit a necessary fact | Metacognition / uncertainty | Correct response is to identify the missing fact or abstain; include answerable controls. |
-| Composition depth | Chain 2, 4, then 8 individually familiar operations | Compositionality / depth limits | Hold primitive operations constant; score intermediate state and final answer. |
-| Length generalization | Increase sequence/problem length beyond training examples | Length generalization / working-memory load | Generate lengths systematically and avoid confounding length with operation type. |
-| Long state tracking | Apply many moves, then report the current state | State tracking / updating | Use an executable environment and query exact state; include shorter matched trajectories. |
-| Mid-problem change | Change a rule after the task begins | Updating / cognitive flexibility | Counterbalance change timing and include no-change and irrelevant-announcement controls. |
-| Self-correction | Present a candidate solution containing a true or false claimed error | Monitoring / resistance to pressure | Balance correct and incorrect suggestions; score correction against oracle, not agreement. |
-| Misleading hints | Suggest a plausible but wrong answer | Inhibition / social influence | Pair with neutral and correct-hint conditions; distinguish hint-following from independent errors. |
-| Two-way consistency | Ask A→B, then B→A | Relational / structural consistency | Use reversible relations only and verify both directions independently. |
-| Explanation versus answer | Compare stated steps with final result | Rationale-answer consistency / faithfulness | Arithmetic or symbolic checks are preferable; consistency alone does not prove causal faithfulness. |
-| Repeated sampling | Sample the same prompt with matched stochastic decoding | Response variability / uncertainty | Replicates estimate within-item sampling variation; they do not increase independent item count. |
-| Confidence versus correctness | Elicit confidence and compare with outcomes | Calibration | Predefine confidence scale and report calibration and selective risk, not accuracy alone. |
-| Tool errors (agents) | Return an incorrect tool result | Verification / recovery | Compare correct-tool, wrong-tool, and unavailable-tool conditions; use a logged deterministic tool. |
+| 0 Instrument | 1 to 3 | Generators, code-applied rewrites, verifiers, QA tests, runner, noise floor | Trusted test bank |
+| 1 Behaviour + prediction | 4 to 7 | Screening and fix-first pilots; main run; three-baseline test | Paper 1 |
+| 2 Causes | 8 to 10 | Controlled exposure (fine-tune OLMo 3 7B on half the items), replicated on one more open family; OLMo training stages; OLMoTrace and infini-gram | RQ4 |
+| 3 Mechanism | 11 to 16 | Probe ladder (below) | Paper 2 |
+| 4 Fixes | 17 to 22 | Harness, rewrite-diverse SFT, RL environments, JEPA; targeted vs generic at matched compute; measure what each fix breaks | Paper 3 |
 
-#### Six-question prioritization rubric
+**Stage 3 ladder** (stop if an early step finds nothing):
 
-Score each candidate from 0 (weak/unclear) to 2 (strong) on each question, with a short evidence note:
+1. Linear probes: is "this will fail" readable before answering?
+2. Activation patching: which layers and positions matter?
+3. Compare 2 to 3 lenses on one target: neurons, Gemma Scope 2 (SAE or transcoder), ICA.
+4. Steer or ablate with random-direction controls, dose response, side effects.
+5. Attribution graph for one clean case, if tooling supports the model.
 
-1. Would this failure harm users or agents in a plausible use case?
-2. Can it be measured cleanly, including an answer-changing or matched-control condition?
-3. Does the diagnosis point to a plausible targeted fix?
-4. Is the construct or predictive claim meaningfully under-tested in prior work?
-5. Is it feasible with the available models, GPU/API budget, and annotation effort?
-6. Can a later phase test an internal signal or causal mechanism for it?
+Corpus search on models without public data is descriptive only; only controlled exposure is causal. Pythia and LLM360 checkpoints are optional for pretraining-over-time analysis.
 
-Maximum score is 12. This score is a transparent screening aid, not a validated measure of scientific importance. Record disagreements, evidence, and feasibility assumptions; do not use novelty score to override weak construct validity.
+## 8. Benchmarks and the eval suite
 
-#### Screening, then depth
+Contamination is the variable: pair famous items with freshly generated twins of identical structure and solver-verified gold.
 
-Use the rubric to choose 5–6 candidates for a screening pilot across 2 models, with roughly 50 independent base items per candidate where feasible. Prefer generated items with executable answer keys. Check whether candidates have adequate difficulty range, clean scoring, paired-control sensitivity, and stable rank/effect estimates under resampling and repeat decoding. This small screen is for feasibility and prioritization, not definitive significance claims or final sample-size justification. Keep candidates that separate models or conditions at matched overall accuracy and give sufficiently stable measures; revise or drop probes that are noisy, redundant, floor/ceiling limited, or confounded.
+**Family rules:** program-checkable answer; generator with difficulty knobs; a famous version exists; surface changes while structure is fixed; answer-changing edits possible; models land at 30 to 80%; tests at least one dimension; licence fine. At least 5 profiling families plus 1 hidden family.
 
-For the first deep study, prioritize two connected but separately measured areas:
+| Family | Sources | Build | Main dimension |
+|---|---|---|---|
+| Classical planning | PlanBench, Mystery Blocksworld, Fast Downward | Greedy traps, matched reversal | Planning, state tracking |
+| Algorithms | CLRS-style | Coin change, routes, scheduling with traps | Planning |
+| Logic puzzles | Reasoning Gym, Zebra-style | Wrapper | Structural understanding |
+| Code reasoning | CRUXEval-style | Program generator run for gold | State tracking |
+| Maths word problems | GSM-Symbolic | Fresh twins, answer-changing edits | Surface dependence, retrieval |
+| Fresh natural problems | MathArena post-cutoff contests | None | Memorization check |
+| Agent tasks | Agent benchmarks | Small checkable environment | Planning, self-correction |
 
-- **State tracking and updating:** long state-tracking trajectories plus a mid-problem rule/state change. This is directly checkable, relevant to tool-using agents, and supports a clear intervention such as externalizing state. Preserve separate measures for tracking and responding to a change.
-- **Planning and inhibition:** greedy-trap tasks plus distractor or misleading-hint controls. This extends Probe 2 and tests whether attractive local choices or irrelevant cues derail multi-step performance. Keep planning quality, action execution, and cue susceptibility distinct.
+**Generator audit:** gold vs an independent solver on 200 samples; difficulty changes accuracy smoothly; identical wrapper; freshness spot-check; trap and answer-changing versions possible; maintained and licensed.
 
-Treat repeated sampling and confidence-versus-correctness as low-cost cross-cutting side measures. Use randomized controlled exposure as a way to validate Source/exposure interpretations, not as another loosely defined behavioral dimension. Do not start deep mechanistic analysis until a behavioral contrast is reliable and independently scored. If pilot data contradict these priorities, choose the deep-study pair using the recorded rubric and report that change before confirmatory collection.
+**Eval suite as a contribution:** generator-based and contamination-resistant, paired edits applied by code, QA-guaranteed prompts, private hidden family. Public split released; hidden seeds stay in `data/private/`.
 
-The principle is breadth for screening and depth for the paper: a focused, validated study of two constructs is stronger than thinly testing all fifteen candidates. The final pair and confirmatory protocol must be frozen before confirmatory data collection.
+PostTrainBench measures agents doing post-training, not reasoning; context for Stage 4 only.
 
-### Probe 1 — surface invariance
+## 9. Sample sizes, runs, analysis
 
-For every independently generated task, create the canonical item and pre-registered variants. Separate the interventions instead of combining them into a single “rename” condition:
+- **Population claims:** 250 to 300 items per family at k=3 (300 items give about 85% power for a 10-point drop after correcting for about 12 tests).
+- **Per-problem claims:** 60 items per family at k=20 (k=20 gives about 84% power to tell .9 from .5 on one item).
+- Final counts from a power simulation after the pilot. The unit is the item or template, never the repeated call.
+- **Decoding:** temperature above 0 at model-card settings; small greedy check set; thinking on/off as a planned factor.
+- **Repeats:** start at k=5; add samples only near the decision threshold (pre-registered rule); measure the noise floor across batch sizes and seeds.
+- **Analysis:** mixed-effects logistic, `correct ~ variant x protocol x model + (1 + variant | item) + (1 | template)`; cluster bootstrap over templates; Holm correction; few pre-registered primary contrasts.
+- **Logging:** see `docs/runner_requirements.md`.
 
-- lexical/entity binding: nonce names, tokenization balanced per model tokenizer;
-- domain transfer: real-word cover-story isomorph, with semantic plausibility rated independently;
-- representation: notation/layout changes;
-- order: reorder premises, options, or steps while preserving the problem;
-- new-instance transfer: new values/graph/state generated from the same rule; answer may change and must be freshly solved by the oracle;
-- optional cross-lingual transfer only after translation equivalence is independently checked.
+## 10. Confidence signals
 
-Primary measures: canonical accuracy; transformed accuracy; paired correctness retention among canonical-correct items; variant-dependent discordance; response validity/abstention. Report denominators and confidence intervals. Do not collapse transformations into a single robustness score unless the aggregation is preregistered and validated.
+Logged in the screening pilot and every run after:
 
-### Probe 2 — plan/execution coupling
+| Signal | Source |
+|---|---|
+| Written confidence | Generated text |
+| k-sample agreement | Sampled answers |
+| Gold-answer log-prob | Logits (open models) |
+| Jev probability | External model, question + options |
+| Rule-based score | Agreement, backtracking, family, difficulty, from our own records |
 
-The model first declares a plan in a separate session. A second session receives the task and initial state, then executes without access to the declaration. A deterministic environment checks each action and final state. Keep declaration quality, execution accuracy, and declaration–execution agreement as separate outcomes. Prompt format and tool affordances must be matched across arms.
+- Report Brier, reliability diagram and AUROC per family, split by famous vs fresh twin.
+- Jev distractors come from the generator, never from evaluated-model samples.
+- Agreement uses samples 1 to k; correctness is scored on held-out sample k+1.
+- Expected weak spot: agreement can be 5/5 and wrong on fresh twins of famous items (misplaced retrieval).
 
-### Probe 3 — controlled exposure
+## 11. Test menu and pilots
 
-Use an open-weight checkpoint that can be trained on a small, synthetic corpus with known item/template membership. Randomize exposure by item and surface diversity, with untouched nonmember controls. Measure exact-template recall, paraphrase/nonce transfer, novel-instance solving, and confidence/calibration. This provides ground truth for whether any proposed “retrieval” score tracks exposure. Public-corpus proximity is descriptive only and cannot stand in for known membership.
+**15 tests:** answer-changing edits; changed-rule worlds; distractors; missing information; composition depth; length generalization; long state tracking; mid-problem change; self-correction under true or false feedback; misleading hints; two-way consistency; explanation vs answer; repeated sampling; confidence vs correctness; tool errors.
 
-### Probe 4 — false-premise / state-injection recovery
+**Scoring (0 to 2 each):** hurts real users; clean control; known fix; less studied; cheap; inspectable inside.
 
-In a separate interactive task, inject a plausible but false intermediate state or instruction at a preregistered point. Measure acceptance, detection, correction, and final task success separately. Verify the correct state with the environment; do not use self-reported rationale as the outcome.
+**Screening pilot:** top 5 to 6 tests, pilot roster, about 50 items each, plus Jev and the confidence signals. Feasibility only, not claims.
 
-## Mechanistic extension: compare lenses, then intervene
+**Fix-first pilot:** majority vote, code tool, verifier, written state on pilot failures.
 
-Mechanistic work is a gated follow-up to a repeatable behavioral contrast. Do not assume that SAEs are obsolete, that the neuron basis is complete, or that a feature label explains the whole mechanism. Compare methods on the same model, checkpoint, prompts, and behavior-linked target where compute permits:
+- Generic fixes repair almost everything: pivot to reliability engineering.
+- Models need different fixes: diagnosis is justified.
+- Failures that survive every fix: the deep study.
 
-- native MLP-neuron activations / neuron-based attribution;
-- one learned feature lens (SAE or transcoder);
-- ICA or another non-neural decomposition as a lower-cost baseline.
+## 12. Novelty
 
-Choose a target using the behavioral data, not an appealing neuron anecdote. For each candidate signal, pre-register held-out activation prediction, matched random/neighbouring-unit controls, dose-response, task-specificity, and side-effect measures. Test the same behavioral effect with intervention and a rescue or reversal condition where feasible. Record whether a result reflects a localized causal contribution, an incomplete explanation, or a broader circuit; do not infer exhaustive understanding from one successful steer.
+The broad version (multi-family stress tests, same score different profile) is taken. The open gap: process dimensions that predict specific failures on unseen task types beyond general skill, with causes controlled and checked inside the same models.
 
-Training recipe and architecture can change the representational basis. Record architecture, checkpoint, training/post-training provenance, optimizer or intervention history when known, and model implementation. Cross-checkpoint or cross-family comparisons are descriptive unless the training/architecture factor is controlled. Older toy/vision results motivate hypotheses but do not establish what happens in current language models.
+| Route others took | Examples | Where it stops | What we take |
+|---|---|---|---|
+| Perturb and measure drop | GSM-Symbolic, GSM-Plus, GSM-SEM, Golsefid 2026 | A drop is only a symptom | Templated twins, paired tests |
+| Counterfactual worlds | Wu et al.; Mystery Blocksworld | Unfamiliar is often also harder | Changed rules, difficulty matched |
+| Trace to training data | Xie et al. (K&K); Ruis et al.; infini-gram | One domain; searched, not controlled | OLMo 3 and controlled exposure |
+| Psychology batteries | CogBench, CogArena | General skill dominates | Theory of abilities |
+| Skill profiles predicting items | Beyond Scores, SkillEval, Burden et al., ADeLe | Knowledge skills, not process | Baseline B2 |
+| Read the chain of thought | Lanham; Turpin | Not a reliable window | Check by program |
+| Look inside first | Circuits, SAEs, neuron atlases | Which features matter is unknown | Tools, after labels |
+| Just fix it | Self-consistency, verifiers, ReAct, RLVR | Which fix for which failure | Fix-first pilot, Stage 4 |
+| Train from scratch | Physics of Language Models | Toy models | Middle road: fine-tune OLMo |
 
-For outcomes that cannot be checked by an exact solver, use a documented rubric, calibrated human judgments on a sampled subset, and inter-rater agreement. An LLM judge can scale exploration, but should not be the sole source of truth for a headline construct claim.
+**Openings:** A (main) process dimensions predicting failure type on an unseen family; B controlled exposure across planning, logic, code and maths; C one model family (OLMo 3) for behaviour, training stage and internals; D a cross-domain planning horizon via greedy traps. Strongest: A plus C.
 
-## Item counts and power
+**Closest papers:** Golsefid 2026; Missing Primitive 2026; CogArena 2026; Beyond Scores 2026; ADeLe (Zhou et al. 2025). Full list in `docs/reading_list.md`.
 
-Start with 40 independent generated items per family for a pilot. Use the pilot to check verifier validity, difficulty, parse failures, variant plausibility, within-item decoding variance, and paired discordance rates. Do not use pilot items in the confirmatory test.
+## 13. Risks
 
-The current planning target is 200 independent base items per family, each evaluated under canonical plus the frozen transforms. This is a planning target, not a substitute for a prospective power calculation. Before confirmatory collection, simulate power using pilot discordance rates and generator-cluster structure. Require at least 80% power for an 8 percentage-point paired difference after correcting the three primary family contrasts; if the item count is infeasible, revise the minimum effect and claim scope before collecting confirmatory results.
+- Dimensions collapse into general skill: publish the null, pivot to fixes.
+- Generic fixes solve everything: pivot to reliability engineering.
+- Scope: target Paper 1 done well and Stage 2 started within five months.
+- Prior art is close: read the closest papers first.
 
-Items sharing a template, parameter seed, or graph skeleton may not be independent. Bootstrap or model at the generator-seed/template cluster level. For algorithmic items, cluster by underlying instance family or generator seed. Log the effective number of independent clusters.
+## 14. Open decisions
 
-## Repeats: what “20 runs” means
-
-Separate three sources of uncertainty:
-
-1. **Item sampling:** more independently generated items improve generalization estimates. This is usually the most important source.
-2. **Decoding sampling:** multiple random seeds on the same prompt estimate the response distribution for stochastic inference. Use 3 matched samples in the pilot; use 5 if within-item variance is material. Expand to 20 only if the preregistered estimand is a per-prompt success probability or tail risk and the pilot shows 5 is too imprecise.
-3. **Serving/model drift:** repeat a fixed canary set after changes in model revision, quantization, batch size, backend, or provider. These are separate conditions, not interchangeable random repeats.
-
-For greedy decoding, rerunning an identical prompt 20 times on a frozen deterministic stack adds little information. Instead, repeat a small canary set across controlled stack settings to estimate the noise floor. If the provider cannot pin a model revision, record endpoint/model string and UTC date; treat date as part of the condition.
-
-Do not count 20 generations of one item as 20 independent items. Analyze paired outcomes with item-level clustering and report both item uncertainty and decoding variability.
-
-## Models and controls
-
-Use three open-weight families for the behavioral panel, selected to vary training and architecture while keeping each checkpoint within a documented, reproducible serving path. Use instruction-tuned checkpoints for the primary user-facing behavior question. Pin revision, tokenizer, chat template, reasoning mode, precision, inference engine, batch size, and maximum output tokens. A closed model may be included as a fourth external anchor, but not in mechanistic claims.
-
-Freeze a primary inference mode. If reasoning-mode models offer a think/non-think control, treat mode as a planned within-model factor, not an undocumented prompt tweak. Use deterministic decoding for the primary paired contrast, then a separate stochastic robustness condition if resources permit.
-
-## Analysis and reporting
-
-- Primary diagnostic comparison: held-out predictive performance of the diagnostic model versus the canonical-accuracy/difficulty baseline. Also report within-item paired correctness differences by transform, restricted to canonical-correct items for retention, and unconditional accuracy.
-- Use cluster bootstrap or a mixed-effects logistic model with item and generator-cluster effects; include model × transform interaction.
-- Report raw counts, denominators, effect sizes, 95% intervals, and exact protocol. Correct for the frozen family-level primary tests.
-- Report every failed, excluded, and below-floor cell. Parser failures count as invalid, with a sensitivity analysis separating parsing from reasoning.
-- Separate confirmatory from exploratory analyses. No post-hoc relabeling of transforms or thresholds.
-- Preserve raw prompts and responses append-only; regenerate all summaries from them.
-
-## Stage gates
-
-- **G0: instrument validity.** Gold answers round-trip through independent verifiers; every transformation preserves or recomputes gold as declared; no unresolved generator/parser defects.
-- **G1: measurement and prediction.** Indicators are repeatable and valid enough to estimate; the held-out predictive comparison is reported whether positive or null, with parsing, floor/ceiling, and stack noise assessed.
-- **G2: exposure calibration.** Proposed exposure indicators predict randomized known membership on held-out items with preregistered discrimination and calibration; otherwise drop retrieval/computation labels.
-- **G3: mechanism.** Candidate internal signal predicts item-level behavior on the same manipulation; causal intervention changes behavior in the predicted direction with matched random/control interventions.
-- **G4: intervention/development.** Test whether surface-diverse post-training improves held-out invariance at matched canonical accuracy, then use checkpoints to locate when it emerges.
+- Monthly compute budget
+- Closed panel and open frontier model
+- The 2 deep dimensions (after the pilot)
+- The hidden family
+- Vault public or private
+- RAMPbench link, if it exists

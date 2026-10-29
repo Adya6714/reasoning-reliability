@@ -1,28 +1,70 @@
+# Study settings. Source of truth: docs/research_design.md Sections 5, 7, 11, 12, 13.
 study:
-  id: rr_behavioral_v1
+  id: rr_v2
   status: design
+
   primary_question: >-
-    Do controlled, task-conditioned behavioral indicators predict held-out failure patterns
-    beyond canonical scores and psychometric skill profiles?
-  primary_estimand: >-
-    held-out predictive improvement of the process-diagnostic model over score and skill-profile baselines
-  process_indicators: [dependence, organization, source, faithfulness]
-  secondary_estimands:
-    - paired correctness difference between canonical and each answer-preserving transform
-    - paired correctness response to minimal answer-changing counterfactuals
-  primary_models: [qwen3_5_27b, gemma4_31b_dense, llama4_scout]
-  primary_families: [arithmetic, graph_optimization, planning]
-  holdout_rule: hold back at least one whole task family from probe development and predictive-model fitting
-  primary_baselines: [canonical_score_plus_difficulty, psychometric_skill_profile_plus_difficulty]
-  target_independent_items_per_family: 200
-  pilot_items_per_family: 40
-  primary_decoding_replicates: 3
-  initial_repeat_rule: run 3 matched stochastic replicates per item when stochastic decoding is part of the estimand; run greedy once plus repeatability audit for greedy condition
-  expansion_rule: increase to 5 replicates if pilot within-item variance is material; expand up to 20 only when estimating a prespecified stochastic response distribution, not to inflate item n
-  minimum_detectable_effect_pp: 8
-  power_target: 0.80
-  confidence_level: 0.95
-  multiple_testing: Holm correction across the three primary family contrasts
-  clustering: generator_seed_and_item_id
-  canonical_accuracy_floor: 0.50
+    Do process measures predict specific failures on an unseen task family
+    beyond overall ability, difficulty, domain and a knowledge-skill profile?
+
+  baselines:
+    baseline_1: overall ability
+    baseline_2: baseline_1 + difficulty + domain + knowledge-skill profile
+    baseline_3: baseline_2 + process measures
+  metrics: [auc, log_loss]
+  cross_validation: by_family
+
+  gating_rule: stages 2 to 4 gate on RQ1 (reliable behavioural contrast), not RQ3
+
+  dimensions:
+    status: provisional candidates; choose 2 deep dimensions after the screening pilot
+    candidates:
+      - structural_understanding
+      - planning
+      - state_tracking
+      - inhibition
+      - misplaced_retrieval
+      - self_correction
+      - uncertainty      # measured on every run
+      - faithfulness     # side measure
+    control: knowledge   # prerequisite tests, not a dimension
+
+  families:
+    minimum_profiling_families: 5
+    candidates: [classical_planning, algorithms_greedy_traps, logic_puzzles, code_output_prediction, maths_word_problems]
+    extra: [fresh_natural_problems_matharena, multi_step_agent_tasks]
+    hidden_family: TBD (one full family held out for the final prediction test; seeds in data/private/)
+
+  items:
+    population_claims: 250 to 300 structural items per family at k=3
+    per_problem_claims: 60 items per family at k=20
+    final_counts: from power simulation after the pilot
+    independent_unit: generated item or template cluster, never the repeated call
+
+  decoding:
+    primary: temperature above 0 at each model card's recommended settings
+    check_set: small greedy subset
+    thinking: planned factor (on and off)
+
+  repeated_runs:
+    start_k: 5
+    expansion: add samples only where the interval straddles the decision threshold (pre-registered stopping rule)
+    noise_floor: rerun a fixed subset across batch sizes and seeds; per-item verdicts only above it
+
+  accuracy_band: [0.30, 0.80]
+
+  confidence_signals:
+    signals: [written_confidence, k_sample_agreement, gold_logprob, jev_probability, rule_based_feature_score]
+    report: [brier, reliability_diagram, auroc]
+    split_by: [family, famous_vs_fresh_twin]
+    independence:
+      - jev distractors come from the generator, never from evaluated-model samples
+      - agreement on samples 1 to k; correctness scored on held-out sample k+1
+
+  analysis:
+    model: "correct ~ variant x protocol x model + (1 + variant | item) + (1 | template)"
+    intervals: cluster bootstrap over templates
+    multiple_testing: Holm
+    primary_contrasts: few, pre-registered; the rest exploratory
+
   preregistration_required_before_confirmatory_runs: true

@@ -1,27 +1,51 @@
 # Model selection
 
-## Behavioral panel
+Detail in `docs/research_design.md`. Roster in `configs/models.yaml`.
 
-Use a deliberately small panel of three model families in the first confirmatory study:
+## Rule
 
-| Candidate | Reason to include | Constraint |
+Every model must create a contrast. Leaderboard rank alone is never a reason.
+
+## Why open models are the core
+
+| Need | Open | Closed (API) |
 |---|---|---|
-| Qwen3.5-27B | Current open-weight Qwen family; Apache-2.0 card; strong behavioral anchor | Hybrid gated-delta/full attention; not the easiest first circuit target |
-| Gemma 4 31B Dense | Current large dense checkpoint from an independent family; Apache-2.0 card; dense model is useful for later layerwise work | Hybrid local/global attention and multimodal family; confirm exact implementation and revision |
-| Llama 4 Scout | Independent Meta family and mixture-of-experts contrast; 17B active / 109B total parameters | Very high total weight footprint, multimodal, and Llama Community License; hosted inference is likely needed |
+| Same exact model every time | Yes, pin by hash | No, can change silently |
+| Control temperature, seed, precision | Yes | Partly or not at all |
+| See full thinking | Yes | Often hidden |
+| Gold-answer log-probability | Yes | Rarely |
+| Look inside | Yes | No |
+| Fine-tune (controlled exposure) | Yes | No |
+| Know training data | Yes for OLMo 3 | No |
 
-“Best” is task- and inference-mode-dependent. This roster is a current, technically diverse open-weight panel, not a universal leaderboard claim. Three families provide an interpretable minimum for checking whether a behavioral effect is family-specific; they do not justify population-wide claims about all LLMs. Add a fourth model only if it answers a planned contrast, such as a closed frontier anchor or an explicitly reasoning-trained counterpart.
+## Why a closed panel too
 
-Use instruction-tuned checkpoints for the primary deployed-assistant behavior question. Do not compare a base model with an instruct model as though they differ only in scale. Freeze thinking mode, prompt, context, output cap, precision, server, and model revision. If thinking and non-thinking modes are both studied, preregister them as matched conditions.
+- Checks that behavioural findings hold in models people actually use.
+- Behaviour only. Never used for exposure, mechanism, or anything needing thinking text.
 
-The roster uses weights so that prompts, revisions, and serving can be controlled. Hosted inference can reduce local GPU barriers, but server details and revisions must still be recorded. Local quantized serving gives more environmental control but makes precision part of the intervention; do not silently compare an API FP16 result to a local 4-bit result.
+## Why Jev
 
-## Mechanistic model
+- Picks from fixed options with a probability; writes no reasoning.
+- Recognition baseline: Jev right means the item may be solvable by pattern alone.
+- Later: cheap router in the Stage 4 system.
+- Not a judge, not for interpretability, not for untrusted text. Fixed options only; distractors come from the generator. Pin the version.
 
-Use Qwen3.5-4B as an exploratory neuron-steering feasibility candidate because an open steering workflow and a public behavioral steering example exist for that exact checkpoint. This makes it useful for reproducing controls and validating the intervention stack, not automatically the right representative of the behavioral panel. Keep Qwen3-8B as a second tractable candidate; first verify each candidate's task accuracy, activation access, software compatibility, and the available GPU VRAM. A second-family replication should follow only after the same behavioral manipulation is measurable.
+## Roster summary
 
-When comparing neuron, SAE/transcoder, or ICA explanations, use the same checkpoint and behavior-linked prompts first so training-recipe differences do not masquerade as method differences. A cross-family comparison is a later replication, not a controlled test of representational basis.
+| Slot | Model | Contrast |
+|---|---|---|
+| Exposure + training stages | OLMo 3 7B (Base, SFT, DPO, Instruct, Think) | Which stage creates fragility; real exposure |
+| Thinking on vs off | Qwen3.6-27B + small Qwen3.5 | Thinking as a clean factor |
+| Interp tools | Gemma 3 (4B or 12B) + Gemma Scope 2 | Ready-made SAEs and transcoders |
+| Reasoning-trained | gpt-oss-20b | Different training recipe |
+| Bridge to v1 | Llama 3.1 8B Instruct | Links to old data |
+| Open frontier | One of DeepSeek, GLM, Kimi (API) | Scale |
+| Closed panel | 2 models from 2 labs | Deployment relevance |
+| Non-LLM baseline | Jev | Recognition baseline |
 
-## Selection record
+- Pilot roster: Qwen 27B (thinking on and off), OLMo 3 7B Instruct, Jev.
+- Dropped: Llama 4 Scout (109B total weights), Gemma 4 31B (no matching interp tools).
 
-At each run, archive the Hugging Face commit hash, tokenizer files/revision, chat template, license snapshot, inference library/server version, precision, and generation configuration. Model display names are not stable identifiers.
+## Selection record (every run)
+
+Hugging Face commit hash, tokenizer revision, chat template, licence snapshot, engine and version, precision, generation config. Display names are not stable identifiers. Freeze versions on run day.
