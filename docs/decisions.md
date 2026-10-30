@@ -28,3 +28,8 @@ One line per decision: date, decision, reason. Newest at the bottom. `docs/resea
 | 2026-10-29 | Jev distractors come from the generator, never from evaluated-model samples; agreement on samples 1 to k, correctness on held-out sample k+1 | Keep signals independent |
 | 2026-10-29 | Added hypothesis H10 (question-only vs mid-reasoning correctness signals) | From "No Answer Needed" GSM8K caveat |
 | 2026-10-29 | Keep package name `src/reasoning_reliability/` (not `src/rvc/`) | Already exists in the repo |
+| 2026-10-29 | Pain-point analysis closed for benchmark selection: master table of 17 checkable failure types from 5 sweeps in `research-vault/09_Test_Menu_and_Selection.md` | Evidence base for benchmarks and dimensions; failure discussion continues separately |
+| 2026-10-29 | Added candidate dimension: goal completion | Rank 5 failure (grade A, 9 sources); checkable; clear fix; benchmark gap |
+| 2026-10-29 | Added candidate dimension: constraint adherence (content rules separate from format rules) | Rank 3 failure (grade A, 11 sources); distinct from inhibition; goal-neglect theory |
+| 2026-10-29 | Coordination with another actor is out of scope | Different research question; needs simulated user (judge noise); mostly system design; single-model part covered by sharded-task tests |
+| 2026-10-29 | Eval design rules added: match number magnitude in twins, include structure-changing edits, check puzzle solvability and token limits, hold harness and format fixed | arXiv gap sweep (GSM-Symbolic re-evaluation, MATH-Perturb, Illusion of Thinking critique, aider) |

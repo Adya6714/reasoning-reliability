@@ -38,8 +38,16 @@ A dimension is a hidden habit seen only through behaviour, like working memory i
 | Misplaced retrieval | Reuses a remembered answer where it does not fit | Gershman | Famous problem vs fresh twin with a different answer | Recall monitor, varied training |
 | Self-correction | Notices and fixes errors | Metacognition (Flavell, Schoenfeld) | True vs false feedback | Verifier in the loop |
 | Uncertainty | Knows when it may be wrong | Metacognition | Confidence signals (Section 10) | "Check this" flag |
+| Goal completion (new) | Knows when the task is actually done: does not stop early, claim false completion, or keep working after the goal is met | Metacognitive monitoring (Flavell); control decisions in problem solving (Schoenfeld); stopping rules (Simon) | N-goal tasks with a state validator (claim vs actual); tasks already complete at the start or partway | Completion check against a validator in the harness |
+| Constraint adherence (new) | Keeps every stated rule active while working | Goal neglect (Duncan et al.): people can state a rule yet fail to follow it; goal maintenance (Miyake) | Counter-intuitive rule worlds with a rule validator; rule-recall check to separate "forgot" from "knew but broke" | Rule checker in the loop, rule restatement |
 | Faithfulness | Shown reasoning drives the answer | Source monitoring | Plant a false step | Side measure only |
 | Knowledge (control) | Has prerequisite facts and skills | CHC crystallized knowledge | Prerequisite mini-tests | A control, not a dimension |
+
+**Decisions on proposed new dimensions (2026-10-29, from the pain-point sweeps):**
+
+- **Goal completion: added.** Rank 5 real-world failure (grade A, 9 sources), clear program-checkable tests, a clear fix, and a gap in existing benchmarks. Risk: overlap with uncertainty and self-correction. Check in the pilot; merge if it correlates highly with them.
+- **Constraint adherence: added.** Rank 3 (grade A, 11 sources). Distinct from inhibition: inhibition ignores a tempting irrelevant cue, constraint adherence keeps a stated rule active. Risk: goal neglect correlates with general ability in humans, so it may collapse into general skill (RQ2). Keep content rules separate from output-format rules, since format following is partly a harness effect. Instruction-following benchmarks are crowded; our angle is counter-intuitive rules with a recall control.
+- **Coordination with another actor: out of scope.** It is a different research question (communicating with a user who holds state), it needs a simulated user, which adds judge noise, and multi-agent role failures are mostly system design. The single-model part (early assumptions under sharded information) is already covered. Revisit in Stage 4 systems work.
 
 Variant design uses Brown and Walter's "What-If-Not": list every attribute of a problem, change it, and split edits into answer-preserving (robustness) and answer-changing (attention).
 

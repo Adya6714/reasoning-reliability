@@ -26,7 +26,10 @@ study:
       - misplaced_retrieval
       - self_correction
       - uncertainty      # measured on every run
+      - goal_completion  # added 2026-10-29
+      - constraint_adherence  # added 2026-10-29
       - faithfulness     # side measure
+    out_of_scope: [coordination_with_another_actor]
     control: knowledge   # prerequisite tests, not a dimension
 
   families:

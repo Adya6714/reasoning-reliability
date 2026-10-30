@@ -9,6 +9,12 @@ Full detail in `docs/research_design.md`.
 - [ ] A4 Close out v1: "under revision" note, erratum, archive
 - [ ] A5 Obsidian simple vault
 
+## Pain points (done 2026-10-29)
+- [x] Sweeps: X, LessWrong, GitHub/HN/Reddit, published taxonomies, arXiv gap fill
+- [x] Master pain-point table (`research-vault/09_Test_Menu_and_Selection.md`)
+- [x] Decide new dimensions: goal completion and constraint adherence added; coordination out of scope
+- [ ] Community form (on hold until the research outlook is shared)
+
 ## Block B: what to measure (weeks 1 to 2)
 - [ ] B1 Candidate dimension list (8 to 10), each with theory source, two tests, fix
 - [ ] B2 Score the 15 tests on the six questions; pick top 5 to 6

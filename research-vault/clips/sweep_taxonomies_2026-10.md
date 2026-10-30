@@ -1,3 +1,17 @@
+---
+title: "Published LLM and agent failure taxonomies: crosswalk"
+type: sweep
+source: taxonomies
+run_date: 2026-10-29
+period_covered: "2023 to 2026"
+items_found: 13
+items_kept: 13
+status: skimmed
+trust: medium
+numbers_checked: false
+overlap: 1
+---
+
 # LLM and Agent Failure Taxonomies: Crosswalk for Benchmark Selection
 
 Oct 29, 2026 · @Adya

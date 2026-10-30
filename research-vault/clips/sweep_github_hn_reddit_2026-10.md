@@ -1,3 +1,17 @@
+---
+title: "GitHub issues, Hacker News and Reddit: agent and model failures"
+type: sweep
+source: github-hn-reddit
+run_date: 2026-10-29
+period_covered: "2024 to 2026"
+items_found: 12
+items_kept: 12
+status: skimmed
+trust: medium
+numbers_checked: false
+overlap: 3
+---
+
 # Sweep 2: agent-framework GitHub issues + Hacker News / r/LocalLLaMA
 
 ## Read this first: coverage and honesty notes

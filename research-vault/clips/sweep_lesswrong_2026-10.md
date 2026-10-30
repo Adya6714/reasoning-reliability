@@ -1,3 +1,17 @@
+---
+title: "LessWrong and Alignment Forum: reproducible reasoning failures"
+type: sweep
+source: lesswrong
+run_date: 2026-10-29
+period_covered: "2023 to 2026"
+items_found: 16
+items_kept: 16
+status: skimmed
+trust: medium
+numbers_checked: false
+overlap: 3
+---
+
 # LessWrong / Alignment Forum sweep: reproducible LLM reasoning failures
 
 ## Read this first: coverage and honesty notes
