@@ -1,4 +1,4 @@
-# Study settings. Source of truth: docs/research_design.md Sections 5, 7, 11, 12, 13.
+# Study settings. Source of truth: docs/research_design.md, docs/eval_suite.md, docs/root_abilities.md.
 study:
   id: rr_v2
   status: design
@@ -9,40 +9,46 @@ study:
 
   baselines:
     baseline_1: overall ability
-    baseline_2: baseline_1 + difficulty + domain + knowledge-skill profile
-    baseline_3: baseline_2 + process measures
+    baseline_2: >-
+      baseline_1 + difficulty + domain + ADeLe-style skill profile;
+      evaluate on both failure occurrence and failure type
+    baseline_3: baseline_2 + process measures (root-ability ladder profiles)
   metrics: [auc, log_loss]
   cross_validation: by_family
 
-  gating_rule: stages 2 to 4 gate on RQ1 (reliable behavioural contrast), not RQ3
+  gating_rule: >-
+    stages 2 to 4 gate on RQ1 (reliable behavioural contrast), not RQ3;
+    hidden-family result is a reported checkpoint before Phase 2
 
   dimensions:
-    status: provisional candidates; choose 2 deep dimensions after the screening pilot
-    candidates:
-      - structural_understanding
-      - planning
-      - state_tracking
-      - inhibition
-      - misplaced_retrieval
-      - self_correction
-      - uncertainty      # measured on every run
-      - goal_completion  # added 2026-10-29
-      - constraint_adherence  # added 2026-10-29
-      - faithfulness     # side measure
+    status: root abilities with 4-level ladders; see docs/root_abilities.md
+    profile: ladder breaking points per ability
+    spine: [R1, R2, R3, R4, R5, R6, R7, R8]
     out_of_scope: [coordination_with_another_actor]
     control: knowledge   # prerequisite tests, not a dimension
 
   families:
+    profiling:
+      - A_planning_and_greedy_traps
+      - B_long_state_tracking_and_compound_goals
+      - C_code_execution_output_prediction
+      - D_maths_word_problems_with_twins
+      - E_logic_and_rule_worlds
+    hidden_family: deterministic tool-use sandbox (seeds in data/private/)
     minimum_profiling_families: 5
-    candidates: [classical_planning, algorithms_greedy_traps, logic_puzzles, code_output_prediction, maths_word_problems]
-    extra: [fresh_natural_problems_matharena, multi_step_agent_tasks]
-    hidden_family: TBD (one full family held out for the final prediction test; seeds in data/private/)
 
   items:
-    population_claims: 250 to 300 structural items per family at k=3
+    population_claims: >-
+      about 300 structural items per family (50 famous, 50 twins, 200 fresh),
+      start k=5, adaptive expansion
     per_problem_claims: 60 items per family at k=20
+    surface_versions_per_item: about 5
     final_counts: from power simulation after the pilot
     independent_unit: generated item or template cluster, never the repeated call
+
+  split:
+    development: 0.4
+    confirmation: 0.6
 
   decoding:
     primary: temperature above 0 at each model card's recommended settings
@@ -53,6 +59,20 @@ study:
     start_k: 5
     expansion: add samples only where the interval straddles the decision threshold (pre-registered stopping rule)
     noise_floor: rerun a fixed subset across batch sizes and seeds; per-item verdicts only above it
+
+  pass_at_k: [1, 4, 8]
+
+  factor_model:
+    baseline: 2PL
+    main: bifactor
+
+  simulations:
+    model_counts: [6, 8, 12, 20, 30]
+    nulls: [zero_specific_factors, format_template_noise]
+
+  harness_check:
+    stat: kendall_tau
+    bootstrap: items
 
   accuracy_band: [0.30, 0.80]
 
@@ -69,5 +89,21 @@ study:
     intervals: cluster bootstrap over templates
     multiple_testing: Holm
     primary_contrasts: few, pre-registered; the rest exploratory
+
+  instruction_drift:
+    levels: [none, show_working, final_answer_only]
+    crossed_with: thinking_on_off
+    note: own pre-registered contrast
+
+  stage3_pass_bars:
+    probes: at least +0.05 AUROC over question-only and text-only baselines, CI excluding 0
+    patching: at least 50% of the pass/fail gap recovered from 3 or fewer layers
+    steering_ablation: effect beyond the 95th percentile of random-direction controls, with a dose response
+
+  stage4_baselines:
+    matched: same data volume, steps and compute, no targeting
+    strong: generic check-your-work prompting, and RL on pooled generators
+    mismatch_control: fix meant for a different weakness
+    always_measure: what each fix breaks
 
   preregistration_required_before_confirmatory_runs: true

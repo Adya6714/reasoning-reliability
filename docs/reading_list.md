@@ -198,3 +198,11 @@
 - Evals: METR, Epoch AI, Apollo Research, Scale AI, AI2
 - RL environments: Prime Intellect (verifiers, Environments Hub), Nous Research (Atropos), Hugging Face (Open-R1)
 - Reliability, routing, eval ops: Martian, Not Diamond, Patronus AI, Haize Labs, Braintrust, LangSmith, Sierra, Harmonic, Thinking Machines, TypeSafe AI (Jev)
+
+## Q. Moved from old docs/references.md
+- Rank et al. 2026, POSTTRAINBENCH (alphaxiv 2603.08640): post-training agents; context for Stage 4, not the behavioural suite
+- [A Sense of Proprioception in Language Models](https://arxiv.org/abs/2610.17495): optional internal-state measures with verifiable labels
+- [How Causality Bridges the Semantic Gap](https://arxiv.org/abs/2610.02594): adjacent; not a direct reasoning benchmark
+- [Qwen3.5-4B](https://huggingface.co/Qwen/Qwen3.5-4B) and [neuron-explorer](https://github.com/lyramakesmusic/neuron-explorer): small feasibility tools, not a behavioural panel
+- [Subjective Evals: A Roadmap](https://cameronrwolfe.substack.com/p/subjective-evals): rubrics and rater ops; use primary measurements for scientific claims
+- Goodfire: [Accelerating Interpretability](https://www.goodfire.com/blog/accelerating-interpretability); Cammarata, [Neural Networks Are Already Clean](https://already-clean.goodfire.com/): program announcements / essays, not evidence

@@ -89,9 +89,9 @@ optional_mechanistic_candidates:
     model: Qwen3-8B
     reason: dense, tractable; feasibility only
 
-considered_and_dropped:
+dropped:
   - model: Llama 4 Scout
-    reason: 109B total weights, needs multiple GPUs
+    reason: 109B total weights, too large (needs multiple GPUs)
   - model: Gemma 4 31B
     reason: no matching interp tools (Gemma Scope 2 targets Gemma 3)
 

@@ -33,3 +33,14 @@ One line per decision: date, decision, reason. Newest at the bottom. `docs/resea
 | 2026-10-29 | Added candidate dimension: constraint adherence (content rules separate from format rules) | Rank 3 failure (grade A, 11 sources); distinct from inhibition; goal-neglect theory |
 | 2026-10-29 | Coordination with another actor is out of scope | Different research question; needs simulated user (judge noise); mostly system design; single-model part covered by sharded-task tests |
 | 2026-10-29 | Eval design rules added: match number magnitude in twins, include structure-changing edits, check puzzle solvability and token limits, hold harness and format fixed | arXiv gap sweep (GSM-Symbolic re-evaluation, MATH-Perturb, Illusion of Thinking critique, aider) |
+| 2026-10-30 | 8 root abilities with 4-level ladders adopted as the dimension spine; profile = ladder breaking points | 17 failure types too many to study directly |
+| 2026-10-30 | Eval suite: 5 profiling families + hidden deterministic tool-use sandbox | Tests transfer from cheap tasks to agent tasks |
+| 2026-10-30 | GSM-Symbolic not used as a base (CC-BY-NC-ND); own templates on GSM8K (MIT) | Licence |
+| 2026-10-30 | Bifactor is the main factor model; 2PL baseline | Confirmatory, tagged items; tests CogArena risk directly |
+| 2026-10-30 | Power and null simulations required before the main run | Know recovery threshold and false-positive rate |
+| 2026-10-30 | Harness check uses Kendall's tau, not W | Only two rankers |
+| 2026-10-30 | ADeLe-style profile is an explicit part of Baseline 2, on occurrence and failure type | Strongest prior baseline |
+| 2026-10-30 | Instruction drift run as its own experiment: 3 levels x thinking on/off | v1 confound becomes a measured factor |
+| 2026-10-30 | Stage 3 pass bars fixed (probe +0.05 AUROC, patching 50% from <=3 layers, steering > 95th pct random) | Pre-registered success criteria |
+| 2026-10-30 | Stage 4 uses matched baseline, strong baseline and mismatch control | Shows targeting matters |
+| 2026-10-30 | Repeated runs start at k=5 with pre-registered adaptive expansion (replaces k=3) | Better per-item estimates near threshold |

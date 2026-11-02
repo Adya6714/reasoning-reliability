@@ -21,33 +21,16 @@ Order matters: you cannot look inside for a failure until you can label it, and 
 
 **Assumptions:** answer-preserving rewrites exist and are solver-checkable; repeated samples estimate stable tendencies above a measured noise floor; dimensions are hidden and seen only through behaviour; retrieval and computation form a continuum; known-structure problems (greedy traps) define planning by construction; open models are representative, checked by a closed panel.
 
-## 3. Dimensions
+## 3. Dimensions (root abilities)
 
-A dimension is a hidden habit seen only through behaviour, like working memory in people. All are provisional. Two are chosen after the screening pilot.
+Spine: 8 root abilities with 4-level ladders. Full table, theory, L1 examples and profile measures: `docs/root_abilities.md`.
 
-**A dimension stays only if:** (1) theory or prior work supports it, (2) two different tests of it agree, (3) it predicts failures beyond general skill.
-
-**Main risk:** abilities collapsing into one general factor (CogArena 2026).
-
-| Candidate | Plain meaning | Theory | Example test | Fix it points to |
-|---|---|---|---|---|
-| Structural understanding | Sees the problem, not the wording | Analogical transfer (Gick and Holyoak; Kotovsky, Hayes and Simon) | Answer-preserving and answer-changing edits | Rewrite-diverse training, JEPA |
-| Planning | Thinks ahead vs reacts | Polya; Tower of London | Greedy traps, lookahead depth | Planner scaffold, RL on traps |
-| State tracking | Keeps track of what changed | Working memory, updating (Miyake) | Many moves, then "what is the state?" | Written state |
-| Inhibition | Ignores tempting irrelevant cues | Executive function (Miyake) | Distractors, misleading hints | Distractor training |
-| Misplaced retrieval | Reuses a remembered answer where it does not fit | Gershman | Famous problem vs fresh twin with a different answer | Recall monitor, varied training |
-| Self-correction | Notices and fixes errors | Metacognition (Flavell, Schoenfeld) | True vs false feedback | Verifier in the loop |
-| Uncertainty | Knows when it may be wrong | Metacognition | Confidence signals (Section 10) | "Check this" flag |
-| Goal completion (new) | Knows when the task is actually done: does not stop early, claim false completion, or keep working after the goal is met | Metacognitive monitoring (Flavell); control decisions in problem solving (Schoenfeld); stopping rules (Simon) | N-goal tasks with a state validator (claim vs actual); tasks already complete at the start or partway | Completion check against a validator in the harness |
-| Constraint adherence (new) | Keeps every stated rule active while working | Goal neglect (Duncan et al.): people can state a rule yet fail to follow it; goal maintenance (Miyake) | Counter-intuitive rule worlds with a rule validator; rule-recall check to separate "forgot" from "knew but broke" | Rule checker in the loop, rule restatement |
-| Faithfulness | Shown reasoning drives the answer | Source monitoring | Plant a false step | Side measure only |
-| Knowledge (control) | Has prerequisite facts and skills | CHC crystallized knowledge | Prerequisite mini-tests | A control, not a dimension |
-
-**Decisions on proposed new dimensions (2026-10-29, from the pain-point sweeps):**
-
-- **Goal completion: added.** Rank 5 real-world failure (grade A, 9 sources), clear program-checkable tests, a clear fix, and a gap in existing benchmarks. Risk: overlap with uncertainty and self-correction. Check in the pilot; merge if it correlates highly with them.
-- **Constraint adherence: added.** Rank 3 (grade A, 11 sources). Distinct from inhibition: inhibition ignores a tempting irrelevant cue, constraint adherence keeps a stated rule active. Risk: goal neglect correlates with general ability in humans, so it may collapse into general skill (RQ2). Keep content rules separate from output-format rules, since format following is partly a harness effect. Instruction-following benchmarks are crowded; our angle is counter-intuitive rules with a recall control.
-- **Coordination with another actor: out of scope.** It is a different research question (communicating with a user who holds state), it needs a simulated user, which adds judge noise, and multi-agent role failures are mostly system design. The single-model part (early assumptions under sharded information) is already covered. Revisit in Stage 4 systems work.
+- A model's **profile** = its breaking point on each ladder (state horizon, lookahead horizon, hop horizon, and so on).
+- The 17 failure types in `research-vault/09_Test_Menu_and_Selection.md` collapse into these 8. The mapping is a draft: check it against the 17-type table and flag mismatches.
+- An ability stays only if: (1) theory supports it, (2) model rankings agree across 4 to 6 templates in at least 2 families (Kendall's W for 3+ templates), (3) it predicts failures beyond general skill.
+- **Main risk:** abilities collapsing into one general factor (CogArena 2026). Bifactor analysis tests this (Section 9).
+- Knowledge prerequisite tests remain a control, not a profile dimension.
+- Coordination with another actor stays out of scope (simulated user adds judge noise; revisit in Stage 4 systems work).
 
 Variant design uses Brown and Walter's "What-If-Not": list every attribute of a problem, change it, and split edits into answer-preserving (robustness) and answer-changing (attention).
 
@@ -71,8 +54,8 @@ Variant design uses Brown and Walter's "What-If-Not": list every attribute of a 
 Predict failure on held-out families with three baselines:
 
 - **B1:** overall ability
-- **B2:** B1 + difficulty + domain + knowledge-skill profile
-- **B3:** B2 + process measures
+- **B2:** B1 + difficulty + domain + an ADeLe-style skill profile (knowledge skills). Evaluate B2 on **both** failure occurrence and failure type.
+- **B3:** B2 + process measures (root-ability ladder profiles)
 
 Dimensions matter only if B3 clearly beats B2 on unseen families. Metrics: AUC and log-loss, cross-validated by family. Written down and pre-registered before data.
 
@@ -82,7 +65,9 @@ Dimensions matter only if B3 clearly beats B2 on unseen families. Metrics: AUC a
 | Partial win (some families or failure types) | Narrower claim, report where it works |
 | No win | Check measurement reliability, then transfer; report the pre-registered null; pivot to reliability engineering or the eval suite as product |
 
-**Gating:** Stages 2 to 4 depend on RQ1 (a reliable contrast exists), not on RQ3.
+**Gating:** Stages 2 to 4 depend on RQ1 (a reliable contrast exists), not on RQ3. The hidden-family result is a reported checkpoint before Phase 2, but Phase 2 still gates on RQ1.
+
+**Instruction drift experiment (own pre-registered contrast):** 3 instruction levels (none, "show working", "final answer only") crossed with thinking on/off.
 
 ## 6. Evidence rules
 
@@ -111,38 +96,43 @@ The core asset is a set of **generators with exact solvers**. They become the te
 4. Steer or ablate with random-direction controls, dose response, side effects.
 5. Attribution graph for one clean case, if tooling supports the model.
 
+**Stage 3 pass bars (pre-register):**
+
+- Probes: at least +0.05 AUROC over question-only and text-only baselines, CI excluding 0.
+- Patching: at least 50% of the pass/fail gap recovered from 3 or fewer layers.
+- Steering/ablation: effect beyond the 95th percentile of random-direction controls, with a dose response.
+
+**Stage 4 baselines:**
+
+- Matched baseline: same data volume, steps and compute, no targeting.
+- Strong baseline: generic "check your work" prompting, and RL on pooled generators.
+- Mismatch control: give the fix meant for a different weakness; if it works as well, the diagnosis adds nothing.
+- Always measure what each fix breaks.
+
 Corpus search on models without public data is descriptive only; only controlled exposure is causal. Pythia and LLM360 checkpoints are optional for pretraining-over-time analysis.
 
 ## 8. Benchmarks and the eval suite
 
-Contamination is the variable: pair famous items with freshly generated twins of identical structure and solver-verified gold.
+Full selection rules, family scores, benchmark review findings and generator build rules: `docs/eval_suite.md`.
 
-**Family rules:** program-checkable answer; generator with difficulty knobs; a famous version exists; surface changes while structure is fixed; answer-changing edits possible; models land at 30 to 80%; tests at least one dimension; licence fine. At least 5 profiling families plus 1 hidden family.
-
-| Family | Sources | Build | Main dimension |
-|---|---|---|---|
-| Classical planning | PlanBench, Mystery Blocksworld, Fast Downward | Greedy traps, matched reversal | Planning, state tracking |
-| Algorithms | CLRS-style | Coin change, routes, scheduling with traps | Planning |
-| Logic puzzles | Reasoning Gym, Zebra-style | Wrapper | Structural understanding |
-| Code reasoning | CRUXEval-style | Program generator run for gold | State tracking |
-| Maths word problems | GSM-Symbolic | Fresh twins, answer-changing edits | Surface dependence, retrieval |
-| Fresh natural problems | MathArena post-cutoff contests | None | Memorization check |
-| Agent tasks | Agent benchmarks | Small checkable environment | Planning, self-correction |
-
-**Generator audit:** gold vs an independent solver on 200 samples; difficulty changes accuracy smoothly; identical wrapper; freshness spot-check; trap and answer-changing versions possible; maintained and licensed.
-
-**Eval suite as a contribution:** generator-based and contamination-resistant, paired edits applied by code, QA-guaranteed prompts, private hidden family. Public split released; hidden seeds stay in `data/private/`.
+- Contamination is a variable: pair famous items with fresh twins of identical structure and solver-verified gold.
+- **5 profiling families:** A planning and greedy traps; B long state tracking and compound goals; C code execution (output prediction); D maths word problems with twins (own templates on GSM8K, MIT; do not derive from GSM-Symbolic); E logic and rule worlds.
+- **Hidden family F:** deterministic tool-use sandbox (same abilities, different surface). Seeds in `data/private/`. Headline test: do cheap-family profiles predict sandbox failures?
+- The suite is a named contribution of Paper 1. Public split released; hidden seeds stay private.
 
 PostTrainBench measures agents doing post-training, not reasoning; context for Stage 4 only.
 
 ## 9. Sample sizes, runs, analysis
 
-- **Population claims:** 250 to 300 items per family at k=3 (300 items give about 85% power for a 10-point drop after correcting for about 12 tests).
-- **Per-problem claims:** 60 items per family at k=20 (k=20 gives about 84% power to tell .9 from .5 on one item).
+- **Population claims:** about 300 structural items per family (50 famous, 50 twins, 200 fresh). Start every item at k=5; add samples only where the interval straddles the decision threshold (pre-registered adaptive rule). Noise floor from batch-size and seed reruns.
+- **Per-problem claims:** 60 items per family at k=20.
+- Split: 40% development, 60% confirmation (confirmation closed until design freeze).
 - Final counts from a power simulation after the pilot. The unit is the item or template, never the repeated call.
-- **Decoding:** temperature above 0 at model-card settings; small greedy check set; thinking on/off as a planned factor.
-- **Repeats:** start at k=5; add samples only near the decision threshold (pre-registered rule); measure the noise floor across batch sizes and seeds.
-- **Analysis:** mixed-effects logistic, `correct ~ variant x protocol x model + (1 + variant | item) + (1 | template)`; cluster bootstrap over templates; Holm correction; few pre-registered primary contrasts.
+- **Decoding:** temperature above 0 at model-card settings; small greedy check set; thinking on/off as a planned factor; report pass^k at k = 1, 4, 8.
+- **Factor models:** baseline 2PL IRT. Main model: BIFACTOR (one general factor + one specific factor per tagged dimension), confirmatory because items are tagged in advance.
+- **Simulations before the main run:** (a) vary number of models 6, 8, 12, 20, 30 to find the recovery threshold; (b) null with zero specific factors for the false-positive rate; (c) null with format and template noise only.
+- **Harness check:** one item subset under two scaffolds; compare model rankings with Kendall's tau or Spearman's rho (not W: only 2 rankers); bootstrap over items for the CI.
+- **Behavioural analysis:** mixed-effects logistic, `correct ~ variant x protocol x model + (1 + variant | item) + (1 | template)`; cluster bootstrap over templates; Holm correction; few pre-registered primary contrasts.
 - **Logging:** see `docs/runner_requirements.md`.
 
 ## 10. Confidence signals
@@ -196,6 +186,8 @@ The broad version (multi-family stress tests, same score different profile) is t
 
 **Closest papers:** Golsefid 2026; Missing Primitive 2026; CogArena 2026; Beyond Scores 2026; ADeLe (Zhou et al. 2025). Full list in `docs/reading_list.md`.
 
+**Pending verification before citing:** Qwen neuron persona atlas site (user-supplied sweep counts and Haiku labelling claims). Check the site methods page and save a dated snapshot before manuscript use. An atlas supplies candidate units; this project supplies task-level failure labels and outcome criteria.
+
 ## 13. Risks
 
 - Dimensions collapse into general skill: publish the null, pivot to fixes.
@@ -207,7 +199,7 @@ The broad version (multi-family stress tests, same score different profile) is t
 
 - Monthly compute budget
 - Closed panel and open frontier model
-- The 2 deep dimensions (after the pilot)
-- The hidden family
+- Which root abilities survive the L1 pilot (Kendall's W across templates)
 - Vault public or private
 - RAMPbench link, if it exists
+- Listed licences still to verify (see `docs/eval_suite.md`)

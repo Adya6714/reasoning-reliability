@@ -4,7 +4,7 @@ Two models with the same score can solve problems in different ways. This projec
 
 ## Status
 
-Design stage. No experiments yet. The code in `src/` is a placeholder until the design is frozen.
+Design stage. No experiments yet. The code in `src/` is a placeholder until the design is frozen. Next: build L1 tests for all 8 root abilities.
 
 ## Plan in one line
 
@@ -14,7 +14,9 @@ Diagnose (measure habits) → predict (failures on a hidden task family) → exp
 
 | File | What it is |
 |---|---|
-| `docs/research_design.md` | The full research design: questions, dimensions, hypotheses, stages, benchmarks, analysis, novelty |
+| `docs/research_design.md` | The full research design: questions, dimensions, hypotheses, stages, analysis, novelty |
+| `docs/eval_suite.md` | Families, selection rules, benchmark review, generator build rules |
+| `docs/root_abilities.md` | 8 root abilities, ladders, profile measures |
 | `docs/roadmap.md` | Phases, weeks and gates |
 | `docs/checklist.md` | What is done and what is next |
 | `docs/decisions.md` | Dated log of every design decision |

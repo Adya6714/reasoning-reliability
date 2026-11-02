@@ -12,27 +12,30 @@ When do language models preserve correct behavior across equivalent task present
 
 Behavioral invariance is the measured construct. Retrieval/computation labels need validation against known exposure and causal evidence. A model's rationale is not ground truth about its internal process.
 
+**Current state:** design complete, building L1 tests next. See [[01_Program_State]].
+
 ## Key docs
 
-- [[../docs/handoff_v2]] — current handoff (add when Block B lands)
-- [[../docs/research_design]] — probes, sample sizes, repeats, analysis
-- [[../docs/benchmark_policy]] — source tiers and contamination controls
-- [[../docs/model_selection]] — behavioral and mechanistic roster
-- [[../docs/roadmap]] — phases and stop/go criteria
-- [[../docs/novelty_and_reliability]] — behavioral diagnosis vs interpretability routes
-- [[../docs/checklist]] — run checklist (add when present)
-- [[../docs/decisions]] — decision log (add when present)
-- [[../configs/models.yaml]] — model roster; pin revisions before running
+- [[../docs/research_design]] : probes, sample sizes, repeats, analysis, novelty
+- [[../docs/eval_suite]] : families, selection rules, benchmark review, generator rules
+- [[../docs/root_abilities]] : 8 root abilities, ladders, profile measures
+- [[../docs/model_selection]] : behavioral and mechanistic roster
+- [[../docs/roadmap]] : phases and stop/go criteria
+- [[../docs/checklist]] : run checklist
+- [[../docs/decisions]] : decision log
+- [[../docs/reading_list]] : papers to read
+- [[../configs/models.yaml]] : model roster; pin revisions before running
+- [[../configs/study.yaml]] : study settings
 
 Models note: pin revisions before any run. Candidate recommendations were checked against official model cards on 2026-10-27.
 
 ## Working notes
 
-- [[01_Program_State]] — confirmed decisions, open questions, gates
-- [[07_Paper_Landscape]] — papers grouped by dimension
-- [[08_X_Link_Review]] — older annotated X links (new clips go in `clips/`)
-- [[09_Test_Menu_and_Selection]] — candidate tests and scoring table
-- [[11_Reading_Queue]] — deduplicated inventory and staged one-paper-at-a-time review order
+- [[01_Program_State]] : confirmed decisions, open questions, gates
+- [[07_Paper_Landscape]] : papers grouped by dimension
+- [[08_X_Link_Review]] : older annotated X links (new clips go in `clips/`)
+- [[09_Test_Menu_and_Selection]] : candidate tests, scoring table, 17 failure types
+- [[11_Reading_Queue]] : deduplicated inventory and staged one-paper-at-a-time review order
 
 ## Closest to my work
 

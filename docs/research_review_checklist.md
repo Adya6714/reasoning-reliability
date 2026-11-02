@@ -238,7 +238,7 @@ Purpose: turn "what fails" into "why it fails", so the fix can target the cause.
 
 ## I. Repo housekeeping before freezing
 
-- [ ] Delete `docs/benchmark_policy.md`, `docs/novelty_and_reliability.md`, `docs/references.md` (content now in `research_design.md` and `reading_list.md`).
+- [x] Delete `docs/benchmark_policy.md`, `docs/novelty_and_reliability.md`, `docs/references.md` (content now in `docs/eval_suite.md`, `docs/research_design.md` and `docs/reading_list.md`).
 - [ ] Decide whether the vault stays public (hidden-family details must never be public).
 - [ ] v1: "under revision" note, erratum, archive (`docs/v1_audit.md`).
 - [ ] Pre-registration folder `prereg/` created with the frozen main test.
