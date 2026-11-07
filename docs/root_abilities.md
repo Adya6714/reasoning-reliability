@@ -1,9 +1,12 @@
 # Root abilities and ladders
 
+Taxonomy and ladder diagrams: `docs/flowcharts.md` (sections 4 and 5).
+
 - The 17 failure types in `research-vault/09_Test_Menu_and_Selection.md` collapse into 8 root abilities (break a 12th-grade skill into 8th-grade skills).
-- Each ability gets a 4-level ladder. A model's profile = its breaking point on each ladder (for example state horizon, lookahead horizon, hop horizon).
+- Each ability gets a 4-level ladder. A model's profile = its breaking point on each ladder (difficulty at about 50% accuracy: state horizon, lookahead horizon, hop horizon, and so on).
 - v1 probes covered only 3 of the 8.
 - Mapping below is a DRAFT; check it against the 17-type table and flag mismatches.
+- These are **candidate constructs**, not eight scientifically established independent faculties. R1 and R8 may correlate; R2 and R6 may overlap (self-check needs metacognition); R5 may mix familiarity, retrieval, structure and revision. Bifactor analysis tests whether they are distinguishable.
 
 | ID | Ability (plain) | Failure types it explains (numbers from 09) | Human theory | L1 atomic example | Profile measure |
 |---|---|---|---|---|---|
@@ -23,8 +26,24 @@
 - L3 mixed: add distractors and familiar pulls.
 - L4 real world: inside a full task family, including the hidden family.
 
+### Example: R1 state tracking
+
+- **L1:** three cups; coin under cup 1; swap cups 1 and 2; where is the coin?
+- **L2:** track 10 objects across 20 swaps; report final positions.
+- **L3:** multiple entities, interleaved unrelated events, misleading intermediate values.
+- **L4:** hundreds of updates inside a larger task (changing requirements, tool outputs, compound goals).
+
+Same idea for other abilities: increase lookahead depth (R4), hops (R8), or steps between rule statement and application (R3).
+
+## Breaking points
+
+- Sweep difficulty; estimate the level where accuracy is about 50%.
+- Example (illustrative only, not experimental data): state horizon ≈ 20 updates, lookahead ≈ 5 steps, hop horizon ≈ 4.
+- That set of horizons is the behavioural profile: more informative than a single accuracy score.
+
 ## Rules
 
 - Each ability needs 4 to 6 templates across at least 2 families.
 - Keep an ability only if model rankings agree across templates (Kendall's W for 3+ templates).
-- Next step: build L1 tests for all 8, run on the pilot roster.
+- First demo (proposed): deepen R1 (state loss) and R2 looping path end-to-end; still build L1 coverage for all 8 on the pilot roster.
+- Next step: Stage 0 frontier check on L1 to L3; then L1 tests for all 8 (priority on first-demo abilities).

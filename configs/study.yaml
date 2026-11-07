@@ -1,11 +1,20 @@
 # Study settings. Source of truth: docs/research_design.md, docs/eval_suite.md, docs/root_abilities.md.
 study:
-  id: rr_v2
+  id: rr_v3
   status: design
+  direction_date: 2026-11-04
 
   primary_question: >-
+    For a specific reasoning failure, can we measure where a model breaks,
+    find an internal signal that predicts the failure before it happens,
+    and use that signal for a targeted fix that beats generic fixes at
+    equal cost, as a pipeline that runs on any new open model?
+
+  supporting_prediction_question: >-
     Do process measures predict specific failures on an unseen task family
     beyond overall ability, difficulty, domain and a knowledge-skill profile?
+
+  pipeline: [frontier_check, measure, predict, localize, fix_verify, generalize, front_end]
 
   baselines:
     baseline_1: overall ability
@@ -17,8 +26,13 @@ study:
   cross_validation: by_family
 
   gating_rule: >-
-    stages 2 to 4 gate on RQ1 (reliable behavioural contrast), not RQ3;
-    hidden-family result is a reported checkpoint before Phase 2
+    stages after measurement gate on RQ1 (reliable behavioural contrast), not RQ3;
+    hidden-family result is a reported checkpoint; Stage 0 frontier check first
+
+  first_demo:
+    proposed_failures: [state_loss, looping]
+    status: proposed_not_frozen
+    note: end-to-end measure to localize to fix to verify; not all 8 abilities equally
 
   dimensions:
     status: root abilities with 4-level ladders; see docs/root_abilities.md
@@ -34,6 +48,8 @@ study:
       - C_code_execution_output_prediction
       - D_maths_word_problems_with_twins
       - E_logic_and_rule_worlds
+    proposed_profiling:
+      - G_long_horizon_memory   # multi-session changing facts; not finalized
     hidden_family: deterministic tool-use sandbox (seeds in data/private/)
     minimum_profiling_families: 5
 
@@ -69,6 +85,10 @@ study:
   simulations:
     model_counts: [6, 8, 12, 20, 30]
     nulls: [zero_specific_factors, format_template_noise]
+    notes:
+      - match item difficulty across abilities
+      - use real pilot ability spread
+      - target roughly 12 or more relatively independent models for recovery
 
   harness_check:
     stat: kendall_tau
@@ -89,11 +109,19 @@ study:
     intervals: cluster bootstrap over templates
     multiple_testing: Holm
     primary_contrasts: few, pre-registered; the rest exploratory
+    sensitivity:
+      - random effect per model family in model-item regression
+      - also report B3 vs B2 with one variant per family
 
   instruction_drift:
     levels: [none, show_working, final_answer_only]
     crossed_with: thinking_on_off
-    note: own pre-registered contrast
+    note: own pre-registered contrast; reference effect size for later variants
+
+  stage0_frontier_check:
+    ladders: [L1, L2, L3]
+    models_note: Opus, Fable, Astra, GLM and peers; pin exact strings on run day
+    gate: frontier models break somewhere; if not, extend ladders first
 
   stage3_pass_bars:
     probes: at least +0.05 AUROC over question-only and text-only baselines, CI excluding 0
@@ -105,5 +133,16 @@ study:
     strong: generic check-your-work prompting, and RL on pooled generators
     mismatch_control: fix meant for a different weakness
     always_measure: what each fix breaks
+    also_measure: reliability per unit of cost
+
+  compute_allocation:
+    status: product_research_direction
+    method: risk_based_token_budgeting
+    inputs: [model_breaking_points, task_demands, live_uncertainty, activation_probes]
+    demand_tagger: open_challenge
+
+  reliability_front_end:
+    capabilities: [query_rewriting, runtime_monitoring, adaptive_compute]
+    calibration_tasks: about 20 to 50 real customer tasks
 
   preregistration_required_before_confirmatory_runs: true

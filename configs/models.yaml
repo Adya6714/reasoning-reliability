@@ -8,7 +8,7 @@ roster:
       model: OLMo 3 7B
       checkpoints: [base, sft, dpo, instruct, think]
       contrast: which training stage creates fragility; real exposure counts from public data (Dolma 3)
-      used_for: [behaviour, exposure, mechanism]
+      used_for: [behaviour, exposure, mechanism, fix]
       hardware: L4 or A100
       revision: PIN ON RUN DAY
 
@@ -53,22 +53,49 @@ roster:
       hardware: L4
       revision: PIN ON RUN DAY
 
-  open_frontier_api:
-    - id: open_frontier
-      model: TBD, one of DeepSeek V4.x, GLM-5.x, Kimi K3
-      contrast: does the effect hold at very large scale
-      used_for: [behaviour]
-      hardware: API
+  # GLM is open-weight frontier-by-performance (local or API). DeepSeek/Kimi are API
+  # candidates. Target about 3 to 4 for Stage 0 and behavioural checks.
+  open_frontier:
+    - id: glm_5_x
+      model: GLM-5.x
+      access: open_weight_or_api
+      contrast: frontier scale with open weights
+      used_for: [behaviour, frontier_sanity_check]
+      revision: PIN MODEL STRING AND DATE
+    - id: deepseek_v4_x
+      model: DeepSeek V4.x
+      access: api
+      contrast: frontier scale
+      used_for: [behaviour, frontier_sanity_check]
+      revision: PIN MODEL STRING AND DATE
+    - id: kimi_k3
+      model: Kimi K3
+      access: api
+      contrast: frontier scale
+      used_for: [behaviour, frontier_sanity_check]
       revision: PIN MODEL STRING AND DATE
 
+  # Behaviour and Stage 0 only. Exact panel size open (about 3 to 4 affordable).
+  # Examples from Nov 4 discussion; pin exact strings on run day.
   closed_panel:
-    - id: closed_a
-      model: TBD, frontier model from lab A
-      used_for: [behaviour]
+    - id: opus
+      model: Claude Opus (current frontier; e.g. Opus 5.5 class)
+      used_for: [behaviour, frontier_sanity_check]
       revision: PIN MODEL STRING AND DATE
-    - id: closed_b
-      model: TBD, frontier model from lab B
-      used_for: [behaviour]
+    - id: fable
+      model: Claude Fable (e.g. Fable 5.1 class)
+      used_for: [behaviour, frontier_sanity_check]
+      revision: PIN MODEL STRING AND DATE
+    - id: gpt_astra
+      model: GPT-6 Astra class (or current OpenAI frontier)
+      used_for: [behaviour, frontier_sanity_check]
+      revision: PIN MODEL STRING AND DATE
+      note: >-
+        Discussion cites MIT CSAIL weight-edit results as inspiration for
+        looping fixes; numbers not independently verified for this project
+    - id: gemini
+      model: Gemini (specific model TBD)
+      used_for: [behaviour, frontier_sanity_check]
       revision: PIN MODEL STRING AND DATE
 
   non_llm_baseline:
@@ -96,7 +123,10 @@ dropped:
     reason: no matching interp tools (Gemma Scope 2 targets Gemma 3)
 
 rules:
+  - stage_0_frontier_check_mandatory: true
+  - if_frontier_models_dont_break: extend_ladders_before_building_instrument
   - closed models are behaviour-only; never used for exposure or mechanism claims
   - record model ID, revision hash, tokenizer, chat template, engine, precision, release date
   - thinking on/off is a planned factor, never a hidden setting
   - tune difficulty so each model lands at about 30 to 80 percent accuracy
+  - bifactor recovery simulations target roughly 12 or more relatively independent models

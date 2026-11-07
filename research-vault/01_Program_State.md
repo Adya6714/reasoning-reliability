@@ -1,33 +1,42 @@
 # Program state
 
-Updated: 2026-10-30
+Updated: 2026-11-04 (v3)
 
 ## Current state
 
-**Design complete. Building L1 tests next.**
+**v3 design written into `docs/`. Stage 0 frontier check and L1 tests next.**
 
-See `docs/root_abilities.md` (8 abilities, ladders) and `docs/eval_suite.md` (5 profiling families + hidden sandbox).
+Pipeline: MEASURE → LOCALIZE → FIX → VERIFY → GENERALIZE. Prediction on the hidden sandbox is a supporting checkpoint. See `docs/research_design.md`, `docs/root_abilities.md`, `docs/eval_suite.md`, `discussion.md`.
 
 ## Confirmed design choices
 
 - Primary evidence comes from fresh generated instances with private test seeds and executable ground truth.
 - Public datasets are secondary anchors because exposure is uncertain.
 - PostTrainBench evaluates autonomous post-training agents; it is not the main behavioral benchmark.
-- Dimension spine: 8 root abilities with 4-level ladders; profile = ladder breaking points.
-- Eval suite: families A to E for profiling; hidden family F is a deterministic tool-use sandbox (`data/private/` seeds).
+- Dimension spine: 8 root abilities with 4-level ladders; profile = ladder breaking points (draft mapping).
+- Eval suite: families A to E for profiling; hidden family F is a deterministic tool-use sandbox (`data/private/` seeds). Family G (long-horizon memory) proposed, not finalized.
 - Maths family uses own templates on GSM8K (MIT); do not derive from GSM-Symbolic (CC-BY-NC-ND).
 - Factor model: 2PL baseline, bifactor main; power and null simulations before the main run.
 - Repeated runs start at k=5 with pre-registered adaptive expansion.
-- Use three open model families behaviorally and at least one accessible dense checkpoint mechanistically.
+- Stage 0 frontier check is mandatory before trusting the instrument on current models.
+- Stages after measurement gate on RQ1 (reliable contrast), not RQ3 (prediction).
+- First demo proposed: state loss and looping end-to-end.
+- Fix-first pilot early; matched / strong / mismatch baselines for targeted fixes.
+- Reliability front-end (rewrite, runtime monitor, adaptive compute) is the product direction; demand tagger is open.
+- Use three open model families behaviorally and at least one accessible dense checkpoint mechanistically; closed/frontier panel for Stage 0 and behaviour only.
 - Analyze independently generated items as the main sampling units; repeated decoding estimates within-item variability.
-- Keep the first study behavioral and predictive. Treat neuron/SAE/transcoder/ICA analysis as a later explanatory phase, compared on the same checkpoint and behavior-linked target.
 - Record training recipe, serving stack, and harness; do not attribute cross-model differences to scale alone.
 - For subjective outcomes, use a defined rubric and human calibration/audit; reserve deterministic verifiers for objectively checkable answers.
 
 ## Open decisions before confirmatory collection
 
+- Which 1 to 2 failure types first (proposed: state loss and looping).
+- Whether Family G becomes a full profiling family.
+- Exact frontier panel strings, count, and API budget.
+- Paper split: one long paper vs series of three.
+- Demand tagger approach.
 - GPU/API budget and what hardware is available.
-- Exact GPU model and VRAM; "I have a GPU" is not enough to establish which checkpoints or activation-capture methods fit locally.
+- Exact GPU model and VRAM for activation capture.
 - Whether behavioral panel is hosted open-weight inference or local inference.
 - The exact immutable model revisions, licenses, and reasoning modes.
 - Pilot-based power simulation and final item counts.
@@ -36,8 +45,11 @@ See `docs/root_abilities.md` (8 abilities, ladders) and `docs/eval_suite.md` (5 
 
 ## Gates
 
-- G0: generator/verifier/transform correctness and frozen run contract.
-- G1: behavioral effects survive floor, parsing, multiple-test, and inference-stack checks.
-- G2: exposure indicators validate against randomized known membership.
-- G3: same-manipulation internal predictor plus controlled causal intervention.
-- G4: post-training/developmental interventions reproduce on private held-out items.
+- G0: Stage 0 frontier check (models break on L1 to L3; else extend ladders).
+- G1: generator/verifier/transform correctness and frozen run contract.
+- G2 (RQ1): behavioural contrast stable above noise. **Gates localize/fix.**
+- G3: hidden-family prediction (RQ3): reported checkpoint, not a hard stop.
+- G4: exposure indicators validate against randomized known membership.
+- G5: localize pass bars (probe +0.05 AUROC; patching 50% from ≤3 layers; steering >95th pct random).
+- G6: targeted fix beats matched, strong, and mismatch on reliability per unit cost.
+- G7: pipeline transfers to a new open model family with minimal manual intervention.

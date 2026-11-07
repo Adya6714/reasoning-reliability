@@ -6,28 +6,37 @@ tags: [research, reasoning-reliability]
 
 # Reasoning Reliability
 
-## Current research question
+## Current research question (v3)
 
-When do language models preserve correct behavior across equivalent task presentations, and which training, inference, or system conditions explain failures?
+For a specific reasoning failure (for example state loss or looping), can we:
 
-Behavioral invariance is the measured construct. Retrieval/computation labels need validation against known exposure and causal evidence. A model's rationale is not ground truth about its internal process.
+1. Measure where any model breaks (MEASURE)
+2. Find an internal signal that predicts the failure before it happens (LOCALIZE)
+3. Use that signal for a targeted fix that beats generic fixes at equal cost (FIX and VERIFY)
+4. As a pipeline that runs on any new open model (GENERALIZE)
 
-**Current state:** design complete, building L1 tests next. See [[01_Program_State]].
+Prediction (profiles on a hidden tool-use sandbox) remains a supporting checkpoint. Mechanistic work is core, not optional.
+
+**Current state:** v3 design written into docs; Stage 0 frontier check and L1 tests next. See [[01_Program_State]].
 
 ## Key docs
 
-- [[../docs/research_design]] : probes, sample sizes, repeats, analysis, novelty
+- [[../docs/research_design]] : canonical v3 design (pipeline, RQs, stages, product)
+- [[../docs/flowcharts]] : Mermaid diagrams for the full programme
+- [[../research_design]] : short mental-model overview
+- [[../discussion]] : Nov 4 discussion log
 - [[../docs/eval_suite]] : families, selection rules, benchmark review, generator rules
 - [[../docs/root_abilities]] : 8 root abilities, ladders, profile measures
-- [[../docs/model_selection]] : behavioral and mechanistic roster
-- [[../docs/roadmap]] : phases and stop/go criteria
+- [[../docs/model_selection]] : behavioural and mechanistic roster
+- [[../docs/roadmap]] : stages and gates
 - [[../docs/checklist]] : run checklist
 - [[../docs/decisions]] : decision log
 - [[../docs/reading_list]] : papers to read
 - [[../configs/models.yaml]] : model roster; pin revisions before running
 - [[../configs/study.yaml]] : study settings
+- [[../site/index]] : interactive site (includes flowchart viewer)
 
-Models note: pin revisions before any run. Candidate recommendations were checked against official model cards on 2026-10-27.
+Models note: pin revisions before any run. Candidate recommendations were checked against official model cards on 2026-10-27; frontier panel strings still TBD.
 
 ## Working notes
 

@@ -8,3 +8,6 @@ data/raw/
 outputs/
 *.sqlite3
 .DS_Store
+site/node_modules/
+site/dist/
+site/.vite/

@@ -44,3 +44,16 @@ One line per decision: date, decision, reason. Newest at the bottom. `docs/resea
 | 2026-10-30 | Stage 3 pass bars fixed (probe +0.05 AUROC, patching 50% from <=3 layers, steering > 95th pct random) | Pre-registered success criteria |
 | 2026-10-30 | Stage 4 uses matched baseline, strong baseline and mismatch control | Shows targeting matters |
 | 2026-10-30 | Repeated runs start at k=5 with pre-registered adaptive expansion (replaces k=3) | Better per-item estimates near threshold |
+| 2026-11-04 | Headline moves to diagnose → localize → fix → verify → generalize; mech interp is central | Nov 4 discussion; prediction becomes supporting checkpoint |
+| 2026-11-04 | Stage 0 frontier sanity check mandatory (L1 to L3 on current frontier) | Confirm ladders still break models people use |
+| 2026-11-04 | Stages after measurement still gate on RQ1, not RQ3 | Keep localize/fix useful if prediction is null |
+| 2026-11-04 | First demo narrowed to state loss and looping (proposed) | Focused end-to-end story; not all 17/8 at once |
+| 2026-11-04 | Reliability front-end: query rewrite + runtime monitor + adaptive compute | Product direction; research supplies per-model diagnosis |
+| 2026-11-04 | Long-horizon memory (Family G) proposed, not finalized | Multi-session changing facts; R1, R3, R7 |
+| 2026-11-04 | Closed/frontier panel expanded (Opus, Fable, Astra-class, Gemini examples) | Stage 0 + deployment relevance; exact strings TBD |
+| 2026-11-04 | GLM treated as open-weight frontier (not API-only) | Performance, not access mode, defines frontier here |
+| 2026-11-04 | Fix-first pilot mandatory early | If generic fixes solve almost everything, pivot |
+| 2026-11-04 | Instruction drift is reference effect size (3 levels × thinking on/off) | Yardstick for later variants |
+| 2026-11-04 | Demand tagger marked open challenge | Needed for load-rating product claim |
+| 2026-11-04 | Docs and configs updated to v3; root `research_design.md` is overview only | Absorb Nov 4 mental model into `docs/` |
+| 2026-11-07 | Clean Mermaid set in `docs/flowcharts.md`; raw paste kept as `flow_chart.md` pointer | Flowcharts for docs, README, and site |

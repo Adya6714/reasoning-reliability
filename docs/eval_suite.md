@@ -1,9 +1,12 @@
 # Eval suite
 
+Diagrams for families, item generation, and generator reuse: `docs/flowcharts.md` (section 6).
+
 ## Purpose
 
 - One set of generators with exact solvers, used five times: test bank (behaviour), hidden family (prediction), controlled training data (causes), labelled examples (mechanism), RL environments and SFT data (fixes).
 - The suite is a named contribution of Paper 1.
+- In v3, the suite is also the failure generator for localize → fix → verify (not only the prediction headline).
 
 ## Selection rules (every family must pass all six)
 
@@ -16,7 +19,7 @@
 
 - Contamination is a variable, not the enemy: pair famous items with fresh twins of identical structure and solver-verified gold.
 
-## Families (5 profiling + 1 hidden)
+## Families (5 profiling + 1 hidden; G proposed)
 
 | Family | Score (of 18) | Main root abilities | Sources |
 |---|---:|---|---|
@@ -26,14 +29,31 @@
 | D Maths word problems with twins | 15 | R5, R8 | own templates on GSM8K (MIT) |
 | E Logic and rule worlds | 15 | R3, R5 | Reasoning Gym wrappers, own changed-rule worlds |
 | F HIDDEN: deterministic tool-use sandbox | 15 | same abilities, different surface | own sandbox; seeds in `data/private/` |
+| G Long-horizon memory (proposed) | TBD | R1, R3, R7 | own multi-session generator; not finalized |
 
-- Headline test: do profiles from cheap puzzle, code and maths families predict failures in the agent sandbox?
+- Headline transfer test: do profiles from cheap puzzle, code and maths families predict failures in the agent sandbox?
+- Family G: multi-session tasks where facts change over time. Status: candidate from Nov 4 discussion; not yet a full suite member.
+
+## Frontier difficulty extensions
+
+Every ladder extends until frontier models break. If Opus, Fable, Astra or GLM do not break, the ladder is too short.
+
+| Family | How it scales for frontier |
+|---|---|
+| A Planning | 20 to 40+ step plans, Mystery-style renamed worlds, deeper traps |
+| B State tracking | Hundreds of updates, interleaved entities, multi-part goals |
+| C Code execution | Long generated programs, nested loops, mutation-heavy state |
+| D Maths twins | Answer-changing twins, deep composition |
+| E Logic/rules | Changed rules vs famous puzzles, many rules over long contexts |
+| G Long-horizon | Multi-session tasks, many changing facts over time |
+| F Hidden sandbox | Scales with deterministic agent task length and tool depth |
 
 ## Item plan
 
 - About 300 structural items per family: 50 famous, 50 twins, 200 fresh.
 - About 5 surface versions per item.
 - 40/60 split: development vs confirmation. Confirmation set is not opened until the design is frozen.
+- Start every item at k=5; add samples only where the interval straddles the decision threshold (pre-registered adaptive rule).
 - 60 items per family run at k=20 for per-problem claims.
 
 ## Benchmark review findings
@@ -48,6 +68,7 @@
 | tau2 | Near-saturated; LLM user simulator adds judge noise | Not used; own deterministic sandbox instead |
 | IFEval / IFBench | IFEval saturated; IFBench top about 81% | Rule tests built into own families |
 | SWE-bench | Results dominated by harness | Not used |
+| PostTrainBench | Measures agents doing post-training, not reasoning | Context for Stage 5 only; not a profiling family |
 
 - Licences still to verify: PlanBench, tau2/tau3, Lost in Conversation, Math-Perturb, Simmer, DyVal, GSM-Infinite, NPHardEval.
 

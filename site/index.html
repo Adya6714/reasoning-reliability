@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reasoning Reliability | Adya Srivastava</title>
+<meta name="description" content="Research programme: measure where language models break at reasoning, localize the failure inside, and fix it better than generic interventions." />
+<meta property="og:title" content="Can we diagnose a reasoning failure, find it inside the model, and fix it?" />
+<meta property="og:description" content="Interactive research site for the Reasoning Reliability programme (v3)." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231B4D8F'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<link rel="stylesheet" href="css/base.css" />
+<link rel="stylesheet" href="css/pipeline.css" />
+<link rel="stylesheet" href="css/content.css" />
+<link rel="stylesheet" href="css/rr.css" />
+</head>
+<body>
+<nav class="rail" id="rail" aria-label="Sections"></nav>
+<div id="tip" role="tooltip" aria-label="Tip" hidden></div>
+
+<main>
+
+<section class="panel" id="overview" data-rail="Overview">
+  <svg id="lattice" aria-hidden="true"></svg>
+  <div class="inner reveal">
+    <p class="kicker">Reasoning Reliability · research programme</p>
+    <h1>Can we find how a model will fail, see it inside the model, and fix it better than a generic patch?</h1>
+    <p class="hero-author">Adya Srivastava, BITS Pilani. Design stage (v3, Nov 2026). Sister project: <a href="https://adya6714.github.io/retrieval-vs-computation/" target="_blank" rel="noopener">Same Score, Different Process</a>.</p>
+    <p class="hero-mission">Benchmarks collapse models into one accuracy number. Two models can score the same and still break in different ways: one loses state, another plans poorly, another retrieves the wrong familiar answer. This programme builds a repeatable pipeline: measure breaking points, localize an internal signal, intervene, and verify against strong baselines.</p>
+    <div class="epistemic">
+      <p><strong>Why this is hard.</strong> Failures look random until you control difficulty and labels. Looking inside without a labelled failure is guessing.</p>
+      <p><strong>What exists today.</strong> Perturbation suites, skill profiles, agent taxonomies, and mech-interp tools each cover one slice. Few connect the same labelled failure from behaviour to internals to a targeted fix.</p>
+      <p><strong>What this adds.</strong> One generator stack with exact solvers, eight candidate root abilities with ladders, and a diagnose → localize → fix → verify loop meant to run on new open models.</p>
+    </div>
+    <p class="status-strip">Status, November 2026: design written into the repo. Generators, verifiers, and new experiments are not started. Stage 0 is a frontier ladder check. Interactive demos on this page are illustrative, not measured results. <a href="#ask">How you can help ↓</a></p>
+    <div class="hero-meta">
+      <a href="https://github.com/Adya6714/reasoning-reliability" target="_blank" rel="noopener">Code</a>
+      <a href="https://github.com/Adya6714/reasoning-reliability/blob/main/docs/research_design.md" target="_blank" rel="noopener">Design doc</a>
+      <a href="#pipeline">Play the pipeline</a>
+      <a href="#charts">Flowcharts</a>
+      <a href="#ask">Contact</a>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="problem" data-rail="The problem">
+  <div class="inner reveal">
+    <p class="kicker">The problem in 30 seconds</p>
+    <h2>Same score, different breaking points.</h2>
+    <p class="lede">Imagine two models at 85% accuracy. One keeps state but cannot look ahead. The other plans well but loses track after a few updates. Deployed as agents, they fail on different jobs. A single score does not say which.</p>
+    <p class="lede">Pick a weakness profile and press Play. The bars are a teaching demo of how two equal-accuracy models can still differ. Not experimental data.</p>
+
+    <div class="lab-shell">
+      <div class="demo-top">
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+          <label for="profile-model" style="font-size:.85rem;color:var(--muted)">Profile</label>
+          <select class="model-select" id="profile-model">
+            <option value="A">Model A · strong state, weak plan</option>
+            <option value="B">Model B · strong plan, weak state</option>
+          </select>
+        </div>
+        <button class="toggle-btn primary" id="profile-play" type="button">Play horizons</button>
+      </div>
+      <div class="demo-body">
+        <div class="race-row"><span>State</span><div class="race-track"><div class="race-fill" id="bar-state"></div></div><span class="stat" id="val-state">0</span></div>
+        <div class="race-row"><span>Plan</span><div class="race-track"><div class="race-fill" id="bar-plan"></div></div><span class="stat" id="val-plan">0</span></div>
+        <div class="race-row"><span>Compose</span><div class="race-track"><div class="race-fill" id="bar-compose"></div></div><span class="stat" id="val-compose">0</span></div>
+        <p class="demo-note" id="profile-caption">Illustrative horizons only. Real profiles come from L1–L4 ladders after the instrument is built.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="pipeline" data-rail="Pipeline">
+  <div class="inner reveal">
+    <p class="kicker">How the work fits together</p>
+    <h2>Follow one failure through the full loop.</h2>
+    <p class="lede">Press Play, or use the arrow keys after focusing the explorer. Stages match the v3 design: measure, localize, fix, verify, generalize, then the reliability front-end.</p>
+
+    <div class="pipe-shell" id="pipe">
+      <div class="pipe-top">
+        <div class="pipe-items">
+          <span class="label">Demo failure</span>
+          <button type="button" class="pipe-chip active" data-fail="state">State loss</button>
+          <button type="button" class="pipe-chip" data-fail="loop">Looping</button>
+        </div>
+        <div class="pipe-ctrls">
+          <button type="button" class="pipe-ctrl" id="pipe-prev">Prev</button>
+          <button type="button" class="pipe-ctrl primary" id="pipe-play">Play</button>
+          <button type="button" class="pipe-ctrl" id="pipe-next">Next</button>
+        </div>
+      </div>
+      <div class="pipe-body">
+        <div class="pipe-rail" id="pipe-rail" aria-label="Stages"></div>
+        <div class="pipe-main">
+          <div class="pipe-stage-head">
+            <div>
+              <div class="pipe-stage-kicker" id="pipe-kicker">Stage 01</div>
+              <h3 id="pipe-title">Measure</h3>
+            </div>
+            <div class="pipe-progress"><span id="pipe-step">1</span> / 6</div>
+          </div>
+          <p id="pipe-blurb" class="lede" style="max-width:none;margin:0 0 .85rem"></p>
+          <ul id="pipe-beats" style="margin:0;padding-left:1.1rem;color:var(--muted)"></ul>
+          <svg class="pipe-canvas" id="pipe-canvas" viewBox="0 0 640 160" aria-hidden="true"></svg>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Prediction on a hidden tool-use sandbox stays as a supporting checkpoint. Later stages gate on a reliable behavioural contrast (RQ1), not on beating B2.</p>
+  </div>
+</section>
+
+<section class="panel" id="lab" data-rail="Breaking points">
+  <div class="inner reveal">
+    <p class="kicker">Measurement instrument</p>
+    <h2>Watch a horizon appear as difficulty rises.</h2>
+    <p class="lede">Each root ability gets an L1–L4 ladder. The breaking point is the difficulty where accuracy crosses about 50%. Drag toughness, then play the sweep. Curve is hypothetical.</p>
+
+    <div class="lab-shell">
+      <div class="demo-top">
+        <button class="toggle-btn primary" id="lab-play" type="button">Pause sweep</button>
+        <label style="font-size:.82rem;color:var(--muted);display:flex;gap:.55rem;align-items:center">
+          Toughness
+          <input type="range" id="lab-tough" min="8" max="26" value="18" />
+        </label>
+        <span class="stat" id="lab-readout">—</span>
+      </div>
+      <div class="demo-body">
+        <svg class="lab-svg" id="lab-svg" viewBox="0 0 640 280" role="img" aria-label="Illustrative accuracy against difficulty"></svg>
+        <p class="demo-note">Not a measured result. Used to explain the profile idea before generators exist.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="state" data-rail="State demo">
+  <div class="inner reveal">
+    <p class="kicker">Root ability R1</p>
+    <h2>Play the coin-under-cups test.</h2>
+    <p class="lede">This is the L1 idea for state tracking. Watch the swaps, then tap a cup. Models that lose state fail as updates pile up. First demo candidates: state loss and looping.</p>
+
+    <div class="lab-shell">
+      <div class="demo-top">
+        <button class="toggle-btn primary" id="cups-play" type="button">Play swaps</button>
+        <button class="toggle-btn" id="cups-reset" type="button">Reset</button>
+        <span class="stat" id="cups-status">Coin starts under A</span>
+      </div>
+      <div class="demo-body">
+        <div class="cups" id="cups"></div>
+        <p class="demo-note">Interaction only. Gold answers in the real suite are solver-checked.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="abilities" data-rail="Abilities">
+  <div class="inner reveal">
+    <p class="kicker">Eight candidate skills</p>
+    <h2>A draft spine from 17 failure types.</h2>
+    <p class="lede">Click an ability or play a tour. Mapping is a draft. Bifactor analysis must test whether these are distinguishable, not just named.</p>
+
+    <div class="ability-shell">
+      <div class="demo-top">
+        <button class="toggle-btn primary" id="ability-play" type="button">Play profile tour</button>
+        <span class="stat" id="ability-measure">State horizon</span>
+      </div>
+      <div class="demo-body" style="display:grid;grid-template-columns:1fr 1.1fr;gap:1rem">
+        <svg class="radar-svg" id="radar" viewBox="0 0 320 300" aria-hidden="true"></svg>
+        <div>
+          <div class="ability-grid" id="ability-grid"></div>
+          <div id="ability-detail"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="predict" data-rail="Prediction">
+  <div class="inner reveal">
+    <p class="kicker">Supporting checkpoint</p>
+    <h2>Race B1, B2, and B3 on a hidden family.</h2>
+    <p class="lede">B2 includes an ADeLe-style skill profile. B3 adds process profiles from the ladders. Claim only if B3 clearly beats B2 after pre-registration. Bars below are illustrative AUCs for the demo.</p>
+
+    <div class="lab-shell">
+      <div class="demo-top">
+        <button class="toggle-btn primary" id="race-play" type="button">Play race</button>
+        <span class="stat" id="race-status">Ready</span>
+      </div>
+      <div class="demo-body">
+        <div class="race-row"><span>B1</span><div class="race-track"><div class="race-fill" id="race-b1"></div></div><span class="stat" id="race-b1v">0</span></div>
+        <div class="race-row"><span>B2</span><div class="race-track"><div class="race-fill" id="race-b2"></div></div><span class="stat" id="race-b2v">0</span></div>
+        <div class="race-row"><span>B3</span><div class="race-track"><div class="race-fill b3" id="race-b3"></div></div><span class="stat" id="race-b3v">0</span></div>
+        <p class="demo-note">Hidden family: deterministic tool-use sandbox. Seeds stay private.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="frontend" data-rail="Front-end">
+  <div class="inner reveal">
+    <p class="kicker">Product direction</p>
+    <h2>Play the reliability front-end path.</h2>
+    <p class="lede">Profile a model once. Estimate task demands. Rewrite, monitor, and allocate compute where risk is high. The demand tagger is still an open engineering piece.</p>
+
+    <div class="flow-shell">
+      <div class="demo-top">
+        <button class="toggle-btn primary" id="flow-play" type="button">Pause flow</button>
+        <button class="toggle-btn" id="flow-step" type="button">Step</button>
+        <span class="stat" id="flow-status">1 / 7</span>
+      </div>
+      <div class="demo-body">
+        <div class="flow-steps" id="flow-steps"></div>
+        <div class="flow-card" id="flow-card"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="charts" data-rail="Flowcharts">
+  <div class="inner reveal">
+    <p class="kicker">Programme maps</p>
+    <h2>Browse the research flowcharts.</h2>
+    <p class="lede">Same diagrams as <code>docs/flowcharts.md</code>. Pick a chart. Proposed design only, not experimental results.</p>
+    <div class="lab-shell">
+      <div class="demo-top">
+        <div class="flow-steps" id="chart-tabs" style="margin:0"></div>
+        <button class="toggle-btn" id="chart-prev" type="button">Prev</button>
+        <button class="toggle-btn primary" id="chart-next" type="button">Next</button>
+      </div>
+      <div class="demo-body">
+        <h3 id="chart-title" style="margin:0 0 .75rem;font-family:var(--serif)"></h3>
+        <p id="chart-note" class="demo-note" style="margin-top:0"></p>
+        <div class="chart-frame" id="chart-frame">
+          <pre class="mermaid" id="chart-mermaid"></pre>
+        </div>
+        <p class="caption" style="margin-top:.85rem">Full set in the repo: <a href="https://github.com/Adya6714/reasoning-reliability/blob/main/docs/flowcharts.md" target="_blank" rel="noopener">docs/flowcharts.md</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="suite" data-rail="Eval suite">
+  <div class="inner reveal">
+    <p class="kicker">Shared generators</p>
+    <h2>Five profiling families plus a hidden sandbox.</h2>
+    <p class="lede">One set of generators with exact solvers feeds behaviour tests, prediction, controlled exposure, interp labels, and RL/SFT. Family G (long-horizon memory) is proposed, not finalized.</p>
+    <div class="suite-grid">
+      <div class="suite-card"><div class="sid">Family A</div><h3>Planning and greedy traps</h3><p>R4, R1 · PlanBench-style + own traps</p></div>
+      <div class="suite-card"><div class="sid">Family B</div><h3>Long state tracking</h3><p>R1, R2 · own generator</p></div>
+      <div class="suite-card"><div class="sid">Family C</div><h3>Code execution</h3><p>R1, R8 · own programs for gold</p></div>
+      <div class="suite-card"><div class="sid">Family D</div><h3>Maths with twins</h3><p>R5, R8 · GSM8K templates (MIT)</p></div>
+      <div class="suite-card"><div class="sid">Family E</div><h3>Logic and rule worlds</h3><p>R3, R5 · Reasoning Gym + own</p></div>
+      <div class="suite-card"><div class="sid">Family F · hidden</div><h3>Tool-use sandbox</h3><p>Transfer test · private seeds</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="roadmap" data-rail="Roadmap">
+  <div class="inner reveal">
+    <p class="kicker">What happens next</p>
+    <h2>Stage 0 first, then the instrument.</h2>
+    <div class="epistemic">
+      <p><strong>0. Frontier check.</strong> Run L1–L3 ladders on current frontier models. If they do not break, extend the ladders.</p>
+      <p><strong>1. Measure.</strong> Generators, verifiers, QA, noise floor, profiles. Gates later work on RQ1.</p>
+      <p><strong>2. Predict.</strong> Hidden-family race. Reported checkpoint, not a hard stop.</p>
+      <p><strong>3–5. Localize, fix, verify, generalize.</strong> Probe pass bars are pre-registered. Targeted fix must beat matched, strong, and mismatch controls.</p>
+    </div>
+    <p class="caption">Full design: <a href="https://github.com/Adya6714/reasoning-reliability/blob/main/docs/research_design.md" target="_blank" rel="noopener">docs/research_design.md</a>. Flowcharts: <a href="https://github.com/Adya6714/reasoning-reliability/blob/main/docs/flowcharts.md" target="_blank" rel="noopener">docs/flowcharts.md</a>. Eval suite: <a href="https://github.com/Adya6714/reasoning-reliability/blob/main/docs/eval_suite.md" target="_blank" rel="noopener">docs/eval_suite.md</a>.</p>
+  </div>
+</section>
+
+<section class="panel" id="ask" data-rail="Get involved">
+  <div class="inner reveal">
+    <p class="kicker">Get involved</p>
+    <h2>Compute, critique, and collaboration.</h2>
+    <p class="lede">This is design-stage work. Critical feedback on the causal chain (failure → ability → experiment → internal signal → intervention → control) is especially useful.</p>
+    <div class="epistemic">
+      <p><strong>Need.</strong> GPU time for Stage 0 and the first ladders; mentors in measurement, mech interp, or agent reliability.</p>
+      <p><strong>Offer.</strong> An open eval suite and a documented pipeline others can rerun on new models.</p>
+      <p><strong>Contact.</strong> Open an issue on the repo, or reply on the sister project site.</p>
+    </div>
+    <div class="hero-meta">
+      <a href="https://github.com/Adya6714/reasoning-reliability/issues" target="_blank" rel="noopener">GitHub issues</a>
+      <a href="https://github.com/Adya6714/reasoning-reliability" target="_blank" rel="noopener">Repository</a>
+      <a href="https://adya6714.github.io/retrieval-vs-computation/" target="_blank" rel="noopener">Sister site</a>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="footer" data-rail="Links">
+  <div class="inner reveal">
+    <p class="kicker">Links</p>
+    <h2>Source of truth is the repo.</h2>
+    <p class="lede">This page explains and plays the design. It does not replace the documents.</p>
+    <ul>
+      <li><a href="https://github.com/Adya6714/reasoning-reliability/blob/main/docs/research_design.md" target="_blank" rel="noopener">Research design (v3)</a></li>
+      <li><a href="https://github.com/Adya6714/reasoning-reliability/blob/main/docs/flowcharts.md" target="_blank" rel="noopener">Flowcharts</a></li>
+      <li><a href="https://github.com/Adya6714/reasoning-reliability/blob/main/docs/root_abilities.md" target="_blank" rel="noopener">Root abilities</a></li>
+      <li><a href="https://github.com/Adya6714/reasoning-reliability/blob/main/docs/eval_suite.md" target="_blank" rel="noopener">Eval suite</a></li>
+      <li><a href="https://github.com/Adya6714/reasoning-reliability/blob/main/discussion.md" target="_blank" rel="noopener">Discussion log</a></li>
+    </ul>
+    <p class="caption">Site visual language adapted from <a href="https://adya6714.github.io/retrieval-vs-computation/" target="_blank" rel="noopener">retrieval-vs-computation</a>. Last updated: 2026-11-07.</p>
+  </div>
+</section>
+
+</main>
+
+<script src="js/charts.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
