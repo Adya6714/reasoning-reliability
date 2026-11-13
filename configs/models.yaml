@@ -1,4 +1,4 @@
-# Model roster. Source of truth: research/docs/research_design.md.
+# Model roster. Source of truth: research/docs/programme_architecture.md + research/docs/research_design.md.
 # Rule: every model must create a contrast; leaderboard rank alone is never a reason.
 # Pin exact Hugging Face revision hashes (or API model strings + date) on run day.
 

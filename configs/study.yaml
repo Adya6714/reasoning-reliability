@@ -1,4 +1,4 @@
-# Study settings. Source of truth: research/docs/research_design.md, research/docs/eval_suite.md, research/docs/root_abilities.md.
+# Study settings. Source of truth: research/docs/programme_architecture.md + research/docs/research_design.md, research/docs/eval_suite.md, research/docs/root_abilities.md.
 study:
   id: rr_v3
   status: design

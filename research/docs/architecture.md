@@ -1,6 +1,6 @@
-# Architecture
+# Architecture (code and data flow)
 
-Programme flowcharts (Mermaid): `research/docs/flowcharts.md`. Programme architecture: `research/docs/programme_architecture.md`.
+Live programme (tracks, budget, next steps): [`programme_architecture.md`](programme_architecture.md). Flowcharts: [`flowcharts.md`](flowcharts.md). This file is the code/data-flow view only.
 
 ## Data flow
 

@@ -1,41 +1,8 @@
 # Roadmap
 
-v3 pipeline (2026-11-04). Detail in `research/docs/research_design.md`. Flowcharts: `research/docs/flowcharts.md` (sections 13 to 15). Week numbers below are the older v2 planning baseline; treat them as a schedule sketch, not a confirmed calendar.
+Live programme: [`programme_architecture.md`](programme_architecture.md). Scientific detail: [`research_design.md`](research_design.md). Flowcharts: [`flowcharts.md`](flowcharts.md).
 
-```mermaid
-flowchart TD
-  S0[0 Frontier check] -->|break| S1[1 Instrument + measure]
-  S0 -->|no break| EXT[Extend ladders]
-  EXT --> S0
-  S1 --> S2[2 Predict checkpoint]
-  S1 --> S3[3 Causes]
-  S3 --> S4[4 Localize]
-  S4 --> S5[5 Fix and verify]
-  S5 --> S6[6 Generalize]
-  S6 --> S7[Front-end]
-```
-
-| Stage | Weeks (sketch) | What | Gate |
-|---|---|---|---|
-| 0 Frontier check | before instrument | L1 to L3 on Opus, Fable, Astra, GLM and peers | Frontier models break somewhere; else extend ladders |
-| 1 Instrument and measure | 1 to 7 | Generators, verifiers, QA, runner, noise floor; screening and fix-first pilots; main behavioural profiles | RQ1: stable contrast above noise. Gates later stages |
-| 2 Predict | with Stage 1 | Three-baseline race on hidden tool-use sandbox | Reported checkpoint. Does **not** gate Stages 3 to 5 |
-| 3 Causes | 8 to 10 | Controlled exposure on OLMo 3 7B + one replication family; OLMo training stages | Exposure detection AUC at least .75 |
-| 4 Localize | 11 to 16 | Probe ladder: probes, patching, lens comparison, steering with controls | Pre-registered pass bars |
-| 5 Fix and verify | 17 to 22 | Harness, SFT, RL, steering, weight edits; matched / strong / mismatch | Targeted beats baselines on reliability per unit cost |
-| 6 Generalize | after first demo | New open model family through the pipeline | Minimal manual intervention |
-| Later | product | Reliability front-end (rewrite, monitor, adaptive compute) | Beats generic prompt optimizers on calibrated tasks |
-
-## Gating rule
-
-- **Stage 0 first.** If frontier models do not break, extend ladders before building the instrument.
-- **Stages 3 to 5 depend on RQ1** (reliable behavioural contrast), not on RQ3 (prediction beats baselines).
-- Hidden-family prediction is a Phase 1 checkpoint, not a hard stop.
-- If RQ3 fails: diagnose (measurement, transfer, or real null), report the pre-registered result; continue localize/fix if RQ1 holds, or pivot (reliability engineering, eval suite as product).
-
-## First demonstration
-
-**Q1 (draft, 13 Nov 2026):** state loss via read vs computed UpdateLedger — which competitor wins (stale / neighbour / prior), and do causes differ by mode. Specs and plan: `research/protocols/state_loss/`. Looping remains a later demo candidate. Do not try all 17 failure types or all 8 abilities equally in the first demo.
+## Current focus: Q1 (state loss)
 
 ```mermaid
 flowchart LR
@@ -46,14 +13,53 @@ flowchart LR
   E4 --> E5[E5 Fix]
 ```
 
-## Outputs
+| Step | Objective | Gate |
+|---|---|---|
+| Sign-off | Adya ticks Q1 plan checkboxes; reads Guo THREAT note | No code before this |
+| E0 | UpdateLedger generator, dual solvers, QA | All offline QA gates pass |
+| E1 | Behaviour + competitor attribution | 30–70% failure cells per mode |
+| E2 | Probes / logit lens on failures | C2 pass mark in prereg |
+| E3 | Patching localisation | C3 pass mark |
+| E4 | Shared vs separate causes | Flip-matrix rule in E4 |
+| E5 | Seven fixes head-to-head with cost | C4: matched beats best generic |
 
-- Paper 1: eval suite + profiles (+ prediction if it wins).
-- Paper 2: cause + mechanism for one or two failures.
-- Paper 3: fixes, cost, transfer, front-end sketch.
+Protocol: `research/protocols/state_loss/`.
 
-Paper split (one long paper vs series) is still open. Shared generators and failure labels across all papers.
+## Nine-stage lifecycle (every failure)
 
-Realistic sketch: first focused demo and Paper 1 measurement half inside a few months; full five-month v2 calendar is a baseline only.
+From the programme architecture. Q1 is at stages 2–3 (literature + questions); implementation starts after sign-off.
 
-Do not advance a stage because a result is exciting. Each gate requires the preceding construct to be measurable and reproducible.
+| Stage | Objective | Decision rule |
+|---|---|---|
+| 1 Problem | Failure real in deployed models | ≥10% failure at realistic size in ≥2 strong models |
+| 2 Literature | Know what is established | No paper already answers our question with causal tests |
+| 3 Questions | Fix claims + kill conditions | Adya signs every claim |
+| 4 Design | Data, models, controls, power | Each claim has dataset, control, pass mark |
+| 5 Implementation | Generators, QA, fake models | All QA pass with no API key |
+| 6 Execution | Pilot then confirmation | Prereg tagged before confirm |
+| 7 Analysis | Pre-registered tests | Pass / fail / inconclusive per claim |
+| 8 Validation | Second family, held-out, audit | Survives checks or claim narrows |
+| 9 Writing | Paper + code + data | Deviations listed vs prereg |
+
+## Wider programme stages (after / beside Q1)
+
+| Stage | What | Gate |
+|---|---|---|
+| 0 Frontier check | L1–L3 on frontier panel | Models still break; else extend ladders |
+| Measure | Profiles on root-ability ladders | Stable contrast above noise |
+| Predict | Hidden tool-use sandbox (checkpoint) | Reported; does **not** gate localize/fix |
+| Localize / Fix / Verify | As in Q1 E2–E5 | Pre-registered bars; matched vs generic vs mismatch |
+| Generalize | Second open family | Minimal manual work |
+| RR-Layer | Input-only cause → transform | Only after ≥2 failures clear fix stage |
+
+## Gating rule
+
+- Stages after measurement gate on a reliable behavioural contrast, not on prediction win.
+- RR-Layer waits on Q1 E5 (and preferably a second failure).
+- If a generic fix wins at equal cost, report that and stop the steering line for that failure.
+
+## Papers (sketch)
+
+1. Measurement + mechanism for computed-state loss (Q1).
+2. Cause-matched vs generic fixes (cost).
+3. Layer / transfer (only if 1–2 hold).

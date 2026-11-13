@@ -1,6 +1,6 @@
 # Flowcharts
 
-Clean Mermaid diagrams for the v3 research design. Source paste: `flow_chart.md` (raw ChatGPT export; use this file instead).
+Clean Mermaid diagrams for the v3 research design. Raw ChatGPT paste archived in [`archive/background.md`](archive/background.md) §E; use this file.
 
 These describe the **proposed** programme, not completed experimental results. Family G is a candidate. Demo numbers elsewhere on the site remain illustrative.
 

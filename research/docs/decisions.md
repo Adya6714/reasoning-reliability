@@ -1,6 +1,6 @@
 # Decision log
 
-One line per decision: date, decision, reason. Newest at the bottom. `research/docs/research_design.md` is the main design document; this log records each change.
+One line per decision: date, decision, reason. Newest at the bottom. Live programme: `programme_architecture.md`. Scientific design: `research_design.md`.
 
 | Date | Decision | Reason |
 |---|---|---|
@@ -65,3 +65,4 @@ One line per decision: date, decision, reason. Newest at the bottom. `research/d
 | 2026-11-13 | Repo layout: `research/{docs,protocols,research-vault}`, `src/rr/`, `failures/<name>/…` | Shared code once; per-failure folders hold only failure-specific work |
 | 2026-11-13 | `pipeline.md` merged into `research/docs/programme_architecture.md` | Same content; one canonical programme doc |
 | 2026-11-13 | Lit agent: `PAPER.md` template + `LIT_AGENT_PROMPT.md` installed | Structured notes tied to RQ1–RQ5 / Q1-C1–C4 |
+| 2026-11-13 | Root sprawl merged into `research/docs/archive/background.md` (discussion, CONSIDER_LATER, Research_template, root overview, flow_chart) | One live programme doc; history preserved but not operational |

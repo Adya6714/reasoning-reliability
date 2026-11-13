@@ -6,52 +6,43 @@ tags: [research, reasoning-reliability]
 
 # Reasoning Reliability
 
-## Current research question (v3)
+## Current question
 
-For a specific reasoning failure (for example state loss or looping), can we:
+When a model tracking changing values answers wrong, which competitor wins (stale / neighbour / prior), and does the cause differ in **read** vs **computed** mode? (Q1)
 
-1. Measure where any model breaks (MEASURE)
-2. Find an internal signal that predicts the failure before it happens (LOCALIZE)
-3. Use that signal for a targeted fix that beats generic fixes at equal cost (FIX and VERIFY)
-4. As a pipeline that runs on any new open model (GENERALIZE)
+Programme destination: a diagnosis-conditioned reliability layer — only after Q1 shows a cause that generic fixes miss.
 
-Prediction (profiles on a hidden tool-use sandbox) remains a supporting checkpoint. Mechanistic work is core, not optional.
+**State (13 Nov 2026):** Specs + architecture + lit notes delivered; awaiting sign-off. See [[01_Program_State]].
 
-**Current state:** Programme architecture and Q1 drafted 13 Nov 2026. Specs in `research/protocols/state_loss/`. Awaiting sign-off. See [[01_Program_State]].
-
-Open the vault folder as `research/research-vault/` (or open the repo root and navigate here).
+Open this folder (`research/research-vault/`) as the Obsidian vault root.
 
 ## Key docs
 
-- [[../docs/programme_architecture]] : **programme architecture, next steps, budget** (canonical)
-- [[../protocols/state_loss/plan]] : **Q1 draft plan** (first demo cut)
-- [[../protocols/state_loss/README]] : Q1 experiment specs (E0–E5)
-- [[../docs/research_design]] : canonical v3 design (pipeline, RQs, stages, product)
-- [[../docs/flowcharts]] : Mermaid diagrams for the full programme
-- [[../../research_design]] : short mental-model overview
-- [[../../discussion]] : Nov 4 discussion log
-- [[../docs/eval_suite]] : families, selection rules, benchmark review, generator rules
-- [[../docs/root_abilities]] : 8 root abilities, ladders, profile measures
-- [[../docs/model_selection]] : behavioural and mechanistic roster
-- [[../docs/roadmap]] : stages and gates
-- [[../docs/checklist]] : run checklist
-- [[../docs/decisions]] : decision log
-- [[../docs/reading_list]] : papers to read
-- [[../docs/agents/LIT_AGENT_PROMPT]] : literature-review agent prompt
-- [[../../configs/models]] : model roster; pin revisions before running
-- [[../../configs/study]] : study settings
-- [[../../site/index]] : interactive site (includes flowchart viewer)
-
-Models note: pin revisions before any run. Candidate recommendations were checked against official model cards on 2026-10-27; frontier panel strings still TBD.
+- [[../docs/programme_architecture]] — **live programme** (tracks, budget, delivered, next steps)
+- [[../docs/README]] — docs map
+- [[../protocols/state_loss/plan]] — Q1 plan
+- [[../protocols/state_loss/README]] — Q1 experiment specs
+- [[../docs/research_design]] — scientific design detail
+- [[../docs/roadmap]] — stages and gates
+- [[../docs/checklist]] — done / next
+- [[../docs/decisions]] — decision log
+- [[../docs/archive/background]] — archived discussion / parking / methodology notes
+- [[../docs/agents/LIT_AGENT_PROMPT]] — lit-agent prompt
+- [[templates/PAPER]] — paper-note template
 
 ## Working notes
 
-- [[01_Program_State]] : confirmed decisions, open questions, gates
-- [[07_Paper_Landscape]] : papers grouped by dimension
-- [[08_X_Link_Review]] : older annotated X links (new clips go in `clips/`)
-- [[09_Test_Menu_and_Selection]] : candidate tests, scoring table, 17 failure types
-- [[11_Reading_Queue]] : deduplicated inventory and staged one-paper-at-a-time review order
+- [[01_Program_State]] — status and gates
+- [[07_Paper_Landscape]] — Q1 seed table at top (THREAT first)
+- [[11_Reading_Queue]] — reading queue + lit follow-ups
+- [[LIT_WEEKLY_2026-11-13]] — weekly lit summary
+- [[09_Test_Menu_and_Selection]] — 17 failure types
+- [[08_X_Link_Review]] — older X links
 
-## Closest to my work
+## Papers (Q1 seeds)
 
-See [[07_Paper_Landscape]] and the Q1 prior-art section in [[../protocols/state_loss/plan]].
+- [[papers/Guo2026_WhenContextChanges]] — **THREAT**
+- [[papers/Wang2025_UnableToForget]]
+- [[papers/Qiao2026_RetrievalBiasUpdates]]
+- [[papers/Chattaraj2026_RememberFirstForgetLast]]
+- [[papers/ChenYeh2026_RemovingCompetitor]]

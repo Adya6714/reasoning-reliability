@@ -1,4 +1,141 @@
-# Reasoning Reliability: Discussion Log
+# Background, history and parking lot
+
+Historical and pedagogical material. **Not** the operational source of truth.
+
+| Live doc | Use for |
+|---|---|
+| [`../programme_architecture.md`](../programme_architecture.md) | Current programme, tracks, budget, next steps |
+| [`../research_design.md`](../research_design.md) | Scientific design detail (abilities, stats, stages) |
+| [`../roadmap.md`](../roadmap.md) | Stages and gates |
+| [`../checklist.md`](../checklist.md) | What is done / next |
+| [`../decisions.md`](../decisions.md) | Dated decision log |
+
+Merged on 13 Nov 2026 from root `discussion.md`, `CONSIDER_LATER.md`, `Research_template.md`, `research_design.md` (overview), and `flow_chart.md`.
+
+---
+## A. Former root overview (`research_design.md`)
+
+# Reasoning reliability: mental model
+
+Canonical operational design: [`research/docs/research_design.md`](research/docs/research_design.md). Programme architecture / budget: [`research/docs/programme_architecture.md`](research/docs/programme_architecture.md). Discussion log (Nov 4 direction): [`discussion.md`](discussion.md). This file is the short overview only.
+
+## What we are building
+
+A scientific method to find, understand, and fix specific ways language models fail at reasoning. Not "which model scores higher" and not "does this prompt help."
+
+> Can we identify how a model is likely to fail before it fails, understand what is happening inside when it fails, and fix it more effectively than generic interventions?
+
+## Pipeline (v3)
+
+1. **Measure:** controlled tests and L1 to L4 ladders; breaking points per root ability.
+2. **Localize:** mechanistic interpretability on labelled failures (probes, patching, steering).
+3. **Fix:** targeted harness, steering, weight edits, SFT, or RL.
+4. **Verify:** beat matched, strong generic, and mismatch controls; measure cost and side effects.
+5. **Generalize:** re-run on another open model family with minimal manual work.
+
+**Stage 0 first:** frontier sanity check (current frontier models on L1 to L3). If they do not break, extend ladders before building the instrument.
+
+**Eventually:** a reliability front-end (query rewriting, runtime monitoring, adaptive compute) guided by per-model profiles.
+
+## Evolution
+
+| Version | Focus |
+|---|---|
+| V1 | Sensitivity to rewording and instruction changes (archived; confounds) |
+| V2 | Ability profiles that predict failures beyond general skill |
+| V3 | Full diagnose → localize → fix → verify pipeline; mech interp is central |
+
+Prediction work (B3 vs B2 on the hidden sandbox) remains, as a supporting question and Phase 1 checkpoint. Stages after measurement gate on **RQ1** (reliable contrast), not on RQ3.
+
+## Two taxonomies
+
+- **17 failure types:** what goes wrong (from five sweeps). Table in `research/research-vault/09_Test_Menu_and_Selection.md`.
+- **8 root abilities (R1 to R8):** candidate underlying skills with 4-level ladders. Profile = breaking points. Draft mapping and caveats in `research/docs/root_abilities.md`.
+
+First demo: **Q1** state loss (read vs computed UpdateLedger) — draft in [`research/protocols/state_loss/`](research/protocols/state_loss/). Looping remains a later candidate.
+
+## Eval instrument
+
+One set of generators with exact solvers, used for behaviour, hidden prediction, controlled training, labelled interp examples, and RL/SFT. Families A to E + hidden deterministic tool-use sandbox F. Family G (long-horizon memory) is proposed, not finalized. Details: `research/docs/eval_suite.md`.
+
+## Statistics (short)
+
+- Kendall's W across 3+ templates per ability.
+- Baseline 2PL; main bifactor (general + specific per tagged ability).
+- Power and null simulations before the main run.
+- B1 / B2 (ADeLe-style) / B3 race on the hidden family.
+- Start k=5 with adaptive expansion; pass^k at 1, 4, 8.
+
+## Interpretability and fixes (short)
+
+- Probe +0.05 AUROC; patching 50% gap from ≤3 layers; steering beyond 95th percentile of random directions.
+- Fix baselines: matched, strong generic, mismatch. Always measure what each fix breaks.
+
+## Product sketch
+
+Profile model once → estimate task demands (demand tagger: open) → risk-based rewrite / monitor / compute. Calibrate on about 20 to 50 real tasks.
+
+## Where to read next
+
+1. `research/docs/research_design.md`
+2. `research/docs/flowcharts.md` (full Mermaid set)
+3. `research/docs/eval_suite.md`
+4. `research/docs/root_abilities.md`
+5. `research/research-vault/09_Test_Menu_and_Selection.md`
+6. `research/docs/reading_list.md`
+7. `research/docs/decisions.md`
+8. `discussion.md`
+9. `site/` interactive explainer
+
+## Status
+
+Design stage. Groundwork drafted. Generators, verifiers, QA, runner, and new experiments: not started. Next: Stage 0 frontier check and L1 tests (prioritize first demo failures).
+
+
+---
+
+## B. Parking lot (from `CONSIDER_LATER.md`)
+
+### Consider later
+
+Parking lot. Items resolved by the v3 direction (2026-11-04) are listed first so they are not reopened by accident.
+
+## Resolved by v3 (do not reopen without a new decision)
+
+- Mechanistic interpretability is central (LOCALIZE stage), not optional later work.
+- Runtime monitoring and adaptive compute are part of the reliability front-end product direction.
+- Matched, strong generic, and mismatch fix baselines are mandatory.
+- Stage 0 frontier check is required before trusting the instrument.
+- Instruction drift is its own experiment (3 levels × thinking on/off) and a reference effect size.
+- Hidden-family prediction is a checkpoint; later stages gate on RQ1.
+- Harness check uses Kendall's tau (two scaffolds), not W.
+- Repeated runs start at k=5 with adaptive expansion.
+
+## Still open / deferred
+
+Independent confirmation of the 17-type list (cannot use the same sweeps that built it):
+
+- Freeze the list, then label failures from reports posted after the freeze date; count "doesn't fit".
+- Blind-label agent logs nobody built around this taxonomy (for example a teammate's own runs).
+
+Simulation design reminders (also in `research/docs/research_design.md`):
+
+- Match item difficulty across abilities; use the real pilot ability spread (avoid floor-driven fake factors).
+- Null with zero specific factors for false-positive rate.
+- Model-item regression: random effect per model family; sensitivity with one variant per family.
+
+Other parked notes from earlier threads (kept for context; many already absorbed into docs):
+
+- Format/protocol as a planned factor; thinking on/off on Qwen as an within-model contrast.
+- Confirmatory bifactor with tagged items; power sims on the bifactor itself.
+- Hold harness and format fixed when measuring the model; harness effects are a separate experiment.
+
+
+---
+
+## C. Discussion log (from `discussion.md`)
+
+### Discussion log
 
 A running record of where the research stands, Adya's concerns, and the points the research must answer.
 
@@ -310,3 +447,519 @@ This section is the detailed design behind the rundown above. It replaces nothin
 1. **New chat:** walk through the research design end to end, then finalize benchmarks, failure types and what each test is for.
 2. **Precursor (baseline) test** before the full design is frozen. Run a small battery (rewording ladders, state-tracking ladder, Probe 2 injection, a looping sandbox) on a few open models and 2 to 3 frontier models. Goals: confirm frontier models still break, find each model's rough breaking points, and set the baseline the full design is built on.
 3. Then freeze, pre-register and update research/docs/research_design.md through a Cursor prompt.
+
+
+---
+
+## D. Research methodology notes (from `Research_template.md`)
+
+Mm. That's the heart of it. Give me a moment.
+
+I think this is probably the most important question you've asked about the research so far. Because until you understand this, you'll keep feeling that you're assembling a large collection of experiments without knowing what you're actually contributing to science.
+
+I want to explain this from the perspective of how a researcher thinks, not just how we should execute your current project.
+
+The first thing I want you to understand is:
+
+Researchers don't normally start by deciding to build a pipeline, a benchmark, or a collection of experiments. They start with something they don't understand. They investigate why it happens, discover that existing explanations are insufficient, formulate a precise question, and design experiments that could answer it.
+
+A research paper is the documented answer to one sufficiently important question.
+
+A research programme can contain many such papers.
+
+Those are two very different things.
+
+# 1. How research actually happens
+
+Let's take an example from a completely different field.
+
+Imagine researchers studying why people make mistakes when solving mathematical problems.
+
+One researcher observes:
+
+People who solve the first five steps correctly sometimes make mistakes in the sixth step, even though they have all the necessary information.
+
+That observation leads to a question:
+
+Are these errors caused by forgetting intermediate results, or by incorrectly using results that are still remembered?
+
+Now look at what happens.
+
+## The lifecycle of a research question
+
+1. Observation
+
+   Something happens that existing explanations don't adequately explain.
+
+   Example: Two models produce the same incorrect answer, but their preceding reasoning behaviours appear different.
+
+2. Background investigation
+
+   Researchers examine what is already known, what has been measured and what explanations have been proposed.
+
+3. Identify the gap
+
+   They find a specific unanswered question, limitation, contradiction or missing piece of evidence.
+
+4. Formulate a hypothesis
+
+   They propose an explanation that could be tested and potentially disproved.
+
+5. Design an experiment
+
+   They construct an experiment that distinguishes their explanation from competing explanations.
+
+6. Collect evidence
+
+   They run experiments, analyse results and examine alternative explanations.
+
+7. Establish the contribution
+
+   They explain what the evidence establishes, how it changes our understanding and what remains unresolved.
+
+Notice something important: the experiment comes relatively late.
+
+Researchers don't begin by asking, "What can I build?"
+
+They ask, "What don't we know, and what would convince us that we now know it?"
+
+# 2. What actually makes a research question novel?
+
+There are several ways a research question can be novel.
+
+It does not necessarily mean nobody has ever studied the subject.
+
+Here are five possibilities.
+
+| Type of novelty     | Meaning                                                                                                    |
+| ------------------- | ---------------------------------------------------------------------------------------------------------- |
+| New phenomenon      | Discovering something previously unobserved                                                                |
+| New explanation     | Explaining an existing phenomenon differently                                                              |
+| New measurement     | Measuring something that existing methods cannot adequately distinguish                                    |
+| New causal evidence | Establishing why something happens rather than merely observing correlations                               |
+| New generalization  | Showing that an established finding applies in a previously untested setting or under different conditions |
+
+For example, consider state loss.
+
+The question "Do language models forget information?" is not novel.
+
+The question "Can we distinguish information that is no longer represented from information that remains represented but is not used in subsequent computation?" is much more specific.
+
+And the question:
+
+"Do these two failure mechanisms respond differently to targeted interventions, and can we predict which intervention will work?"
+
+is a further scientific question.
+
+Each question builds on the previous one, but each could independently become a research contribution if the evidence is sufficiently strong.
+
+Novelty comes from the precise knowledge you establish, not from how many technologies or experiments you use.
+
+# 3. How do you know whether a question has already been answered?
+
+This is the practical part I want you to learn.
+
+You cannot establish novelty by reading five papers and concluding that none of them did exactly what you want.
+
+You need a systematic process.
+
+I would teach you to investigate a research question using six steps.
+
+## Step 1: Start with a phenomenon, not a solution
+
+Let's take our state-loss problem.
+
+We observe that a model can correctly track a sequence of updates initially, but eventually produces an incorrect current state.
+
+Don't immediately decide that we'll use:
+
+- SAEs.
+- Transcoders.
+- Activation patching.
+- Probes.
+- Steering.
+
+Those are possible research tools.
+
+First, identify what you don't understand.
+
+For example:
+
+- Does the model actually lose the information?
+- Does it retain the information but retrieve the wrong version?
+- Does it retrieve the correct information but perform the update incorrectly?
+- Does it represent the correct state but fail to use it?
+
+These are different possible explanations.
+
+## Step 2: Convert the phenomenon into competing hypotheses
+
+This is where actual research thinking begins.
+
+Suppose the model makes an error after 15 state updates.
+
+We have three hypotheses.
+
+Hypothesis A — Representation failure
+
+The information required to reconstruct the current state is no longer available in the relevant internal representation.
+
+Hypothesis B — Retrieval or access failure
+
+The information remains represented, but the model fails to retrieve or attend to the correct information when needed.
+
+Hypothesis C — Computation or integration failure
+
+The model accesses the correct information but performs an incorrect state transition.
+
+These are simplified hypotheses, not necessarily mutually exclusive mechanisms.
+
+Now we have something worth investigating.
+
+We can design experiments to distinguish these hypotheses.
+
+For example, test whether the correct state can be decoded from activations at different stages, whether it is used during the subsequent update, and whether carefully controlled interventions change the outcome.
+
+This is substantially more scientific than simply training a probe to predict whether the model will fail.
+
+## Step 3: Search for each hypothesis separately
+
+This is something researchers do very deliberately.
+
+They don't search only for their proposed paper title.
+
+They search for the underlying concepts and mechanisms.
+
+For our example, I would investigate:
+
+| Search direction             | What we need to discover                                                      |
+| ---------------------------- | ----------------------------------------------------------------------------- |
+| State tracking in LLMs       | What is already known about tracking changing information?                    |
+| Memory representations       | How is information maintained internally?                                     |
+| Information accessibility    | Can represented information become inaccessible?                              |
+| Retrieval versus computation | Can we distinguish retrieving an answer from computing with information?      |
+| Mechanistic interpretability | Have similar internal mechanisms been identified?                             |
+| Causal interventions         | Has anyone manipulated these mechanisms to restore correct behaviour?         |
+| Targeted interventions       | Have researchers shown that different failure causes require different fixes? |
+
+For each relevant paper, read these sections in particular:
+
+1. Abstract: what are they claiming?
+2. Introduction: what gap do they identify?
+3. Related work: what has already been done?
+4. Methodology: what exactly did they test?
+5. Results: what did they establish?
+6. Limitations: what remains unresolved?
+
+The limitations section is particularly useful, but don't assume that every limitation mentioned by an author is an open research opportunity. Some are acknowledged limitations that nobody has shown to be important.
+
+## Step 4: Build a research gap matrix
+
+This is probably the most useful habit you can develop.
+
+Instead of maintaining a list of papers you've read, maintain a list of questions and evidence.
+
+For example, our preliminary state-loss literature matrix might look like this:
+
+| Scientific question                                   | Existing evidence                        | What remains to investigate                               |
+| ----------------------------------------------------- | ---------------------------------------- | --------------------------------------------------------- |
+| Do models lose track of evolving state?               | Yes, existing memory benchmarks          | Specific computational mechanisms                         |
+| Can state-tracking performance be measured?           | Yes                                      | Whether different underlying causes can be distinguished  |
+| Can internal signals predict failure?                 | Probes and monitors exist                | Whether they identify a mechanism rather than a correlate |
+| Can internal representations be manipulated?          | Yes                                      | Whether interventions restore state tracking specifically |
+| Do different failure mechanisms need different fixes? | Not established by the examples reviewed | Test diagnosis-guided versus generic repair               |
+| Does the improvement generalize?                      | Depends on the method                    | Test across task structures and models                    |
+
+This is not yet a completed literature review. It's a map of the questions we need to validate against the full literature.
+
+The distinction is important: we should never turn an unverified gap into a claim of novelty.
+
+# 4. The most important distinction: a research programme is not a research paper
+
+Let's apply this directly to your Reasoning Reliability project.
+
+Your current document describes a programme with five stages:
+
+1. Measure.
+2. Localize.
+3. Fix.
+4. Verify.
+5. Generalize.
+
+The eventual reliability front-end is another proposed direction. The document explicitly distinguishes these proposals from experimentally validated results.&#x20;
+
+Pasted text(20261109-085834).txt
+
+That is a perfectly reasonable research programme.
+
+But it is not necessarily one paper.
+
+I would think about it like this:
+
+## Your research programme
+
+The overarching scientific ambition
+
+Understand why language models fail at reasoning, identify their internal failure mechanisms, and use that knowledge to improve reliability.
+
+### Possible individual papers
+
+Paper 1 — Behavioural measurement
+
+Are different reasoning failures distinguishable across models, and do behavioural profiles predict failures on unseen tasks?
+
+Measurement and prediction
+
+Paper 2 — State-tracking mechanisms
+
+What internal computational processes distinguish successful and unsuccessful state updates?
+
+Mechanistic understanding
+
+Paper 3 — Diagnosis-guided intervention
+
+Does identifying the cause of a reasoning failure help select a more effective repair than generic interventions?
+
+Intervention and causality
+
+Paper 4 — Generalization
+
+Can a model's measured failure profile predict reliability in unfamiliar agent environments, and can targeted runtime interventions improve outcomes?
+
+Generalization and deployment
+
+These are possible papers, not commitments. Paper 2 might be too ambitious, Paper 3 might turn out to have already been answered, and Papers 1 and 2 might eventually make more sense as one paper.
+
+The point is that each paper needs its own central question, related work, hypothesis, experiments and contribution.
+
+You do not have to publish an entire pipeline to do meaningful research.
+
+In fact, trying to publish the entire pipeline in one paper could make your contribution less clear.
+
+# 5. Let's work through how an actual researcher would develop your state-loss question
+
+I want to show you the difference between a vague idea and a research question.
+
+Starting observation
+
+A model makes an incorrect state update after processing a sequence of changing facts.
+
+Question 1
+
+Does the model fail because it has lost the information, or because it cannot use information it still retains?
+
+Potential contribution: Distinguishing representational availability from computational use.
+
+Question 2
+
+Are different state-tracking failures associated with different internal mechanisms?
+
+Potential contribution: A mechanistic account of distinct failure modes.
+
+Question 3
+
+Can we causally manipulate these mechanisms to change the probability of failure?
+
+Potential contribution: Evidence of causal involvement rather than mere correlation.
+
+Question 4
+
+Do different mechanisms respond differently to different interventions?
+
+Potential contribution: Evidence that mechanistic diagnosis can guide repair.
+
+Now, notice something.
+
+Question 4 is not automatically answered just because Questions 1–3 have been answered.
+
+And Question 3 is not automatically answered because a probe predicts failures accurately.
+
+Each question requires its own evidence.
+
+This is how research becomes progressively more specific.
+
+# 6. What makes an experiment convincing?
+
+Researchers don't just ask whether their experiment produced an interesting result.
+
+They ask whether the experiment could distinguish their hypothesis from alternative explanations.
+
+Suppose you claim:
+
+"We found an internal mechanism responsible for state loss."
+
+A reviewer might ask:
+
+- How do you know it isn't simply correlated with longer contexts?
+- How do you know the probe isn't detecting the answer rather than the mechanism?
+- How do you know the activation intervention isn't changing general model behaviour?
+- How do you know the improvement isn't caused by additional computation?
+- How do you know your intervention works outside the particular examples used to identify it?
+
+You need controls for these possibilities.
+
+This is why your existing plan includes:
+
+- Exact ground-truth solvers.
+- Controlled difficulty ladders.
+- Successful and unsuccessful paired examples.
+- Activation patching and ablation.
+- Random-direction controls.
+- Strong generic baselines.
+- Mismatch controls.
+- Cross-model validation.
+
+These are useful elements of an experimental design, not novelty claims by themselves.&#x20;
+
+Pasted text(20261109-085834).txt
+
+The central principle is:
+
+An experiment is valuable when its result rules out an alternative explanation, not merely when it produces a positive result.
+
+# 7. How do researchers decide what to work on?
+
+This is another part of research that people don't explain enough.
+
+A researcher usually has many interesting unanswered questions. They cannot pursue all of them.
+
+They evaluate questions using a combination of:
+
+| Criterion       | What they ask                                                |
+| --------------- | ------------------------------------------------------------ |
+| Importance      | Would answering this change what we understand?              |
+| Novelty         | Has the question already been answered adequately?           |
+| Tractability    | Can we realistically answer it with available methods?       |
+| Identifiability | Can our experiment distinguish competing explanations?       |
+| Evidence        | Can we produce convincing, reproducible results?             |
+| Scope           | Can we make a sufficiently strong contribution in one paper? |
+
+For your project, I would add one more:
+
+Research risk: What happens if our central hypothesis is wrong?
+
+For instance, suppose we discover that written-state memory solves almost all state-loss failures.
+
+That is useful information. It might mean internal mechanistic intervention is unnecessary for this particular failure.
+
+We should not spend six months trying to prove that activation steering is better.
+
+A good researcher is willing to abandon an attractive hypothesis when the evidence contradicts it.
+
+# 8. The practical method I want you to learn
+
+Whenever you encounter an interesting problem in AI research, use this sequence.
+
+## Your research-question development method
+
+Use this before committing to an experiment.
+
+1. Describe the phenomenon.
+
+   What exactly is happening? Avoid explanations at this stage.
+
+2. Identify competing explanations.
+
+   What are at least two or three plausible reasons it happens?
+
+3. Search the literature for each explanation.
+
+   Find the closest papers, not just papers with similar titles.
+
+4. Identify what existing studies actually establish.
+
+   Separate demonstrated results from authors' hypotheses and future work.
+
+5. Find the unresolved distinction.
+
+   What can existing approaches not distinguish, explain, predict or establish?
+
+6. Write one falsifiable research question.
+
+   It must be possible for your experiment to show that your hypothesis is wrong.
+
+7. Design a discriminating experiment.
+
+   Decide what results would support or reject your hypothesis.
+
+8. Define the contribution before running the experiment.
+
+   What new knowledge would a successful result establish?
+
+# 9. One thing I want you to stop doing
+
+I want you to stop thinking:
+
+"We have 17 failures. We need to investigate all 17, build experiments for all of them, apply interpretability to all of them, and then fix all of them."
+
+That is an engineering-project mindset.
+
+Instead, think:
+
+"We have observed 17 types of failures. Which one contains an interesting unanswered scientific question? What do we know about it? What don't we know? Can we design an experiment that establishes something genuinely new?"
+
+You might spend three months investigating one failure and discover something substantial.
+
+Or you might investigate it and discover that an existing paper has already answered your question. That is not wasted research. It saves you from building an entire study around an established result.
+
+Your own research document acknowledges that the 17 failures and eight root abilities are candidate classifications, not experimentally established independent abilities.&#x20;
+
+Pasted text(20261109-085834).txt
+
+You don't need to prove all eight abilities exist before writing a good paper.
+
+You need to establish one meaningful claim rigorously.
+
+# 10. Let's apply this to your immediate research
+
+Here is what I would do next.
+
+I would temporarily put the entire pipeline aside and focus on one scientific question.
+
+My current candidate is:
+
+> When language models make state-tracking errors, can we distinguish failures of information representation from failures of information utilization, and do these mechanisms respond differently to targeted interventions?
+
+Before accepting this question, we need to establish three things:
+
+1. Prior-art test: Has anyone already distinguished these mechanisms in comparable language-model state-tracking tasks?
+2. Methodological test: Can we actually distinguish them experimentally, rather than merely assign different labels to similar activation patterns?
+3. Value test: Would establishing this distinction change how we diagnose or repair models?
+
+If all three checks look promising, we have a potential paper.
+
+If not, we revise the question.
+
+## One final mental model
+
+I want you to remember this distinction:
+
+| What you're doing                                                                 | What it means                             |
+| --------------------------------------------------------------------------------- | ----------------------------------------- |
+| Building a benchmark                                                              | Creating an instrument                    |
+| Training a probe                                                                  | Creating a measurement method             |
+| Running activation patching                                                       | Investigating a possible causal mechanism |
+| Steering a model                                                                  | Testing an intervention                   |
+| Comparing models                                                                  | Gathering evidence                        |
+| Establishing that one mechanism explains a failure and changes which repair works | Potential scientific contribution         |
+
+The tools are not the research question. They are instruments for answering it.
+
+My recommendation is that we work on developing your ability to formulate research questions before expanding the Reasoning Reliability Pipeline any further.
+
+I would like us to take one real paper at a time, understand exactly what question its authors asked, why they asked it, what they knew beforehand, what experiment they designed, and what new knowledge they established.
+
+Then we can do the same exercise with your state-loss research.
+
+That is how you gradually develop the ability to look at a problem and independently recognize: there is something here that we still don't understand, and I know how to investigate it.
+
+That ability is much more valuable to becoming a researcher than knowing how to run an SAE or activation-patching experiment.
+
+Okay. This is probably the most important question you've asked so far. Until this clicks, the rest will feel like assembling a pipeline without knowing what it contributes. Researchers usually start with a crisp puzzle, like: why do step six errors happen even when the information is there? From that, they ask: is it forgetting, misuse, or something else entirely? They then design a simple test that could genuinely distinguish those possibilities. If existing papers already answer it, you pivot. If they don't, you define a tight experiment that could answer it. So, for you, the concrete next step is not building the whole pipeline, but writing down one sharp question that is clearly not settled yet, and designing the simplest possible test for that. That turns a vague pipeline into an actual research contribution.
+
+
+---
+
+## E. Flowcharts provenance (from `flow_chart.md`)
+
+Raw ChatGPT Mermaid paste removed. Use [`../flowcharts.md`](../flowcharts.md) for clean diagrams and the site Flowcharts panel.

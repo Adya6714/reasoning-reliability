@@ -56,4 +56,4 @@ Order and gates: `README.md` in this folder. Detail files: `E0_instrument.md` �
 
 ## Relation to the wider programme
 
-Q1 is the first focused cut of the v3 pipeline on **state loss** (R1): measure → localise → fix → verify. Looping remains a later demo candidate. Canonical programme design stays in `research/docs/research_design.md`.
+Q1 is the first focused cut of the v3 pipeline on **state loss** (R1): measure → localise → fix → verify. Looping remains a later demo candidate. Live programme: `research/docs/programme_architecture.md`. Scientific detail: `research/docs/research_design.md`.

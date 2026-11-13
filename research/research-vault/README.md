@@ -1,18 +1,18 @@
-# Using this vault
+# Research vault
 
-Open the **repo root** in Obsidian. Start at [[research/research-vault/00_Home]].
+Obsidian vault for paper notes, sweeps, and programme state.
 
-## Layout
+Open **this folder** as the vault root in Obsidian.
 
-- `papers/` — one note per paper
-- `clips/` — tweets, threads, blogs, OpenResearch summaries
-- `templates/NOTE` — the only template (papers fill all sections; clips fill 1, 2, 7)
-- Hub notes: `00_Home`, `01_Program_State`, `07_Paper_Landscape`, `08_X_Link_Review`, `09_Test_Menu_and_Selection`
+| File | What |
+|---|---|
+| `00_Home.md` | Vault home |
+| `01_Program_State.md` | Current status |
+| `templates/PAPER.md` | Lit-agent paper template (use this) |
+| `templates/NOTE.md` | Legacy note template |
+| `papers/` | One note per paper |
+| `07_Paper_Landscape.md` | Landscape; Q1 seed table at top |
+| `11_Reading_Queue.md` | Queue + lit follow-ups |
+| `LIT_WEEKLY_*.md` | Weekly lit summaries |
 
-## Add a note
-
-1. New file in `papers/` or `clips/`.
-2. Insert template `NOTE` (Settings → Templates folder: `research/research-vault/templates`).
-3. Score `overlap` (0–3). Link it in [[research/research-vault/07_Paper_Landscape]].
-
-Install the **Dataview** community plugin so the tables on Home work. Do not commit PDFs.
+Programme docs live in `../docs/` (not inside the vault). Start at `../docs/programme_architecture.md`.

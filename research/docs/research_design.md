@@ -1,6 +1,6 @@
 # Research design
 
-Canonical design as of 2026-11-04 (v3). Narrative discussion: `discussion.md`. Mental-model overview: `research_design.md` at repo root (points here).
+Canonical scientific design as of 2026-11-04 (v3), updated 13 Nov 2026 for Q1. **Live programme / budget / next steps:** [`programme_architecture.md`](programme_architecture.md). Docs map: [`README.md`](README.md). History (old discussion, parking lot): [`archive/background.md`](archive/background.md).
 
 ## 1. Question
 
@@ -239,7 +239,7 @@ Behavioural failure → internal signal → causal intervention → targeted fix
 
 **Closest papers:** Golsefid 2026; Missing Primitive 2026; CogArena 2026; Beyond Scores 2026; ADeLe (Zhou et al. 2025). Full list in `research/docs/reading_list.md`.
 
-**Pending verification before citing:** Qwen neuron persona atlas; MIT CSAIL / Astra-style weight-edit numbers in `discussion.md` (inspiration only until independently checked).
+**Pending verification before citing:** Qwen neuron persona atlas; MIT CSAIL / Astra-style weight-edit numbers in `archive/background.md` (inspiration only until independently checked).
 
 ## 15. Papers (proposed split; finalize later)
 

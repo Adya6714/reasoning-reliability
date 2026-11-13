@@ -1,6 +1,18 @@
 # Checklist
 
-v3 direction (2026-11-04). Full detail in `research/docs/research_design.md`. Eval suite: `research/docs/eval_suite.md`. Root abilities: `research/docs/root_abilities.md`.
+Live programme: [`programme_architecture.md`](programme_architecture.md). Design detail: [`research_design.md`](research_design.md). Docs map: [`README.md`](README.md).
+
+## Now (13 Nov 2026)
+- [x] Programme architecture + budget
+- [x] Q1 protocol (`research/protocols/state_loss/`)
+- [x] Repo restructure (`research/`, `src/rr/`, `failures/state_loss/`)
+- [x] Lit agent + first 5 seed notes (Guo THREAT)
+- [x] Root clutter archived → `archive/background.md`
+- [ ] Sign off Q1 plan (8 checkboxes)
+- [ ] Adya reads Guo note before E0
+- [ ] Verify Q1 licences (comp-mech; Kim & Schuster design-only)
+- [ ] E0 UpdateLedger (after sign-off)
+- [ ] E1 pilot → prereg tag → E1–E5
 
 ## Block A: house in order (week 1)
 - [x] A1 Compute: JarvisLabs
@@ -20,21 +32,11 @@ v3 direction (2026-11-04). Full detail in `research/docs/research_design.md`. Ev
 - [x] Clean Mermaid flowcharts in `research/docs/flowcharts.md` + site Flowcharts panel
 - [ ] Community form (on hold until the research outlook is shared)
 
-## Open now (v3 design)
-- [x] First failure cut drafted as Q1 (state loss: read vs computed) — `research/protocols/state_loss/` (13 Nov 2026)
-- [x] Programme architecture + budget canonicalised at `research/docs/programme_architecture.md` (pipeline.md merged)
-- [x] Repo restructure: `research/`, `src/rr/`, `failures/state_loss/`
-- [x] Lit agent files installed; first 5 seed notes (see vault `papers/`)
-- [ ] Sign off Q1 plan (8 checkbox decisions in plan doc; see `research/protocols/state_loss/plan.md`)
-- [ ] Adya reads Guo et al. lit note (THREAT check before E0)
-- [ ] Verify Q1 licences: comp-mech; Kim & Schuster boxes are design-only (no licence)
+## Open (programme-wide)
 - [ ] Decide whether Family G (long-horizon memory) becomes a full profiling family
 - [ ] Run Stage 0 frontier check (also feeds Q1 E1 frontier panel)
-- [ ] After Q1 sign-off: build UpdateLedger (E0), then E1–E5 per `research/protocols/state_loss/`
 - [ ] Build L1 tests for remaining abilities (looping and others after Q1)
-- [ ] Run L1 tests on the pilot roster
 - [ ] Run power and null simulations (model counts 6, 8, 12, 20, 30; zero-specific and format/template nulls)
-- [ ] Freeze and pre-register (`research/protocols/state_loss/prereg.md` → `git tag q1-prereg` before E1 confirm)
 - [ ] Verify listed licences (PlanBench, tau2/tau3, Lost in Conversation, Math-Perturb, Simmer, DyVal, GSM-Infinite, NPHardEval)
 - [ ] Check OLMo 3 training data for Reasoning Gym, CRUXEval and GSM8K-derived data
 - [ ] Sketch demand-tagger approach (open product component)

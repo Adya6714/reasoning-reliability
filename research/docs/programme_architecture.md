@@ -1,18 +1,33 @@
 # Reasoning Reliability: Programme Architecture, Next Steps and Budget
 
-Nov 13, 2026 · @Adya
+Nov 13, 2026 · @Adya · **canonical live programme doc** (docs map: [`README.md`](README.md))
+
+## Already delivered (this repo)
+
+| Deliverable | Where |
+| --- | --- |
+| This programme doc (tracks, RQs, budget, next steps) | `research/docs/programme_architecture.md` |
+| Q1 protocol (UpdateLedger, E0–E5, prereg, benchmarks, plan) | `research/protocols/state_loss/` |
+| Repo layout (`research/`, `src/rr/`, `failures/<name>/`) | branch `programme-architecture` |
+| Lit agent template + prompt | `research/research-vault/templates/PAPER.md`, `research/docs/agents/LIT_AGENT_PROMPT.md` |
+| First 5 seed paper notes (Guo = THREAT; no computed-state in prior art) | `research/research-vault/papers/` |
+| Landscape table + weekly lit summary | `07_Paper_Landscape.md`, `LIT_WEEKLY_2026-11-13.md` |
+| Scientific design, flowcharts, site | `research/docs/`, `site/` |
+| History / parking / old discussion (archived) | `research/docs/archive/background.md` |
+
+**Not delivered yet:** Q1 code (E0+), confirmatory runs, RR-Layer. Blocked on Adya sign-off of the Q1 plan checkboxes and reading the Guo note.
 
 ## Where things stand
 
-There are three tracks, and they need fixed names because "v1" and "v2" have meant different things in different chats. This doc uses:
+Three tracks (names fixed — "v1"/"v2" meant different things in different chats):
 
 | Name | Repo | What it is | State on 13 Nov 2026 |
 | --- | --- | --- | --- |
 | **RvC v1.1** | [retrieval-vs-computation](https://github.com/Adya6714/retrieval-vs-computation) | Corrected rerun of the CAISc paper on current models | Stage 0 done: bank 1,379 usable items, 18/18 QA gates, 163 old tests pass, dry run clean, [PR #1](https://github.com/Adya6714/retrieval-vs-computation/pull/1) open. No real model called yet |
-| **RR-Failures** (your "V1") | [reasoning-reliability](https://github.com/Adya6714/reasoning-reliability) | Measure one failure, find its internal cause, test fixes. First question Q1: read versus computed state | Q1 specs committed in `research/protocols/state_loss/` (commit dcc485a). Plan not signed off; no code |
-| **RR-Layer** (your "V2") | reasoning-reliability, later | A model that restructures inputs before a downstream LLM answers | Idea stage. This doc decides whether and how to pursue it |
+| **RR-Failures** (your "V1") | [reasoning-reliability](https://github.com/Adya6714/reasoning-reliability) | Measure one failure, find its internal cause, test fixes. First question Q1: read versus computed state | Specs + architecture + lit notes in-repo. Plan not signed off; no experiment code |
+| **RR-Layer** (your "V2") | reasoning-reliability, later | A model that restructures inputs before a downstream LLM answers | Idea stage. Only after Q1 E5 |
 
-The argument of this doc in one line: RR-Layer is only worth building if RR-Failures first shows that a failure has a diagnosable cause that a generic fix misses. So RR-Layer is the programme's destination, and Q1 is its first evidence.
+One-line argument: RR-Layer is only worth building if RR-Failures first shows a diagnosable cause that a generic fix misses. Q1 is the first evidence.
 
 ## Is the problem real?
 
