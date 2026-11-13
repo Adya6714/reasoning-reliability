@@ -54,6 +54,17 @@ Every model must create a contrast. Leaderboard rank alone is never a reason.
 - Pilot roster: Qwen 27B (thinking on and off), OLMo 3 7B Instruct, Jev.
 - Dropped: Llama 4 Scout (109B total weights), Gemma 4 31B (no matching interp tools).
 
+## Q1 roster (draft, 13 Nov 2026)
+
+Detail: `docs/q1/plan.md` and `docs/q1/E1_behaviour.md`.
+
+| Slot | Model | Role |
+|---|---|---|
+| Main mechanism | Qwen3.5-27B (64 layers: 48 GatedDeltaNet + 16 full; Qwen-Scope 27B SAEs) | E1–E5 |
+| Replication | Gemma 3 27B-it (Gemma Scope 2, CC BY 4.0) | E1–E5 |
+| Code / pilot | Qwen3.5-2B / 9B | Instrument and E1 pilot |
+| Behaviour only | Frontier + GLM / Kimi / DeepSeek | E1 only |
+
 ## Astra / weight-edit note
 
 Discussion cites MIT CSAIL editing a tiny fraction of a small Qwen's weights to reduce looping, with large reported benchmark jumps. Treat as inspiration for the looping fix path (failure type 4). Numbers are not independently verified for this project.

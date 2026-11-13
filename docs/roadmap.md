@@ -35,7 +35,16 @@ flowchart TD
 
 ## First demonstration
 
-Proposed (not frozen): **state loss** and **looping** end-to-end through measure → localize → fix → verify → generalize. Do not try all 17 failure types or all 8 abilities equally in the first demo.
+**Q1 (draft, 13 Nov 2026):** state loss via read vs computed UpdateLedger — which competitor wins (stale / neighbour / prior), and do causes differ by mode. Specs and plan: `docs/q1/`. Looping remains a later demo candidate. Do not try all 17 failure types or all 8 abilities equally in the first demo.
+
+```mermaid
+flowchart LR
+  E0[E0 Instrument] --> E1[E1 Behaviour]
+  E1 --> E2[E2 Readout]
+  E2 --> E3[E3 Localise]
+  E3 --> E4[E4 Shared]
+  E4 --> E5[E5 Fix]
+```
 
 ## Outputs
 

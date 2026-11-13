@@ -21,13 +21,16 @@ v3 direction (2026-11-04). Full detail in `docs/research_design.md`. Eval suite:
 - [ ] Community form (on hold until the research outlook is shared)
 
 ## Open now (v3 design)
-- [ ] Decide which 1 to 2 failure types first (proposed: state loss and looping)
+- [x] First failure cut drafted as Q1 (state loss: read vs computed) — `docs/q1/` (13 Nov 2026)
+- [ ] Sign off Q1 plan (8 checkbox decisions in plan doc; see `docs/q1/plan.md`)
+- [ ] Verify Q1 licences: comp-mech; Kim & Schuster boxes are design-only (no licence)
 - [ ] Decide whether Family G (long-horizon memory) becomes a full profiling family
-- [ ] Run Stage 0 frontier check
-- [ ] Build L1 tests for all 8 abilities (priority on first-demo abilities)
+- [ ] Run Stage 0 frontier check (also feeds Q1 E1 frontier panel)
+- [ ] After Q1 sign-off: build UpdateLedger (E0), then E1–E5 per `docs/q1/`
+- [ ] Build L1 tests for remaining abilities (looping and others after Q1)
 - [ ] Run L1 tests on the pilot roster
 - [ ] Run power and null simulations (model counts 6, 8, 12, 20, 30; zero-specific and format/template nulls)
-- [ ] Freeze and pre-register
+- [ ] Freeze and pre-register (`docs/q1/prereg.md` → `git tag q1-prereg` before E1 confirm)
 - [ ] Verify listed licences (PlanBench, tau2/tau3, Lost in Conversation, Math-Perturb, Simmer, DyVal, GSM-Infinite, NPHardEval)
 - [ ] Check OLMo 3 training data for Reasoning Gym, CRUXEval and GSM8K-derived data
 - [ ] Sketch demand-tagger approach (open product component)

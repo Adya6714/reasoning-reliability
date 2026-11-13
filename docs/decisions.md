@@ -57,3 +57,7 @@ One line per decision: date, decision, reason. Newest at the bottom. `docs/resea
 | 2026-11-04 | Demand tagger marked open challenge | Needed for load-rating product claim |
 | 2026-11-04 | Docs and configs updated to v3; root `research_design.md` is overview only | Absorb Nov 4 mental model into `docs/` |
 | 2026-11-07 | Clean Mermaid set in `docs/flowcharts.md`; raw paste kept as `flow_chart.md` pointer | Flowcharts for docs, README, and site |
+| 2026-11-13 | Q1 draft cut: state loss via UpdateLedger (read vs computed; stale / neighbour / prior competitors); specs in `docs/q1/` | Prior-art crowded on read-mode stale; computed + three competitors + cost/fix is the gap |
+| 2026-11-13 | Q1 main model Qwen3.5-27B; Gemma 3 27B-it replication; Qwen 2B/9B for code; frontier/GLM/Kimi/DeepSeek for E1 only | Interp tools (Qwen-Scope / Gemma Scope 2) + scale; behaviour-only for closed |
+| 2026-11-13 | Q1 experiments E0–E5; Guo attention redirection is an E5 baseline, not the fix claim | Matched fix must beat best generic per cost (C4) |
+| 2026-11-13 | Q1 not signed off; 8 plan checkboxes + comp-mech licence still open; Kim & Schuster design-only | No code until Adya sign-off |

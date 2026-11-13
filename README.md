@@ -4,7 +4,7 @@ Find where a language model breaks at reasoning, locate that failure inside the 
 
 ## Status
 
-Design stage (v3, 2026-11-04). No new experiments yet. `src/` is a placeholder until the design is frozen. Next: Stage 0 frontier check, then L1 tests (priority: state loss and looping).
+Design stage (v3). First focused cut is **Q1** (state loss: read vs computed competitors) — draft for review, 13 Nov 2026. Specs in [`docs/q1/`](docs/q1/); plan summary [`docs/q1/plan.md`](docs/q1/plan.md). No Q1 code until sign-off. `src/` stays a placeholder until the design is frozen.
 
 ## Plan in one line
 
@@ -25,6 +25,8 @@ Full diagram set: [`docs/flowcharts.md`](docs/flowcharts.md).
 
 | File | What it is |
 |---|---|
+| `docs/q1/` | **Q1 specs** (UpdateLedger, E0–E5, prereg, benchmarks) — first demo cut |
+| `docs/q1/plan.md` | Q1 draft plan (claims, models, prior art, open decisions) |
 | `docs/research_design.md` | Canonical research design (v3 pipeline, RQs, stages, stats, product) |
 | `docs/flowcharts.md` | Clean Mermaid diagrams for the whole programme |
 | `research_design.md` | Short mental-model overview (points to docs) |

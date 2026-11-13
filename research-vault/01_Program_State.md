@@ -1,12 +1,12 @@
 # Program state
 
-Updated: 2026-11-04 (v3)
+Updated: 2026-11-13 (v3 + Q1 draft)
 
 ## Current state
 
-**v3 design written into `docs/`. Stage 0 frontier check and L1 tests next.**
+**Q1 draft in `docs/q1/` (state loss: read vs computed). Awaiting Adya sign-off (8 plan checkboxes). No Q1 code until then.**
 
-Pipeline: MEASURE → LOCALIZE → FIX → VERIFY → GENERALIZE. Prediction on the hidden sandbox is a supporting checkpoint. See `docs/research_design.md`, `docs/root_abilities.md`, `docs/eval_suite.md`, `discussion.md`.
+Pipeline: MEASURE → LOCALIZE → FIX → VERIFY → GENERALIZE. Prediction on the hidden sandbox is a supporting checkpoint. See `docs/q1/plan.md`, `docs/research_design.md`, `docs/root_abilities.md`, `docs/eval_suite.md`, `discussion.md`.
 
 ## Confirmed design choices
 
@@ -20,7 +20,7 @@ Pipeline: MEASURE → LOCALIZE → FIX → VERIFY → GENERALIZE. Prediction on 
 - Repeated runs start at k=5 with pre-registered adaptive expansion.
 - Stage 0 frontier check is mandatory before trusting the instrument on current models.
 - Stages after measurement gate on RQ1 (reliable contrast), not RQ3 (prediction).
-- First demo proposed: state loss and looping end-to-end.
+- First demo: Q1 state loss via UpdateLedger (read vs computed; stale / neighbour / prior); looping later.
 - Fix-first pilot early; matched / strong / mismatch baselines for targeted fixes.
 - Reliability front-end (rewrite, runtime monitor, adaptive compute) is the product direction; demand tagger is open.
 - Use three open model families behaviorally and at least one accessible dense checkpoint mechanistically; closed/frontier panel for Stage 0 and behaviour only.
@@ -30,7 +30,7 @@ Pipeline: MEASURE → LOCALIZE → FIX → VERIFY → GENERALIZE. Prediction on 
 
 ## Open decisions before confirmatory collection
 
-- Which 1 to 2 failure types first (proposed: state loss and looping).
+- Q1 sign-off (8 checkbox decisions in plan doc; `docs/q1/plan.md`); comp-mech licence; Kim & Schuster design-only.
 - Whether Family G becomes a full profiling family.
 - Exact frontier panel strings, count, and API budget.
 - Paper split: one long paper vs series of three.

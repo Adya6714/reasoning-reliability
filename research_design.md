@@ -35,7 +35,7 @@ Prediction work (B3 vs B2 on the hidden sandbox) remains, as a supporting questi
 - **17 failure types:** what goes wrong (from five sweeps). Table in `research-vault/09_Test_Menu_and_Selection.md`.
 - **8 root abilities (R1 to R8):** candidate underlying skills with 4-level ladders. Profile = breaking points. Draft mapping and caveats in `docs/root_abilities.md`.
 
-First demo (proposed): **state loss** and **looping** end-to-end, not all 17 or all 8 equally.
+First demo: **Q1** state loss (read vs computed UpdateLedger) — draft in [`docs/q1/`](docs/q1/). Looping remains a later candidate.
 
 ## Eval instrument
 

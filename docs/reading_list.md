@@ -46,6 +46,15 @@
 - Dziri et al. 2023, Faith and Fate
 - Anil et al. 2022, length generalization
 
+### C2. Q1 prior art (read-mode stale / context change) — checked 13 Nov 2026
+- ★ PI-LLM (arXiv 2506.08184); data MIT — Q1 read-mode anchor
+- ★ Guo et al., When Context Changes (arXiv 2609.38866) — probes / attention routing; data "after review"; E5 baseline
+- Chen & Yeh (zenodo 23153676)
+- Qiao et al. (arXiv 2603.12271)
+- Ortu et al. 2024, competition of mechanisms (fact vs counterfactual only) — comp-mech; licence TBD
+- Gap Q1 fills: arithmetic **computed** mode, **prior** competitor, thinking/cost baseline; Guo fix needs current-value tokens (absent in computed mode)
+- Full selection: `docs/q1/benchmarks.md`
+
 ## D. Probe 3: memorization, exposure, contamination
 - ★ Xie et al. 2024, On Memorization of LLMs in Logical Reasoning (Knights and Knaves)
 - ★ Ruis et al. 2024, Procedural Knowledge in Pretraining Drives Reasoning

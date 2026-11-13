@@ -1,0 +1,110 @@
+[
+  {
+    "structure_id": "UL-000123",
+    "mode": "read",
+    "competitor": "stale",
+    "strength": 2,
+    "n_updates": 3,
+    "distance": "near",
+    "surface": "warehouse",
+    "entities": [
+      "crates of apples",
+      "crates of pears"
+    ],
+    "initial": {
+      "crates of apples": 10,
+      "crates of pears": 31
+    },
+    "operations": [
+      {
+        "entity": "crates of apples",
+        "op": "set",
+        "value": 15
+      },
+      {
+        "entity": "crates of apples",
+        "op": "set",
+        "value": 15,
+        "note": "repeat of stale value (strength 2)"
+      },
+      {
+        "entity": "crates of apples",
+        "op": "set",
+        "value": 12
+      }
+    ],
+    "query": "crates of apples",
+    "gold": 12,
+    "competitors": {
+      "stale": [
+        10,
+        15
+      ],
+      "neighbour": [
+        31
+      ],
+      "prior": null
+    },
+    "solver_trace": [
+      10,
+      15,
+      15,
+      12
+    ],
+    "rendered_text": "The warehouse holds 10 crates of apples and 31 crates of pears. The stock of apples is now 15 crates. The noon count confirms 15 crates of apples. The stock of apples is now 12 crates. How many crates of apples are in the warehouse now?"
+  },
+  {
+    "structure_id": "UL-000123",
+    "mode": "computed",
+    "competitor": "stale",
+    "strength": 2,
+    "n_updates": 2,
+    "distance": "near",
+    "surface": "warehouse",
+    "entities": [
+      "crates of apples",
+      "crates of pears"
+    ],
+    "initial": {
+      "crates of apples": 10,
+      "crates of pears": 31
+    },
+    "rendered_text": "The warehouse holds 10 crates of apples and 31 crates of pears. The morning count confirms 10 crates of apples. A truck adds 5 crates of apples. Later, 3 crates of apples are shipped out. How many crates of apples are in the warehouse now?",
+    "operations": [
+      {
+        "entity": "crates of apples",
+        "op": "add",
+        "value": 5
+      },
+      {
+        "entity": "crates of apples",
+        "op": "sub",
+        "value": 3
+      }
+    ],
+    "query": "crates of apples",
+    "gold": 12,
+    "competitors": {
+      "stale_written": [
+        10
+      ],
+      "stale_unwritten_intermediate": [
+        15
+      ],
+      "neighbour": [
+        31
+      ],
+      "prior": null
+    },
+    "strength_rule": "computed mode: strength = number of times the INITIAL (written) value is restated before the updates (here 2)",
+    "rules": [
+      "the gold 12 appears nowhere in the text",
+      "the intermediate 15 appears nowhere in the text"
+    ],
+    "solver_trace": [
+      10,
+      15,
+      12
+    ]
+  }
+]

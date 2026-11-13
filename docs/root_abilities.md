@@ -45,5 +45,5 @@ Same idea for other abilities: increase lookahead depth (R4), hops (R8), or step
 
 - Each ability needs 4 to 6 templates across at least 2 families.
 - Keep an ability only if model rankings agree across templates (Kendall's W for 3+ templates).
-- First demo (proposed): deepen R1 (state loss) and R2 looping path end-to-end; still build L1 coverage for all 8 on the pilot roster.
+- First demo: **Q1** deepens R1 (state loss) via UpdateLedger (`docs/q1/`); R2 looping is the next candidate; still build L1 coverage for all 8 on the pilot roster.
 - Next step: Stage 0 frontier check on L1 to L3; then L1 tests for all 8 (priority on first-demo abilities).

@@ -17,10 +17,12 @@ For a specific reasoning failure (for example state loss or looping), can we:
 
 Prediction (profiles on a hidden tool-use sandbox) remains a supporting checkpoint. Mechanistic work is core, not optional.
 
-**Current state:** v3 design written into docs; Stage 0 frontier check and L1 tests next. See [[01_Program_State]].
+**Current state:** v3 design in docs; **Q1** (state loss: read vs computed) drafted 13 Nov 2026 in `docs/q1/` — awaiting sign-off. Stage 0 and E0 next after approval. See [[01_Program_State]].
 
 ## Key docs
 
+- [[../docs/q1/plan]] : **Q1 draft plan** (first demo cut)
+- [[../docs/q1/README]] : Q1 experiment specs (E0–E5)
 - [[../docs/research_design]] : canonical v3 design (pipeline, RQs, stages, product)
 - [[../docs/flowcharts]] : Mermaid diagrams for the full programme
 - [[../research_design]] : short mental-model overview

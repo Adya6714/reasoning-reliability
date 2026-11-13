@@ -67,9 +67,9 @@ Spine: 8 root abilities with 4-level ladders. Full table: `docs/root_abilities.m
 - Knowledge prerequisite tests remain a control, not a profile dimension.
 - Coordination with another actor stays out of scope.
 
-**First demonstration (proposed, not frozen):** end-to-end on **state loss** (type 1 / R1) and **looping** (type 4 / R2), not all 17 types or all 8 abilities equally. Rule breaking is a third candidate.
+**First demonstration — Q1 (draft, 13 Nov 2026):** end-to-end on **state loss** (type 1 / R1) via UpdateLedger: read vs computed mode; competitors stale / neighbour / prior. Specs and plan: `docs/q1/`. **Looping** (type 4 / R2) remains a later demo candidate. Rule breaking is a third candidate.
 
-Signature method carried from v1: plan/execute split with controlled **false-state injection** (know exactly when the error enters).
+Signature method carried from v1: plan/execute split with controlled **false-state injection** (know exactly when the error enters). Q1 adds a stronger variant: computed mode never writes the gold value, so interference cannot be pure surface retrieval.
 
 ## 5. Hypotheses
 
@@ -263,8 +263,9 @@ Shared infrastructure and failure definitions across all three.
 
 ## 17. Open decisions
 
+- **Q1 sign-off** (8 checkbox decisions; see `docs/q1/plan.md`); no Q1 code until then
+- Q1 licences: comp-mech unverified; Kim & Schuster boxes design-only
 - Monthly compute and API budget; exact frontier panel composition
-- Which 1 to 2 failure types first (proposed: state loss and looping)
 - Whether Family G (long-horizon memory) becomes a full profiling family
 - Which root abilities survive the L1 pilot (Kendall's W)
 - Paper split: one long paper vs series of three
