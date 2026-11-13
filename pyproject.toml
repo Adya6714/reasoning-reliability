@@ -19,10 +19,10 @@ analysis = ["numpy>=2,<3", "pandas>=2.2,<4", "scipy>=1.13,<2", "statsmodels>=0.1
 dev = ["pytest>=8,<9", "ruff>=0.6,<1"]
 
 [project.scripts]
-rr = "reasoning_reliability.cli:main"
+rr = "rr.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/reasoning_reliability"]
+packages = ["src/rr"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

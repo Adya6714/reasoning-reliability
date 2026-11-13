@@ -2,7 +2,7 @@
 
 This file was a ChatGPT Mermaid paste (CSS + node text). It is kept only as provenance.
 
-**Use the clean diagrams instead:** [`docs/flowcharts.md`](docs/flowcharts.md)
+**Use the clean diagrams instead:** [`research/docs/flowcharts.md`](research/docs/flowcharts.md)
 
 That file has proper Mermaid for the full v3 architecture: central idea, taxonomies, ladders, benchmarks, models, statistics, interpretability, fixes, front-end, first demo, roadmap, and papers.
 

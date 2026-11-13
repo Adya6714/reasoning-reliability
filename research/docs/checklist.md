@@ -1,0 +1,84 @@
+# Checklist
+
+v3 direction (2026-11-04). Full detail in `research/docs/research_design.md`. Eval suite: `research/docs/eval_suite.md`. Root abilities: `research/docs/root_abilities.md`.
+
+## Block A: house in order (week 1)
+- [x] A1 Compute: JarvisLabs
+- [x] A2 Make the repo one plan (design doc, configs, docs)
+- [ ] A3 Runner: moved to Block C (requirements in `research/docs/runner_requirements.md`)
+- [ ] A4 Close out v1: "under revision" note, erratum, archive old repo
+- [x] A5 Obsidian simple vault
+- [ ] A6 Stage 0 frontier check: L1 to L3 on Opus, Fable, Astra, GLM (and peers)
+
+## Pain points (done 2026-10-29)
+- [x] Sweeps: X, LessWrong, GitHub/HN/Reddit, published taxonomies, arXiv gap fill
+- [x] Master pain-point table (`research/research-vault/09_Test_Menu_and_Selection.md`)
+- [x] Decide new dimensions: goal completion and constraint adherence added; coordination out of scope
+- [x] Collapse 17 types into 8 root abilities with ladders (`research/docs/root_abilities.md`)
+- [x] Choose eval suite families + hidden sandbox (`research/docs/eval_suite.md`)
+- [x] Adopt v3 pipeline: measure → localize → fix → verify → generalize (`research/docs/research_design.md`)
+- [x] Clean Mermaid flowcharts in `research/docs/flowcharts.md` + site Flowcharts panel
+- [ ] Community form (on hold until the research outlook is shared)
+
+## Open now (v3 design)
+- [x] First failure cut drafted as Q1 (state loss: read vs computed) — `research/protocols/state_loss/` (13 Nov 2026)
+- [x] Programme architecture + budget canonicalised at `research/docs/programme_architecture.md` (pipeline.md merged)
+- [x] Repo restructure: `research/`, `src/rr/`, `failures/state_loss/`
+- [x] Lit agent files installed; first 5 seed notes (see vault `papers/`)
+- [ ] Sign off Q1 plan (8 checkbox decisions in plan doc; see `research/protocols/state_loss/plan.md`)
+- [ ] Adya reads Guo et al. lit note (THREAT check before E0)
+- [ ] Verify Q1 licences: comp-mech; Kim & Schuster boxes are design-only (no licence)
+- [ ] Decide whether Family G (long-horizon memory) becomes a full profiling family
+- [ ] Run Stage 0 frontier check (also feeds Q1 E1 frontier panel)
+- [ ] After Q1 sign-off: build UpdateLedger (E0), then E1–E5 per `research/protocols/state_loss/`
+- [ ] Build L1 tests for remaining abilities (looping and others after Q1)
+- [ ] Run L1 tests on the pilot roster
+- [ ] Run power and null simulations (model counts 6, 8, 12, 20, 30; zero-specific and format/template nulls)
+- [ ] Freeze and pre-register (`research/protocols/state_loss/prereg.md` → `git tag q1-prereg` before E1 confirm)
+- [ ] Verify listed licences (PlanBench, tau2/tau3, Lost in Conversation, Math-Perturb, Simmer, DyVal, GSM-Infinite, NPHardEval)
+- [ ] Check OLMo 3 training data for Reasoning Gym, CRUXEval and GSM8K-derived data
+- [ ] Sketch demand-tagger approach (open product component)
+- [ ] v1 site: "under revision" note, erratum, archive old repo
+
+## Block B: what to measure (weeks 1 to 2)
+- [x] B1 Root ability spine (8 abilities, ladders); draft mapping to 17 failure types
+- [ ] B2 Score the 15 tests on the six questions; pick top 5 to 6 (align with L1 templates and first-demo failures)
+
+## Block C: build the instrument (weeks 2 to 4)
+- [x] C1 Choose families (A to E + hidden F; G proposed); see `research/docs/eval_suite.md`
+- [ ] C2 Build items, surfaces, protocol, verify, analysis; port v1 modules with tests
+- [ ] C3 QA tests that block bad runs
+- [ ] C4 Build the runner to `research/docs/runner_requirements.md`
+- [ ] C5 Measure the noise floor
+
+## Block D: pilots (weeks 4 to 5)
+- [ ] D1 Screening pilot (Jev, five confidence signals)
+- [ ] D2 Fix-first pilot
+- [ ] D3 Decide: continue, narrow, or pivot
+
+## Block E: lock the study (week 6)
+- [ ] E1 Choose abilities that survive Kendall's W across templates
+- [x] E2 Hidden family chosen: deterministic tool-use sandbox
+- [x] E3 Three-baseline prediction test written (B2 includes ADeLe-style profile)
+- [ ] E4 Power simulation; final item counts
+- [ ] E5 Pre-register in `prereg/`
+
+## Block F: main behavioural run (weeks 7 to 9)
+- [ ] F1 Run all models; surprise checklist; replicate on fresh twins
+- [ ] F2 Report hidden-family prediction checkpoint (does not gate later stages)
+
+## Block G: causes (weeks 9 to 11)
+- [ ] G1 Controlled exposure on OLMo 3 7B; replicate on a second family
+- [ ] G2 OLMo training stages
+
+## Block H: localize (weeks 11 to 16)
+- [ ] H1 Probe ladder: probes, patching, lens comparison, steering with controls, attribution graph
+- [x] H2 Stage 3 pass bars fixed in design
+
+## Block I: fix, verify, generalize (weeks 17 to 22+)
+- [ ] I1 Harness, SFT, RL, steering, weight edits; matched / strong / mismatch; cost and side effects
+- [ ] I2 Re-run pipeline on a second open model family
+- [ ] I3 Front-end sketch: rewrite, runtime monitor, adaptive compute
+
+## In parallel
+- [ ] Read closest papers (`research/docs/research_design.md` Section 14); file in Obsidian

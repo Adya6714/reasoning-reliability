@@ -1,6 +1,6 @@
 # Reasoning reliability: mental model
 
-Canonical operational design: [`docs/research_design.md`](docs/research_design.md). Discussion log (Nov 4 direction): [`discussion.md`](discussion.md). This file is the short overview only.
+Canonical operational design: [`research/docs/research_design.md`](research/docs/research_design.md). Programme architecture / budget: [`research/docs/programme_architecture.md`](research/docs/programme_architecture.md). Discussion log (Nov 4 direction): [`discussion.md`](discussion.md). This file is the short overview only.
 
 ## What we are building
 
@@ -32,14 +32,14 @@ Prediction work (B3 vs B2 on the hidden sandbox) remains, as a supporting questi
 
 ## Two taxonomies
 
-- **17 failure types:** what goes wrong (from five sweeps). Table in `research-vault/09_Test_Menu_and_Selection.md`.
-- **8 root abilities (R1 to R8):** candidate underlying skills with 4-level ladders. Profile = breaking points. Draft mapping and caveats in `docs/root_abilities.md`.
+- **17 failure types:** what goes wrong (from five sweeps). Table in `research/research-vault/09_Test_Menu_and_Selection.md`.
+- **8 root abilities (R1 to R8):** candidate underlying skills with 4-level ladders. Profile = breaking points. Draft mapping and caveats in `research/docs/root_abilities.md`.
 
-First demo: **Q1** state loss (read vs computed UpdateLedger) — draft in [`docs/q1/`](docs/q1/). Looping remains a later candidate.
+First demo: **Q1** state loss (read vs computed UpdateLedger) — draft in [`research/protocols/state_loss/`](research/protocols/state_loss/). Looping remains a later candidate.
 
 ## Eval instrument
 
-One set of generators with exact solvers, used for behaviour, hidden prediction, controlled training, labelled interp examples, and RL/SFT. Families A to E + hidden deterministic tool-use sandbox F. Family G (long-horizon memory) is proposed, not finalized. Details: `docs/eval_suite.md`.
+One set of generators with exact solvers, used for behaviour, hidden prediction, controlled training, labelled interp examples, and RL/SFT. Families A to E + hidden deterministic tool-use sandbox F. Family G (long-horizon memory) is proposed, not finalized. Details: `research/docs/eval_suite.md`.
 
 ## Statistics (short)
 
@@ -60,13 +60,13 @@ Profile model once → estimate task demands (demand tagger: open) → risk-base
 
 ## Where to read next
 
-1. `docs/research_design.md`
-2. `docs/flowcharts.md` (full Mermaid set)
-3. `docs/eval_suite.md`
-4. `docs/root_abilities.md`
-5. `research-vault/09_Test_Menu_and_Selection.md`
-6. `docs/reading_list.md`
-7. `docs/decisions.md`
+1. `research/docs/research_design.md`
+2. `research/docs/flowcharts.md` (full Mermaid set)
+3. `research/docs/eval_suite.md`
+4. `research/docs/root_abilities.md`
+5. `research/research-vault/09_Test_Menu_and_Selection.md`
+6. `research/docs/reading_list.md`
+7. `research/docs/decisions.md`
 8. `discussion.md`
 9. `site/` interactive explainer
 

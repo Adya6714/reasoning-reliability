@@ -1,4 +1,4 @@
-# Study settings. Source of truth: docs/research_design.md, docs/eval_suite.md, docs/root_abilities.md.
+# Study settings. Source of truth: research/docs/research_design.md, research/docs/eval_suite.md, research/docs/root_abilities.md.
 study:
   id: rr_v3
   status: design
@@ -35,7 +35,7 @@ study:
     note: end-to-end measure to localize to fix to verify; not all 8 abilities equally
 
   dimensions:
-    status: root abilities with 4-level ladders; see docs/root_abilities.md
+    status: root abilities with 4-level ladders; see research/docs/root_abilities.md
     profile: ladder breaking points per ability
     spine: [R1, R2, R3, R4, R5, R6, R7, R8]
     out_of_scope: [coordination_with_another_actor]

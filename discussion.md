@@ -2,7 +2,7 @@
 
 A running record of where the research stands, Adya's concerns, and the points the research must answer.
 
-**Note (2026-11-07):** The 4 Nov 2026 entries below set the v3 direction. That direction is now written into `docs/research_design.md`, `configs/study.yaml`, `configs/models.yaml`, and related docs. Prefer those files as the operational source of truth; keep this log for history and open debate.
+**Note (2026-11-07):** The 4 Nov 2026 entries below set the v3 direction. That direction is now written into `research/docs/research_design.md`, `configs/study.yaml`, `configs/models.yaml`, and related docs. Prefer those files as the operational source of truth; keep this log for history and open debate.
 
 ## Where the research stands (as of 4 Nov 2026)
 
@@ -121,7 +121,7 @@ A running record of where the research stands, Adya's concerns, and the points t
 
 ## Full research design (v3 draft, 4 Nov)
 
-This section is the detailed design behind the rundown above. It replaces nothing in the repo yet; once agreed, it gets folded into docs/research_design.md.
+This section is the detailed design behind the rundown above. It replaces nothing in the repo yet; once agreed, it gets folded into research/docs/research_design.md.
 
 ### 1. Research question and claims
 
@@ -309,4 +309,4 @@ This section is the detailed design behind the rundown above. It replaces nothin
 
 1. **New chat:** walk through the research design end to end, then finalize benchmarks, failure types and what each test is for.
 2. **Precursor (baseline) test** before the full design is frozen. Run a small battery (rewording ladders, state-tracking ladder, Probe 2 injection, a looping sandbox) on a few open models and 2 to 3 frontier models. Goals: confirm frontier models still break, find each model's rough breaking points, and set the baseline the full design is built on.
-3. Then freeze, pre-register and update docs/research_design.md through a Cursor prompt.
+3. Then freeze, pre-register and update research/docs/research_design.md through a Cursor prompt.

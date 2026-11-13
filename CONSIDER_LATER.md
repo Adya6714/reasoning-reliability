@@ -20,7 +20,7 @@ Independent confirmation of the 17-type list (cannot use the same sweeps that bu
 - Freeze the list, then label failures from reports posted after the freeze date; count "doesn't fit".
 - Blind-label agent logs nobody built around this taxonomy (for example a teammate's own runs).
 
-Simulation design reminders (also in `docs/research_design.md`):
+Simulation design reminders (also in `research/docs/research_design.md`):
 
 - Match item difficulty across abilities; use the real pilot ability spread (avoid floor-driven fake factors).
 - Null with zero specific factors for false-positive rate.
